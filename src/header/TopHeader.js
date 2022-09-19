@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import CartIcon from "../icons/cart.svg";
 import menuHumberger from "../icons/menuHumberger.svg";
 import { useState } from "react";
-import nav_bg from "../iamges/nav_bg.jpg";
+import nav_bg from "../images/nav_bg.jpg";
 import CloseIco from "../icons/close.svg";
 // import { BiQrScan } from "react-icons/bi";
 const NavigationsLinks = ({ setisVisible }) => {
@@ -65,7 +65,7 @@ export const SmTopHeader = ({ openCart, closeCart }) => {
   };
   return (
     <div className="lg:hidden w-full">
-      <div className=" flex justify-between w-full  gap-3 list-none  ">
+      <div className=" flex justify-between w-full  gap-3 list-none mt-2 ">
         {isVisible && (
           <button
             className="absolute top-5 left-5 z-[111]"
@@ -98,7 +98,7 @@ export const SmTopHeader = ({ openCart, closeCart }) => {
         <div>
           <li>
             <button onClick={openCart} className="lg:relative">
-              <p className="absolute top-1 right-6 bg-[#5B6D5B] w-5 h-5 rounded-full text-sm ">
+              <p className="absolute bottom-10 right-0 bg-[#5B6D5B] w-5 h-5 rounded-full text-sm ">
                 2
               </p>
               <img className="w-[40px] h-[40px]" src={CartIcon} alt="cart" />
