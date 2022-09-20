@@ -1,4 +1,3 @@
-import { useState } from "react";
 import CloseOverlay from "../icons/close.svg";
 
 function Cart({ isVisisble, setCartVisisble }) {

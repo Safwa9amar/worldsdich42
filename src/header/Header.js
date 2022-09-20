@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import nav_bg from "../asstes/bg/product.jpg";
 import Logo from "../asstes/logo.png";
 import burger from "../images/buger.png";

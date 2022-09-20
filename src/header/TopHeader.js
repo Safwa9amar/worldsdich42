@@ -19,7 +19,7 @@ const NavigationsLinks = ({ setisVisible }) => {
       <li>
         <Link
           className={`no-underline ${
-            location.pathname == "/" ? activeClass : ""
+            location.pathname === "/" ? activeClass : ""
           }`}
           to="/"
         >
@@ -29,7 +29,7 @@ const NavigationsLinks = ({ setisVisible }) => {
       <li>
         <Link
           className={`no-underline ${
-            location.pathname == "/menu" ? activeClass : ""
+            location.pathname === "/menu" ? activeClass : ""
           }`}
           to="menu"
         >
@@ -39,7 +39,7 @@ const NavigationsLinks = ({ setisVisible }) => {
       <li>
         <Link
           className={`no-underline ${
-            location.pathname == "/contact" ? activeClass : ""
+            location.pathname === "/contact" ? activeClass : ""
           }`}
           to="contact"
         >
