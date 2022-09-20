@@ -8,7 +8,7 @@ function Cart({ isVisisble, setCartVisisble }) {
         ${isVisisble ? "" : "opacity-0 pointer-events-none"}
         transition-opaciy
         duration-500
-        absolute top-0 right-0 z-[222] w-full h-screen bg-[#121618dd]
+        absolute top-0 right-0 z-[9999] w-full h-screen bg-[#121618dd]
         lg:w-1/4
       `}
     >

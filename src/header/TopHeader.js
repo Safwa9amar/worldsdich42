@@ -4,25 +4,45 @@ import menuHumberger from "../icons/menuHumberger.svg";
 import { useState } from "react";
 import nav_bg from "../images/nav_bg.jpg";
 import CloseIco from "../icons/close.svg";
+import { useLocation } from "react-router-dom";
+
 // import { BiQrScan } from "react-icons/bi";
 const NavigationsLinks = ({ setisVisible }) => {
+  let location = useLocation();
+  let activeClass = "text-[#FFC700] transition-all duration-300 ";
+
   const handleClick = (e) => {
     setisVisible(false);
   };
   return (
     <>
       <li>
-        <Link className="no-underline" to="/">
+        <Link
+          className={`no-underline ${
+            location.pathname == "/" ? activeClass : ""
+          }`}
+          to="/"
+        >
           <button onClick={handleClick}>Accueil</button>
         </Link>
       </li>
       <li>
-        <Link className="no-underline" to="menu">
+        <Link
+          className={`no-underline ${
+            location.pathname == "/menu" ? activeClass : ""
+          }`}
+          to="menu"
+        >
           <button onClick={handleClick}>Menu</button>
         </Link>
       </li>
       <li>
-        <Link className="no-underlin" to="contact">
+        <Link
+          className={`no-underline ${
+            location.pathname == "/contact" ? activeClass : ""
+          }`}
+          to="contact"
+        >
           <button onClick={handleClick}>Contact</button>
         </Link>
       </li>
@@ -42,7 +62,7 @@ const NavigationsLinks = ({ setisVisible }) => {
 export const MdTopHeader = ({ openCart }) => {
   return (
     <div className="hidden lg:block lg:mx-4">
-      <ul className="flex gap-3 list-none ">
+      <ul className="flex gap-3 list-none text-xl">
         <NavigationsLinks />
         <li>
           <button onClick={() => openCart(true)} className="lg:relative">
@@ -68,7 +88,7 @@ export const SmTopHeader = ({ openCart, closeCart }) => {
       <div className=" flex justify-between w-full  gap-3 list-none mt-2 ">
         {isVisible && (
           <button
-            className="absolute top-5 left-5 z-[111]"
+            className="absolute top-5 left-5 z-[999999]"
             onClick={handleClick}
           >
             <img className="w-[25px]" src={CloseIco} alt="close" />
@@ -82,7 +102,7 @@ export const SmTopHeader = ({ openCart, closeCart }) => {
             backgroundImage: `url(${nav_bg})`,
             backgroundSize: "100% 100%",
           }}
-          className={`bg-red-400 fixed ${
+          className={`bg-red-400 fixed z-[9999] ${
             isVisible ? "" : "opacity-0 pointer-events-none"
           } transition-opacity duration-500 h-screen w-screen z-50 top-0 left-0
           text-4xl text-center overflow-hidden
