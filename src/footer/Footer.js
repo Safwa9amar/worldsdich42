@@ -23,28 +23,41 @@ export default function Footer() {
         <div className="grid grid-row-2 gap-3 text-white lg:p-10 ">
           <div className="flex justify-between  flex-col lg:flex-row items-center lg:items-start gap-5 w-full">
             <div className="text-[#888888] font-bold  ">CONTACTEZ-NOUS</div>
-            <div className="flex items-start gap-2 lg:text-lg">
+            <a
+              target="_blank"
+              href="https://www.google.com/maps/place/45.4321830454166,%204.392961885894287"
+              className="flex items-start gap-2 lg:text-lg"
+            >
               <GiPositionMarker className="w-[30px] h-[30px]" />
               <p>
                 17, Rue Antoine du Rafour
                 <br /> 42100 Sanit-étienne
               </p>
-            </div>
-            <div className="flex  items-center gap-2 lg:text-lg">
+            </a>
+            <a
+              href="mailto:worlddwich42@gmail.com"
+              className="flex  items-center gap-2 lg:text-lg"
+            >
               <AiOutlineMail className="w-[30px] h-[30px]" />
               <p> worlddwich42@gmail.com</p>
-            </div>
-            <div className="flex items-center gap-2 lg:text-lg">
+            </a>
+            <a
+              href="tel:+04 87 66 92 67"
+              className="flex items-center gap-2 lg:text-lg"
+            >
               <FiPhoneCall className="w-[30px] h-[30px]" />
               <p>+04 87 66 92 67 | +07 54 15 85 35</p>
-            </div>
+            </a>
           </div>
           <div className="flex justify-between  flex-col lg:flex-row   items-center gap-5 w-full">
             <div className="text-[#888888] font-bold  ">Réseaux sociaux</div>
-            <div className="flex items-center gap-2 lg:text-lg">
+            <a
+              href="https://www.facebook.com/profile.php?id=100069830787150"
+              className="flex items-center gap-2 lg:text-lg"
+            >
               <AiOutlineFacebook className="w-[30px] h-[30px]" />
               <p>World’s Dwich 42</p>
-            </div>
+            </a>
             <div className="flex items-center gap-2 lg:text-lg">
               <AiOutlineInstagram className="w-[30px] h-[30px]" />
               <p>World’s Dwich 42</p>

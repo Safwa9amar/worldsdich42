@@ -7,7 +7,7 @@ import Footer from "./footer/Footer";
 import Home from "./home/Home";
 import Contact from "./contact/Contact";
 import Cart from "./checkout/Cart";
-
+import Catergory from "./menu/components/Catergory";
 
 function App() {
   const [isVisisble, setCartVisisble] = React.useState(false);
@@ -19,7 +19,8 @@ function App() {
         <Cart isVisisble={isVisisble} setCartVisisble={setCartVisisble} />
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route exact path="/menu" element={<Menu />} />
+          <Route exact path="/menu/category" element={<Catergory />} />
+          <Route exact path="/menu" element={<Menu />}/>
           <Route exact path="/contact" element={<Contact />} />
         </Routes>
         <Footer />

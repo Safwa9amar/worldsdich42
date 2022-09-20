@@ -16,34 +16,34 @@ const NavigationsLinks = ({ setisVisible }) => {
   };
   return (
     <>
-      <li>
+      <li onClick={handleClick}>
         <Link
           className={`no-underline ${
             location.pathname === "/" ? activeClass : ""
           }`}
           to="/"
         >
-          <button onClick={handleClick}>Accueil</button>
+          Accueil
         </Link>
       </li>
-      <li>
+      <li onClick={handleClick}>
         <Link
           className={`no-underline ${
             location.pathname === "/menu" ? activeClass : ""
           }`}
           to="menu"
         >
-          <button onClick={handleClick}>Menu</button>
+          Menu
         </Link>
       </li>
-      <li>
+      <li onClick={handleClick}>
         <Link
           className={`no-underline ${
             location.pathname === "/contact" ? activeClass : ""
           }`}
           to="contact"
         >
-          <button onClick={handleClick}>Contact</button>
+          Contact
         </Link>
       </li>
       {/* <li>

@@ -69,7 +69,7 @@ export default function Header({ setCartVisisble }) {
               Sur place , à emporter et en livraison
             </p>
           </div>
-          <div className="w-1/2 lg:w-1/3">
+          <div className="w-1/2 lg:w-1/4">
             <img className="w-full h-full" src={burger} alt="burger" />
           </div>
         </div>

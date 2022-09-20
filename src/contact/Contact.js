@@ -11,9 +11,9 @@ const Contact = () => {
         backgroundAttachment: "fixed",
         backgroundSize: "100% 100%",
       }}
-      className="mx-[2.5vw] w-[95vw] pb-20 flex flex-col items-center "
+      className="md:mx-[2.5vw] md:w-[95vw] pb-20 flex flex-col items-center "
     >
-      <div className=" text-black bg-white w-full md:w-1/2 m-4 p-4 rounded-lg">
+      <div className="w-[95%] text-black bg-white md:w-1/2 m-4 p-4 rounded-lg">
         <div className="flex flex-col md:flex-row justify-between md:items-baseline ">
           <h3 className="text-3xl md:w-fit text-center  mt-10 ">
             Contactez-nous
@@ -44,7 +44,7 @@ const Contact = () => {
         <br />
         <iframe
           title="google map"
-          className="w-full h-[30vh] rounded-xl"
+          className="w-full h-[35vh] rounded-xl"
           src="https://maps.google.com/maps?q=17,%20Rue%20Antoine%20du%20Rafour%2042100%20Sanit-%C3%A9tienne&t=&z=15&ie=UTF8&iwloc=&output=embed"
         ></iframe>
         <br />
