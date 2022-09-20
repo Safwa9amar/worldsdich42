@@ -25,6 +25,7 @@ export default function Footer() {
             <div className="text-[#888888] font-bold  ">CONTACTEZ-NOUS</div>
             <a
               target="_blank"
+              rel="noreferrer"
               href="https://www.google.com/maps/place/45.4321830454166,%204.392961885894287"
               className="flex items-start gap-2 lg:text-lg"
             >

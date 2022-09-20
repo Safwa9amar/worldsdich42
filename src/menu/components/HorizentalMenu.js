@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { HorizentalMenuData } from "../icons/data";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -25,7 +25,7 @@ const MenuItem = ({ icon, text, isActive }) => {
   const color = isActive ? "[#5B6D5B]" : "white";
   return (
     <a
-      href="#"
+      href="/menu"
       className={`flex items-center flex-1 gap-2 text-${color} ${
         isActive ? "font-bold shadow-md shadow-[#5B6D5B] " : ""
       }`}
