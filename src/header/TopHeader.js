@@ -59,18 +59,24 @@ const NavigationsLinks = ({ setisVisible }) => {
   );
 };
 
+const CartIndicator = ({ count = 0, openCart }) => {
+  return (
+    <button onClick={openCart} className="lg:relative">
+      <p className="absolute bottom-10 right-0 bg-[#5B6D5B] w-5 h-5 rounded-full text-sm ">
+        {count}
+      </p>
+      <img className="w-[40px] h-[40px]" src={CartIcon} alt="cart" />
+    </button>
+  );
+};
+
 export const MdTopHeader = ({ openCart }) => {
   return (
     <div className="hidden lg:block lg:mx-4">
       <ul className="flex gap-3 list-none text-xl">
         <NavigationsLinks />
         <li>
-          <button onClick={() => openCart(true)} className="lg:relative">
-            <p className="absolute -top-5 right-0 bg-[#5B6D5B] w-5 h-5 rounded-full text-sm ">
-              2
-            </p>
-            <img className="w-[25px] h-[25px]" src={CartIcon} alt="cart" />
-          </button>
+          <CartIndicator openCart={openCart} />
         </li>
       </ul>
     </div>
@@ -88,7 +94,7 @@ export const SmTopHeader = ({ openCart, closeCart }) => {
       <div className=" flex justify-between w-full  gap-3 list-none mt-2 ">
         {isVisible && (
           <button
-            className="absolute top-5 left-5 z-[999999]"
+            className="absolute top-5 left-5 z-[999990999]"
             onClick={handleClick}
           >
             <img className="w-[25px]" src={CloseIco} alt="close" />
@@ -102,7 +108,7 @@ export const SmTopHeader = ({ openCart, closeCart }) => {
             backgroundImage: `url(${nav_bg})`,
             backgroundSize: "100% 100%",
           }}
-          className={`bg-red-400 fixed z-[9999] ${
+          className={`bg-red-400 fixed z-[9999999] ${
             isVisible ? "" : "opacity-0 pointer-events-none"
           } transition-opacity duration-500 h-screen w-screen z-50 top-0 left-0
           text-4xl text-center overflow-hidden
@@ -117,12 +123,7 @@ export const SmTopHeader = ({ openCart, closeCart }) => {
         </div>
         <div>
           <li>
-            <button onClick={openCart} className="lg:relative">
-              <p className="absolute bottom-10 right-0 bg-[#5B6D5B] w-5 h-5 rounded-full text-sm ">
-                2
-              </p>
-              <img className="w-[40px] h-[40px]" src={CartIcon} alt="cart" />
-            </button>
+            <CartIndicator openCart={openCart} />
           </li>
         </div>
       </div>

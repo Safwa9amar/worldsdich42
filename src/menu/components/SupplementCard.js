@@ -1,43 +1,69 @@
-import React from "react";
-import { AiOutlineCheckCircle, AiFillCheckCircle } from "react-icons/ai";
-import Carousel from "react-multi-carousel";
+import * as React from "react";
 import imgTest from "../../asstes/supplement/cheddar.png";
+import boursin from "../../asstes/supplement/boursin.png";
+import champignon from "../../asstes/supplement/champignon.png";
+import chevre from "../../asstes/supplement/chevre.png";
+import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 const data = [
   {
     id: 1,
     img: imgTest,
-    Name: "Cheddar",
+    text: "Cheddar",
+    isAvaliable: true,
   },
   {
     id: 2,
-    img: imgTest,
-    Name: "Cheddar",
+    img: boursin,
+    text: "boursin",
+    isAvaliable: false,
   },
   {
     id: 3,
-    img: imgTest,
-    Name: "Cheddar",
+    img: champignon,
+    text: "champignon",
+    isAvaliable: false,
+  },
+  {
+    id: 4,
+    img: chevre,
+    text: "chevre",
+    isAvaliable: true,
   },
   {
     id: 4,
     img: imgTest,
-    Name: "Cheddar",
+    text: "Cheddar",
+    isAvaliable: true,
+  },
+  {
+    id: 4,
+    img: imgTest,
+    text: "Cheddar",
+    isAvaliable: true,
+  },
+  {
+    id: 4,
+    img: imgTest,
+    text: "Cheddar",
+    isAvaliable: true,
   },
 ];
 
 const responsive = {
   superLargeDesktop: {
     breakpoint: { max: 4000, min: 3000 },
-    items: 5,
+    items: 3,
   },
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 5,
+    items: 3,
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
-    items: 4,
+    items: 2,
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
@@ -45,54 +71,146 @@ const responsive = {
   },
 };
 
-const CarouselRange = ({ imgData }) => {
-  return (
-    <Carousel containerClass="w-full h-full" responsive={responsive}>
-      <h1>qsdsq qsdqs d</h1>
-      {imgData.map((el) => {
-        return (
-          <div className="flex items-center justify-center gap-2 w-[150px] h-[150px]">
-            <img src={el.img} alt="lmqjkd" />
-            <p>{el.text}</p>
-            <p>- 1 +</p>
-          </div>
-        );
-      })}
-    </Carousel>
-  );
-};
+const data_burger = [
+  {
+    recip: "Filet d'escalope",
+    isChecked: true,
+  },
+  {
+    recip: "lardinette avec sauce gruyère",
+    isChecked: true,
+  },
+  {
+    recip: " Crudités",
+    isChecked: true,
+  },
+  {
+    recip: "salade oignons rouge",
+    isChecked: true,
+  },
+  {
+    recip: "fromage cheddar",
+    isChecked: true,
+  },
+  {
+    recip: " 2 sauces au choix.",
+    isChecked: true,
+  },
+];
 
-export const SupplementCard = ({
-  setSupplementCard,
-  isSupplementCardVisisble,
-}) => {
+const CarouselItems = ({ src, name, status }) => {
+  const [count, setCount] = React.useState(0);
+  const increment = () => {
+    setCount(count + 1);
+  };
+  const decrement = () => {
+    setCount(count - 1);
+  };
   return (
-    <div
-      className={`${
-        isSupplementCardVisisble ? "block" : "hidden"
-      } flex justify-center items-center fixed z-[999] w-screen h-screen bg-[#0000009c] text-white`}
-    >
-      <button onClick={() => setSupplementCard(!isSupplementCardVisisble)}>
-        close X
-      </button>
-      <div className="flex flex-col items-start gap-4 bg-[#28231B]">
-        <div>
-          <p className="flex items-center gap-1">
-            <AiOutlineCheckCircle />
-            Filet d'escalope
-          </p>
-          <p className="flex items-center gap-1">
-            <AiFillCheckCircle />
-            lardinette avec sauce gruyère
-          </p>
-          <p className="flex items-center gap-1">
-            <AiFillCheckCircle />
-            Salade oignons rouge
-          </p>
+    <div className="indicator carousel-item flex flex-col  items-center">
+      <span
+        className={`indicator-item badge ${
+          status ? "badge-primary" : "badge-neutral"
+        }`}
+      >
+        {status ? "disponible" : "indisponible"}
+      </span>
+      <img
+        className={`rounded-box w-[100px] h-[100px] ${
+          status ? "" : "brightness-50"
+        }`}
+        src={src}
+        alt={name}
+      />
+      <p>{name}</p>
+      {status && (
+        <div className="flex justify-between gap-4 items-center bg-[#5B6D5B] px-4 rounded-md">
+          <div onClick={decrement} className="cursor-pointer font-bold">
+            -
+          </div>
+          <div>{count}</div>
+          <div onClick={increment} className="cursor-pointer font-bold">
+            +
+          </div>
         </div>
-        <h2>Fromage</h2>
-        <CarouselRange imgData={data} />
-      </div>
+      )}
     </div>
   );
 };
+
+const MyCarousel = ({ data }) => {
+  return (
+    <>
+      <h2 className="">Fromage</h2>
+      <Carousel containerClass="w-full h-[200px]" responsive={responsive}>
+        {data.map((el) => (
+          <CarouselItems src={el.img} name={el.text} status={el.isAvaliable} />
+        ))}
+      </Carousel>
+    </>
+  );
+};
+
+export function SupplementCard({ id, show, toggleModal }) {
+  const [showModal, setShowModal] = React.useState(false);
+  React.useEffect(() => {
+    setShowModal(show)
+  }, [show]);
+  const handleclick = ()=>{
+    setShowModal(!showModal)
+    toggleModal();
+    console.log(show)
+  }
+  return (
+    <>
+      <input
+        type="checkbox"
+        id="my-modal"
+        checked={showModal}
+        className="modal-toggle"
+      />
+      <div className="modal ">
+        <div className="modal-box relative ">
+          <div className="flex gap-2 absolute right-4 top-2 ">
+            <label onClick={handleclick} className="btn btn-sm  btn-circle ">
+              <AiOutlineCheckCircle className="w-full h-full" />
+            </label>
+            <label onClick={handleclick} className="btn btn-sm btn-circle ">
+              <AiOutlineCloseCircle className="w-full h-full" />
+            </label>
+          </div>
+          <h3 className="font-bold text-lg">Choisissez ce que vous voulez!</h3>
+          <div className="py-4">
+            {data_burger.map((el) => (
+              <CheckedItem isChecked={el.isChecked} text={el.recip} />
+            ))}
+
+            <div className="w-full">
+              <MyCarousel data={data} />
+              <MyCarousel data={data} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function CheckedItem({ isChecked, text }) {
+  const [checked, setChecked] = React.useState(isChecked);
+  return (
+    <div className="sm:text-md md:text-xl ">
+      <div className="form-control">
+        <label className="label cursor-pointer justify-start gap-2 ">
+          <input
+            type="checkbox"
+            checked={checked}
+            className="toggle toggle-sm	checkbox-accent"
+            onChange={() => setChecked(!checked)}
+          />
+          <span className="label-text">{text}</span>
+        </label>
+      </div>
+    </div>
+  );
+}

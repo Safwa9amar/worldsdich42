@@ -42,9 +42,9 @@ const MenuItem = ({ icon, text, isActive }) => {
 
 const HorizentalMenu = () => {
   return (
-    <div>
+    <div className="sticky top-0 z-50 bg-[#1E1E1E]">
       <Carousel
-        containerClass="w-full md:bg-[#1E1E1E] py-4 md:p-6 md:my-6 border-b-2 border-b-[#5B6D5B]"
+        containerClass="w-full   md:bg-[#1E1E1E] py-4 md:p-6 md:my-6 border-b-2 border-b-[#5B6D5B]"
         responsive={responsive}
       >
         {HorizentalMenuData.map((el) => (
