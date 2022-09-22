@@ -33,19 +33,19 @@ const data = [
     isAvaliable: true,
   },
   {
-    id: 4,
+    id: 5,
     img: imgTest,
     text: "Cheddar",
     isAvaliable: true,
   },
   {
-    id: 4,
+    id: 6,
     img: imgTest,
     text: "Cheddar",
     isAvaliable: true,
   },
   {
-    id: 4,
+    id: 7,
     img: imgTest,
     text: "Cheddar",
     isAvaliable: true,
@@ -73,26 +73,32 @@ const responsive = {
 
 const data_burger = [
   {
+    id: 1,
     recip: "Filet d'escalope",
     isChecked: true,
   },
   {
+    id: 2,
     recip: "lardinette avec sauce gruyère",
     isChecked: true,
   },
   {
+    id: 3,
     recip: " Crudités",
     isChecked: true,
   },
   {
+    id: 4,
     recip: "salade oignons rouge",
     isChecked: true,
   },
   {
+    id: 5,
     recip: "fromage cheddar",
     isChecked: true,
   },
   {
+    id: 6,
     recip: " 2 sauces au choix.",
     isChecked: true,
   },
@@ -141,10 +147,21 @@ const CarouselItems = ({ src, name, status }) => {
 const MyCarousel = ({ data }) => {
   return (
     <>
-      <h2 className="">Fromage</h2>
-      <Carousel containerClass="w-full h-[200px]" responsive={responsive}>
+      <div className="text-xl font-medium">
+        <h2 className="">Fromage</h2>
+      </div>
+      <Carousel
+        containerClass="w-full h-[200px]"
+        showDots={true}
+        responsive={responsive}
+      >
         {data.map((el) => (
-          <CarouselItems src={el.img} name={el.text} status={el.isAvaliable} />
+          <CarouselItems
+            key={el.id}
+            src={el.img}
+            name={el.text}
+            status={el.isAvaliable}
+          />
         ))}
       </Carousel>
     </>
@@ -154,22 +171,23 @@ const MyCarousel = ({ data }) => {
 export function SupplementCard({ id, show, toggleModal }) {
   const [showModal, setShowModal] = React.useState(false);
   React.useEffect(() => {
-    setShowModal(show)
+    setShowModal(show);
   }, [show]);
-  const handleclick = ()=>{
-    setShowModal(!showModal)
+  const handleclick = () => {
+    setShowModal(!showModal);
     toggleModal();
-    console.log(show)
-  }
+    console.log(show);
+  };
   return (
     <>
       <input
+        readOnly={true}
         type="checkbox"
         id="my-modal"
         checked={showModal}
         className="modal-toggle"
       />
-      <div className="modal ">
+      <div className="modal">
         <div className="modal-box relative ">
           <div className="flex gap-2 absolute right-4 top-2 ">
             <label onClick={handleclick} className="btn btn-sm  btn-circle ">
@@ -182,11 +200,14 @@ export function SupplementCard({ id, show, toggleModal }) {
           <h3 className="font-bold text-lg">Choisissez ce que vous voulez!</h3>
           <div className="py-4">
             {data_burger.map((el) => (
-              <CheckedItem isChecked={el.isChecked} text={el.recip} />
+              <CheckedItem
+                key={el.id}
+                isChecked={el.isChecked}
+                text={el.recip}
+              />
             ))}
 
             <div className="w-full">
-              <MyCarousel data={data} />
               <MyCarousel data={data} />
             </div>
           </div>
@@ -198,15 +219,19 @@ export function SupplementCard({ id, show, toggleModal }) {
 
 function CheckedItem({ isChecked, text }) {
   const [checked, setChecked] = React.useState(isChecked);
+  const handleChange = () => {
+    setChecked(!checked);
+  };
+  
   return (
     <div className="sm:text-md md:text-xl ">
       <div className="form-control">
         <label className="label cursor-pointer justify-start gap-2 ">
           <input
+            onChange={handleChange}
             type="checkbox"
             checked={checked}
             className="toggle toggle-sm	checkbox-accent"
-            onChange={() => setChecked(!checked)}
           />
           <span className="label-text">{text}</span>
         </label>

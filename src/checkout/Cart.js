@@ -4,7 +4,7 @@ import classicImg from "../menu/images/category/classic.png";
 import {MdOutlineSwipe} from 'react-icons/md'
 import SwipeToDelete from "react-swipe-to-delete-component";
 import "react-swipe-to-delete-component/dist/swipe-to-delete.css";
-
+import {Link } from "react-router-dom"
 const CartItem = ({ img, header, price }) => {
   const [count, setCount] = React.useState(0);
   const increment = () => {
@@ -66,7 +66,13 @@ function Cart({ isVisisble, setCartVisisble }) {
           <CartItem img={classicImg} header="classic burger" price={"10"} />
           <CartItem img={classicImg} header="classic burger" price={"10"} />
         </div>
-        <button className="btn btn-active btn-accent fixed bottom-10 z-50 px-10">Complete order</button>
+        <Link
+          onClick={() => setCartVisisble(false)}
+          to="/checkout"
+          className="btn btn-active btn-accent fixed bottom-10 z-50 px-10"
+        >
+          Complete order
+        </Link>
       </div>
     </div>
   );

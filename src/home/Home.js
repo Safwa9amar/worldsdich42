@@ -26,6 +26,7 @@ const responsive = {
     items: 1,
   },
 };
+
 const Home = () => {
   return (
     <div className="md:w-[95vw] md:mx-[2.5vw] flex flex-col items-center gap-10">
@@ -43,9 +44,10 @@ const Home = () => {
       >
         {data.map((el) => (
           <img
+            key={el.id}
             className="w-full md:w-[300px] h-[350px] rounded-lg"
-            src={el}
-            alt={el}
+            src={el.img}
+            alt={el.id}
           />
         ))}
       </Carousel>
@@ -98,9 +100,10 @@ const Home = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 place-items-center gap-2">
           {data.map((el) => (
             <img
+              key={el.id}
               className="w-[150px] h-[150px] md:w-[250px] md:h-[250px] md: rounded-lg"
-              src={el}
-              alt={el}
+              src={el.img}
+              alt={el.id}
             />
           ))}
         </div>

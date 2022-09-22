@@ -61,19 +61,18 @@ const data = [
   },
 ];
 
-
 export function GridSreenMenu({ handleHide }) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-10 place-items-center md:m-20  ">
       {data.map((el) => {
         return (
-
           <MenuItem
+            key={el.id}
             itemName={el.category}
             itemImg={el.image}
             itemId={el.id}
             handleHide={handleHide}
-            />
+          />
         );
       })}
     </div>

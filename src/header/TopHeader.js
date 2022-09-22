@@ -12,7 +12,11 @@ const NavigationsLinks = ({ setisVisible }) => {
   let activeClass = "text-[#FFC700] transition-all duration-300 ";
 
   const handleClick = (e) => {
-    setisVisible(false);
+    try {
+      setisVisible(false);
+    } catch (error) {
+      return false;
+    }
   };
   return (
     <>
@@ -73,7 +77,7 @@ const CartIndicator = ({ count = 0, openCart }) => {
 export const MdTopHeader = ({ openCart }) => {
   return (
     <div className="hidden lg:block lg:mx-4">
-      <ul className="flex gap-3 list-none text-xl">
+      <ul className="flex items-center gap-3 list-none text-xl">
         <NavigationsLinks />
         <li>
           <CartIndicator openCart={openCart} />

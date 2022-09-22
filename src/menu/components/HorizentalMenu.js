@@ -48,7 +48,7 @@ const HorizentalMenu = () => {
         responsive={responsive}
       >
         {HorizentalMenuData.map((el) => (
-          <MenuItem icon={el.icon} text={el.text} />
+          <MenuItem key={el.id} icon={el.icon} text={el.text} />
         ))}
       </Carousel>
     </div>

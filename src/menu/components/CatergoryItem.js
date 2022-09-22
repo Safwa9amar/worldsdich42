@@ -1,10 +1,11 @@
 import React from "react";
 import ReactStars from "react-rating-stars-component";
-import { SupplementCard } from "./SupplementCard";
 import { BsCartPlusFill } from "react-icons/bs";
 import menuImg from "../../images/Menu.png";
 import product_bg from "../../images/product_bg.jpg";
 import arcticons_manga from "../../icons/arcticons_manga-plus.svg";
+
+
 function MenuBtn({ price = 2, updatePrice }) {
   const [active, setactive] = React.useState(false);
   const handleClick = () => {
@@ -13,7 +14,7 @@ function MenuBtn({ price = 2, updatePrice }) {
   React.useEffect(() => {
     if (active) updatePrice(price);
     if (!active) updatePrice(0);
-  }, [active]);
+  }, [active, price, updatePrice]);
   return (
     <button
       onClick={handleClick}
@@ -33,15 +34,12 @@ export const CatergoryItem = ({
   price,
   toggleModal,
 }) => {
-  const handleClick = () => {
-    alert("cliked");
-  };
-  const [Price, setPrice] = React.useState(price);
+
+  const [Price] = React.useState(price);
   const [MenuPrice, setMenuPrice] = React.useState(false);
   const [mobileToggleView, setMobileToggleView] = React.useState(false);
 
   function updatePrice(menuPrice) {
-    console.log(MenuPrice);
     setMenuPrice(menuPrice);
   }
 
@@ -64,7 +62,7 @@ export const CatergoryItem = ({
           {header.toLowerCase()}
         </h3>
         <p className="text-[#5B6D5B] font-bold text-xl">
-          €{eval(Math.abs(Price) + MenuPrice)}
+          €{Math.abs(Price) + Math.abs(MenuPrice)}
         </p>
         <img
           onClick={() => {
@@ -132,15 +130,17 @@ export const CatergoryItem = ({
         </div>
         <div className=" flex flex-col  items-start gap-4 p-4 md:p-0">
           <div className="flex justify-between w-full">
-            <p className="text-xl">
+            <p className="text-xl flex items-center gap-2">
               {header}
               <sup className="text-[#5B6D5B]">({category})</sup>
             </p>
             <BsCartPlusFill className="w-[30px] h-[30px] cursor-pointer" />
           </div>
 
-          <p className="text-[#888888] text-lg ">{description}</p>
-          <p className="flex text-xl font-bold">
+          <p className="text-[#888888] text-lg ">
+            {description.slice(0, 100)}...
+          </p>
+          <div className="flex text-xl font-bold">
             <ReactStars
               value={rating?.stars}
               count={5}
@@ -148,11 +148,11 @@ export const CatergoryItem = ({
               activeColor="#ffd700"
             />
             <sup className="text-[#5B6D5B]">( {rating?.count} )</sup>
-          </p>
+          </div>
           <div className="flex justify-between w-full">
             <div className="flex items-center gap-2">
               <p className="text-[#5B6D5B] font-bold text-xl">
-                €{eval(Math.abs(Price) + MenuPrice)}
+                €{Math.abs(Price) + Math.abs(MenuPrice)}€
               </p>
               <MenuBtn updatePrice={updatePrice} />
             </div>

@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import HorizentalMenu from "./HorizentalMenu";
 import { CatergoryItem } from "./CatergoryItem";
 import classicImg from "../images/category/classic.png";
@@ -8,7 +7,6 @@ import { SupplementCard } from "./SupplementCard";
 
 
 export default function Catergory() {
-  const Location = useLocation();
   const [ShowModel, setShowModel] = React.useState(false);
   const toggleModal=()=>{
     setShowModel(!ShowModel);
@@ -23,7 +21,7 @@ export default function Catergory() {
           img={classicImg}
           header="Classic"
           category="Burger"
-          description="Filet d'escalope, lardinette avec sauce gruyère, Crudités, salade
+          description="Filet d'escalope, lardinette
             oignons rouge,fromage cheddar, 2 sauces au choix."
           rating={{ stars: 4, count: 20 }}
           price={6.5}
@@ -33,7 +31,7 @@ export default function Catergory() {
           img={burger}
           header="Turki"
           category="Burger"
-          description="Filet d'escalope, lardinette avec sauce gruyère, Crudités, salade
+          description="Filet d'escce gruyère, Crudités, salade
             oignons rouge,fromage cheddar, 2 sauces au choix."
           rating={{ stars: 4, count: 20 }}
           price={6.5}
@@ -43,7 +41,7 @@ export default function Catergory() {
           img={burger}
           header="Turki"
           category="Burger"
-          description="Filet d'escalope, lardinette avec sauce gruyère, Crudités, salade
+          description="Filet d'escalope,
             oignons rouge,fromage cheddar, 2 sauces au choix."
           rating={{ stars: 4, count: 20 }}
           price={6.5}
@@ -53,7 +51,7 @@ export default function Catergory() {
           img={classicImg}
           header="Turki"
           category="Burger"
-          description="Filet d'escalope, lardinette avec sauce gruyère, Crudités, salade
+          description="Filet d'escalope, lardinette avde
             oignons rouge,fromage cheddar, 2 sauces au choix."
           rating={{ stars: 4, count: 20 }}
           price={6.5}
@@ -63,7 +61,7 @@ export default function Catergory() {
           img={burger}
           header="Turki"
           category="Burger"
-          description="Filet d'escalope, lardinette avec sauce gruyère, Crudités, salade
+          description="Filet d'escalope, lardinette avec sauce gruyère, Cpe, lardinette avec sauce gruyère, Cpe, lardinette avec sauce gruyère, Crudités, salade
             oignons rouge,fromage cheddar, 2 sauces au choix."
           rating={{ stars: 4, count: 20 }}
           price={6.5}

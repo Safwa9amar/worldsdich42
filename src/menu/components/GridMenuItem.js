@@ -12,7 +12,6 @@ export default function MenuItem({ itemName, itemImg, itemId, handleHide }) {
   };
   const handleclick = ()=>{
     handleHide()
-    console.log(itemId);
   } 
   return (
     <Link
