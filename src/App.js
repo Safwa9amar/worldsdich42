@@ -11,14 +11,14 @@ import Checkout from "./checkout/Checkout";
 import Catergory from "./menu/components/Catergory";
 import ScrollToTop from "./helpers/ScrollToTop";
 import CategoryContextProvider from "./context/category";
-import SupplementContextProvider from "./context/SuplementContext";
+import SupplementContextProvider from "./context/suplement";
 
 function App() {
   const [isVisisble, setCartVisisble] = React.useState(false);
 
   return (
-    <CategoryContextProvider>
-      <SupplementContextProvider>
+    <SupplementContextProvider>
+      <CategoryContextProvider>
         <div
           id="scroller"
           className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
@@ -38,8 +38,8 @@ function App() {
             <Footer />
           </BrowserRouter>
         </div>
-      </SupplementContextProvider>
-    </CategoryContextProvider>
+      </CategoryContextProvider>
+    </SupplementContextProvider>
   );
 }
 

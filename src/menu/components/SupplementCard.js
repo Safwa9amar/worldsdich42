@@ -2,7 +2,7 @@ import * as React from "react";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { Supplement } from "../../context/SuplementContext";
+import { Supplement } from "../../context/suplement";
 
 const responsive = {
   superLargeDesktop: {
@@ -23,8 +23,7 @@ const responsive = {
   },
 };
 
-
-const CarouselItems = ({ src, name, status }) => {
+const CarouselItems = ({ src, name, status, id }) => {
   const [count, setCount] = React.useState(0);
   const increment = () => {
     setCount(count + 1);
@@ -32,6 +31,11 @@ const CarouselItems = ({ src, name, status }) => {
   const decrement = () => {
     setCount(count - 1);
   };
+
+  React.useEffect(() => {
+    // console.log(id);
+  }, [count]);
+
   return (
     <div className="indicator carousel-item flex flex-col  items-center">
       <span
@@ -78,6 +82,7 @@ const MyCarousel = ({ data }) => {
         {data.map((el) => (
           <CarouselItems
             key={el.id}
+            id={el.id}
             src={el.img}
             name={el.text}
             status={el.isAvaliable}
@@ -88,14 +93,15 @@ const MyCarousel = ({ data }) => {
   );
 };
 
-export function SupplementCard({ id, show, toggleModal, recipeData }) {
+export function SupplementCard(props) {
+  
+  const { id, show, toggleModal, recipeData, handleSelectedSuplmnt } = props;
   const [showModal, setShowModal] = React.useState(false);
   const [recipe_data, setRecipe_data] = React.useState([]);
 
   const [RecipArr, setRecipArr] = React.useState(undefined);
-
+  const supplementData = React.useContext(Supplement);
   let arr = [];
-
   const handleRecipChange = (id, check) => {
     if (!check) {
       arr.push(id);
@@ -108,10 +114,11 @@ export function SupplementCard({ id, show, toggleModal, recipeData }) {
     //
     setRecipe_data(recipeData);
     //
-  }, [show]);
+    handleSelectedSuplmnt(RecipArr);
+  }, [show, RecipArr]);
   const handleclick = () => {
     handleClos();
-    arr.length > 0 && setRecipArr(arr)
+    arr.length > 0 && setRecipArr(arr);
   };
   const handleClos = () => {
     setShowModal(!showModal);
@@ -152,7 +159,7 @@ export function SupplementCard({ id, show, toggleModal, recipeData }) {
             })}
 
             <div className="w-full">
-              <MyCarousel data={Supplement} />
+              <MyCarousel data={supplementData} />
             </div>
           </div>
         </div>

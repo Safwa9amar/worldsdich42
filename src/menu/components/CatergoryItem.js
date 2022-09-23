@@ -1,10 +1,10 @@
 import React from "react";
 import ReactStars from "react-rating-stars-component";
 import { BsCartPlusFill } from "react-icons/bs";
+import { FaCartArrowDown } from "react-icons/fa";
 import menuImg from "../../images/Menu.png";
 import product_bg from "../../images/product_bg.jpg";
 import arcticons_manga from "../../icons/arcticons_manga-plus.svg";
-
 
 function MenuBtn({ price = 2, updatePrice }) {
   const [active, setactive] = React.useState(false);
@@ -25,24 +25,52 @@ function MenuBtn({ price = 2, updatePrice }) {
   );
 }
 
-export const CatergoryItem = ({
-  img,
-  header,
-  category,
-  description,
-  rating,
-  price,
-  toggleModal,
-}) => {
-
+export const CatergoryItem = (props) => {
+  const {
+    img,
+    header,
+    category,
+    description,
+    rating,
+    price,
+    toggleModal,
+    handleAddToCart,
+    id,
+    reciveOptionclick,
+  } = props;
+  //
   const [Price] = React.useState(price);
+  //
   const [MenuPrice, setMenuPrice] = React.useState(false);
+  //
   const [mobileToggleView, setMobileToggleView] = React.useState(false);
+  //
+  const [ToggleCart, setToggleCart] = React.useState(false);
+
+  //
 
   function updatePrice(menuPrice) {
     setMenuPrice(menuPrice);
   }
+  //
+  const addToCart = () => {
+    let arr = [
+      {
+        id: id,
+        isMenu: MenuPrice ? true : false,
+      },
+    ];
+    ToggleCart && handleAddToCart(arr);
+    setToggleCart(true);
+  };
 
+  //
+  const handleOptionclick = ()=>{
+    toggleModal()
+    reciveOptionclick(id)
+  }
+
+  //
   return (
     <>
       <div className="md:hidden relative bg-[#28231B] w-[170px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg m-6 text-white">
@@ -130,15 +158,29 @@ export const CatergoryItem = ({
         </div>
         <div className=" flex flex-col  items-start gap-4 p-4 md:p-0">
           <div className="flex justify-between w-full">
-            <p className="text-xl flex items-center gap-2">
+            <p className="text-xl flex items-center gap-2  ">
               {header}
               <sup className="text-[#5B6D5B]">({category})</sup>
             </p>
-            <BsCartPlusFill className="w-[30px] h-[30px] cursor-pointer" />
+            <label
+              onClick={addToCart}
+              className={`${ToggleCart ? "" : ""} cursor-pointer`}
+            >
+              {!ToggleCart && (
+                <BsCartPlusFill className="w-[30px] h-[30px] swap-off" />
+              )}
+              {ToggleCart && (
+                <FaCartArrowDown className="w-[30px] h-[30px] fill-warning" />
+              )}
+            </label>
           </div>
 
-          <p className="text-[#888888] text-lg ">
-            {description.map(el => el.recip + ', ').toString().slice(0, 100)}...
+          <p className="text-[#888888] text-lg">
+            {description
+              .map((el) => el.recip + ", ")
+              .toString()
+              .slice(0, 100)}
+            ...
           </p>
           <div className="flex text-xl font-bold">
             <ReactStars
@@ -149,7 +191,7 @@ export const CatergoryItem = ({
             />
             <sup className="text-[#5B6D5B]">( {rating?.count} )</sup>
           </div>
-          <div className="flex justify-between w-full">
+          <div className="flex justify-between gap-10 w-full">
             <div className="flex items-center gap-2">
               <p className="text-[#5B6D5B] font-bold text-xl">
                 €{Math.abs(Price) + Math.abs(MenuPrice)}€
@@ -157,7 +199,7 @@ export const CatergoryItem = ({
               <MenuBtn updatePrice={updatePrice} />
             </div>
             <button
-              onClick={() => toggleModal()}
+              onClick={handleOptionclick}
               className="flex justify-end items-center  cursor-pointer hover:text-[#5B6D5B] "
             >
               <p>OPTIONS</p>

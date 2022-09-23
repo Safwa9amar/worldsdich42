@@ -10,7 +10,6 @@ export function GridSreenMenu({ handleHide }) {
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-10 place-items-center md:m-20  ">
       {ContextData.map((el) => {
         const { id, name, img } = el;
-        console.log(id, name, img);
         return (
           <MenuItem
             key={id}

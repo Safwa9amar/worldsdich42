@@ -49,6 +49,27 @@ const data = [
           },
         ],
       },
+      {
+        id: 2,
+        name: "Turki",
+        prix: 10.5,
+        img: classicImg,
+        Categorie: "Burger",
+        rating: { stars: 5, count: 12 },
+        recipes: [
+          {
+            id: 1,
+            recip: "lreoms dola d'escalope",
+            isChecked: true,
+          },
+          {
+            id: 2,
+            recip: "test for  sauce gruyère",
+            isChecked: true,
+          }
+        
+        ],
+      },
     ],
   },
   {

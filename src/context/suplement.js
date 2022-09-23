@@ -3,7 +3,7 @@ import imgTest from "../asstes/supplement/cheddar.png";
 import boursin from "../asstes/supplement/boursin.png";
 import champignon from "../asstes/supplement/champignon.png";
 import chevre from "../asstes/supplement/chevre.png";
-export const Supplement = createContext();
+
 
 const data = [
   {
@@ -50,21 +50,22 @@ const data = [
   },
 ];
 
+export const Supplement = createContext();
+
+
 const SupplementContextProvider = (props) => {
-  const [Supplement, setSupplement] = useState(data);
+  const [supp, setSupp] = useState(data);
   useEffect(() => {
     // getNotioPage();
-    setSupplement(data);
+    setSupp(data);
   }, []);
 
   //   async function getNotioPage() {
   //     const data = await fetch("./data.json").then((res) => console.log(res));
-  //     setSupplement(data);
+  //     setCategories(data);
   //   }
   return (
-    <Supplement.Provider value={Supplement}>
-      {props.children}
-    </Supplement.Provider>
+    <Supplement.Provider value={supp}>{props.children}</Supplement.Provider>
   );
 };
 export default SupplementContextProvider;

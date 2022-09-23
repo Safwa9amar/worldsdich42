@@ -23,13 +23,31 @@ export default function Catergory() {
   const [categoryItems, setcategoryItems] = React.useState([]);
   const [RecipeData, setRecipeData] = React.useState([]);
 
+  //set suppliment state
+  const [SelectedSuplement, setSelectedSuplement] = React.useState();
+  const handleSelectedSuplmnt = (arr) => {
+    setSelectedSuplement(arr);
+  };
+  //set add to cart state
+  const [Cart, setCart] = React.useState();
+  const handleAddToCart = (arr) => {
+    setCart(arr);
+  };
+  //
+  let arrData = [];
+  //
+
+  const reciveOptionclick = (id) => {
+    const data = categoryItems.filter((el) => el.id === id);
+    setRecipeData(data[0].recipes);
+  };
   React.useEffect(() => {
     let newData = filterCategoryItems(categories, categoryId);
-    let recipe = newData[0].recipes;
     //
     setcategoryItems(newData);
-    setRecipeData(recipe);
-  }, [categories, categoryId]);
+    arrData.push(Cart);
+    
+  }, [categories, categoryId, SelectedSuplement, Cart]);
 
   return (
     <div className="flex-col md:w-[95vw] md:mx-[2.5vw] px-[1vw] h-screen overflow-y-scroll md:h-fit md:overflow-auto scrollbar-thin scrollbar-thumb-gray-900 scrollbar-track-gray-600">
@@ -39,6 +57,7 @@ export default function Catergory() {
         id={10}
         show={ShowModel}
         toggleModal={toggleModal}
+        handleSelectedSuplmnt={handleSelectedSuplmnt}
       />
 
       <div className="grid grid-cols-2 xl:grid-cols-3 gap-2 md:gap-4 mt-20  my-14 place-items-center ">
@@ -48,6 +67,7 @@ export default function Catergory() {
           return (
             <CatergoryItem
               key={id}
+              id={id}
               img={img}
               header={name}
               category={Categorie}
@@ -55,6 +75,8 @@ export default function Catergory() {
               rating={rating}
               price={prix}
               toggleModal={toggleModal}
+              handleAddToCart={handleAddToCart}
+              reciveOptionclick={reciveOptionclick}
             />
           );
         })}
