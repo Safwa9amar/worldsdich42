@@ -1,122 +1,63 @@
 import React from "react";
 import HorizentalMenu from "./HorizentalMenu";
 import { CatergoryItem } from "./CatergoryItem";
-import classicImg from "../images/category/classic.png";
-import burger from "../images/burger.png";
 import { SupplementCard } from "./SupplementCard";
+import { useLocation } from "react-router-dom";
+import { Categories } from "../../context/category";
 
+const filterCategoryItems = (arr, id) => {
+  return arr.filter((el) => el.id === id)[0].list;
+};
 
 export default function Catergory() {
   const [ShowModel, setShowModel] = React.useState(false);
-  const toggleModal=()=>{
+
+  const toggleModal = () => {
     setShowModel(!ShowModel);
-  }
+  };
+  //
+  let { search } = useLocation();
+  let categoryId = Math.abs(search.replace(/^\D+/g, ""));
+  const categories = React.useContext(Categories);
+  //
+  const [categoryItems, setcategoryItems] = React.useState([]);
+  const [RecipeData, setRecipeData] = React.useState([]);
+
+  React.useEffect(() => {
+    let newData = filterCategoryItems(categories, categoryId);
+    let recipe = newData[0].recipes;
+    //
+    setcategoryItems(newData);
+    setRecipeData(recipe);
+  }, [categories, categoryId]);
+
   return (
-    <div className="flex-col md:w-[95vw] md:mx-[2.5vw] h-screen overflow-y-scroll ">
+    <div className="flex-col md:w-[95vw] md:mx-[2.5vw] px-[1vw] h-screen overflow-y-scroll md:h-fit md:overflow-auto scrollbar-thin scrollbar-thumb-gray-900 scrollbar-track-gray-600">
       <HorizentalMenu />
-      <SupplementCard id={10} show={ShowModel} toggleModal={toggleModal} />
+      <SupplementCard
+        recipeData={RecipeData}
+        id={10}
+        show={ShowModel}
+        toggleModal={toggleModal}
+      />
 
       <div className="grid grid-cols-2 xl:grid-cols-3 gap-2 md:gap-4 mt-20  my-14 place-items-center ">
-        <CatergoryItem
-          img={classicImg}
-          header="Classic"
-          category="Burger"
-          description="Filet d'escalope, lardinette
-            oignons rouge,fromage cheddar, 2 sauces au choix."
-          rating={{ stars: 4, count: 20 }}
-          price={6.5}
-          toggleModal={toggleModal}
-        />
-        <CatergoryItem
-          img={burger}
-          header="Turki"
-          category="Burger"
-          description="Filet d'escce gruyère, Crudités, salade
-            oignons rouge,fromage cheddar, 2 sauces au choix."
-          rating={{ stars: 4, count: 20 }}
-          price={6.5}
-          toggleModal={toggleModal}
-        />
-        <CatergoryItem
-          img={burger}
-          header="Turki"
-          category="Burger"
-          description="Filet d'escalope,
-            oignons rouge,fromage cheddar, 2 sauces au choix."
-          rating={{ stars: 4, count: 20 }}
-          price={6.5}
-          toggleModal={toggleModal}
-        />
-        <CatergoryItem
-          img={classicImg}
-          header="Turki"
-          category="Burger"
-          description="Filet d'escalope, lardinette avde
-            oignons rouge,fromage cheddar, 2 sauces au choix."
-          rating={{ stars: 4, count: 20 }}
-          price={6.5}
-          toggleModal={toggleModal}
-        />
-        <CatergoryItem
-          img={burger}
-          header="Turki"
-          category="Burger"
-          description="Filet d'escalope, lardinette avec sauce gruyère, Cpe, lardinette avec sauce gruyère, Cpe, lardinette avec sauce gruyère, Crudités, salade
-            oignons rouge,fromage cheddar, 2 sauces au choix."
-          rating={{ stars: 4, count: 20 }}
-          price={6.5}
-          toggleModal={toggleModal}
-        />
-        <CatergoryItem
-          img={classicImg}
-          header="Turki"
-          category="Burger"
-          description="Filet d'escalope, lardinette avec sauce gruyère, Crudités, salade
-            oignons rouge,fromage cheddar, 2 sauces au choix."
-          rating={{ stars: 4, count: 20 }}
-          price={6.5}
-          toggleModal={toggleModal}
-        />
-        <CatergoryItem
-          img={burger}
-          header="Turki"
-          category="Burger"
-          description="Filet d'escalope, lardinette avec sauce gruyère, Crudités, salade
-            oignons rouge,fromage cheddar, 2 sauces au choix."
-          rating={{ stars: 4, count: 20 }}
-          price={6.5}
-          toggleModal={toggleModal}
-        />
-        <CatergoryItem
-          img={burger}
-          header="Turki"
-          category="Burger"
-          description="Filet d'escalope, lardinette avec sauce gruyère, Crudités, salade
-            oignons rouge,fromage cheddar, 2 sauces au choix."
-          rating={{ stars: 4, count: 20 }}
-          price={6.5}
-          toggleModal={toggleModal}
-        />
-        <CatergoryItem
-          img={burger}
-          header="Turki"
-          category="Burger"
-          description="Filet d'escalope, lardinette avec sauce gruyère, Crudités, salade
-            oignons rouge,fromage cheddar, 2 sauces au choix."
-          rating={{ stars: 4, count: 20 }}
-          price={6.5}
-          toggleModal={toggleModal}
-        />
-        <CatergoryItem
-          img={burger}
-          header="Turki"
-          category="Burger"
-          description="Filet d'escalope, lardinette avec sauce gruyère, Crudités, salade
-            oignons rouge,fromage cheddar, 2 sauces au choix."
-          rating={{ stars: 4, count: 20 }}
-          price={6.5}
-          toggleModal={toggleModal}
-        />
+        {categoryItems.map((el) => {
+          const { id, name, Categorie, prix, rating, recipes, img } = el;
+
+          return (
+            <CatergoryItem
+              key={id}
+              img={img}
+              header={name}
+              category={Categorie}
+              description={recipes}
+              rating={rating}
+              price={prix}
+              toggleModal={toggleModal}
+            />
+          );
+        })}
       </div>
     </div>
   );

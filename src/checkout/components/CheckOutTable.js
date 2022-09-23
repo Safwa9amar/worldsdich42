@@ -31,14 +31,16 @@ export function CheckOutTable({ burger, showTable, setshowTable }) {
       className={`
       ${
         !showTable
-          ? "translate-y-[100%] invisible "
-          : "flex translate-y-0 visible	"
+          ? " scale-[0.1] translate-x-1/3 translate-y-1/4 invisible "
+          : "flex -translate-y-14 visible  "
       }
       absolute z-[10] bottom-0  md:translate-y-0 
       transition-all duration-300 
       overflow-hidden 
       md:static 
       md:visible
+      md:scale-[1]
+      md:translate-x-0
       w-full
       
       `}
@@ -53,30 +55,6 @@ export function CheckOutTable({ burger, showTable, setshowTable }) {
           </tr>
         </thead>
         <tbody>
-          <TableRow
-            avatar={burger}
-            header={"Classic"}
-            category={"burger"}
-            price={6.5}
-            totalPrice={13}
-            amount={2}
-          />
-          <TableRow
-            avatar={burger}
-            header={"Classic"}
-            category={"burger"}
-            price={6.5}
-            totalPrice={13}
-            amount={2}
-          />
-          <TableRow
-            avatar={burger}
-            header={"Classic"}
-            category={"burger"}
-            price={6.5}
-            totalPrice={13}
-            amount={2}
-          />
           <TableRow
             avatar={burger}
             header={"Classic"}

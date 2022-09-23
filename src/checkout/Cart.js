@@ -61,10 +61,6 @@ function Cart({ isVisisble, setCartVisisble }) {
         </p>
         <div className="w-full overflow-y-scroll">
           <CartItem img={classicImg} header="classic burger" price={"10"} />
-          <CartItem img={classicImg} header="classic burger" price={"10"} />
-          <CartItem img={classicImg} header="classic burger" price={"10"} />
-          <CartItem img={classicImg} header="classic burger" price={"10"} />
-          <CartItem img={classicImg} header="classic burger" price={"10"} />
         </div>
         <Link
           onClick={() => setCartVisisble(false)}

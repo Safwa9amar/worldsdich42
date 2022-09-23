@@ -1,4 +1,5 @@
 import React from "react";
+import BuySuccess from "./BuySuccess";
 
 function ApplyCoupon() {
   return (
@@ -69,7 +70,7 @@ export function CartTotals({ subTotal, total }) {
           text={"En livraison"}
         />
       </div>
-      <div className="flex flex-col gap-4 text-white w-full px-5">
+      <div className="flex flex-col gap-4  w-full px-5">
         <div className="flex gap-2 justify-between">
           <p className="text-info">CART TOTALS</p>
           <p>€{total}</p>
@@ -86,7 +87,8 @@ export function CartTotals({ subTotal, total }) {
           <ApplyCoupon />
         </div>
         <br />
-        <div className="btn rounded-md bg-[#5B6D5B] w-1/2 mb-4">checkout</div>
+        <BuySuccess/>
+        
       </div>
     </div>
   );

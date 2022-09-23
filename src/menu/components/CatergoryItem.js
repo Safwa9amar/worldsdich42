@@ -138,7 +138,7 @@ export const CatergoryItem = ({
           </div>
 
           <p className="text-[#888888] text-lg ">
-            {description.slice(0, 100)}...
+            {description.map(el => el.recip + ', ').toString().slice(0, 100)}...
           </p>
           <div className="flex text-xl font-bold">
             <ReactStars

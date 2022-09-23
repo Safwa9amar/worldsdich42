@@ -1,56 +1,8 @@
 import * as React from "react";
-import imgTest from "../../asstes/supplement/cheddar.png";
-import boursin from "../../asstes/supplement/boursin.png";
-import champignon from "../../asstes/supplement/champignon.png";
-import chevre from "../../asstes/supplement/chevre.png";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-
-const data = [
-  {
-    id: 1,
-    img: imgTest,
-    text: "Cheddar",
-    isAvaliable: true,
-  },
-  {
-    id: 2,
-    img: boursin,
-    text: "boursin",
-    isAvaliable: false,
-  },
-  {
-    id: 3,
-    img: champignon,
-    text: "champignon",
-    isAvaliable: false,
-  },
-  {
-    id: 4,
-    img: chevre,
-    text: "chevre",
-    isAvaliable: true,
-  },
-  {
-    id: 5,
-    img: imgTest,
-    text: "Cheddar",
-    isAvaliable: true,
-  },
-  {
-    id: 6,
-    img: imgTest,
-    text: "Cheddar",
-    isAvaliable: true,
-  },
-  {
-    id: 7,
-    img: imgTest,
-    text: "Cheddar",
-    isAvaliable: true,
-  },
-];
+import { Supplement } from "../../context/SuplementContext";
 
 const responsive = {
   superLargeDesktop: {
@@ -71,38 +23,6 @@ const responsive = {
   },
 };
 
-const data_burger = [
-  {
-    id: 1,
-    recip: "Filet d'escalope",
-    isChecked: true,
-  },
-  {
-    id: 2,
-    recip: "lardinette avec sauce gruyère",
-    isChecked: true,
-  },
-  {
-    id: 3,
-    recip: " Crudités",
-    isChecked: true,
-  },
-  {
-    id: 4,
-    recip: "salade oignons rouge",
-    isChecked: true,
-  },
-  {
-    id: 5,
-    recip: "fromage cheddar",
-    isChecked: true,
-  },
-  {
-    id: 6,
-    recip: " 2 sauces au choix.",
-    isChecked: true,
-  },
-];
 
 const CarouselItems = ({ src, name, status }) => {
   const [count, setCount] = React.useState(0);
@@ -168,15 +88,34 @@ const MyCarousel = ({ data }) => {
   );
 };
 
-export function SupplementCard({ id, show, toggleModal }) {
+export function SupplementCard({ id, show, toggleModal, recipeData }) {
   const [showModal, setShowModal] = React.useState(false);
+  const [recipe_data, setRecipe_data] = React.useState([]);
+
+  const [RecipArr, setRecipArr] = React.useState(undefined);
+
+  let arr = [];
+
+  const handleRecipChange = (id, check) => {
+    if (!check) {
+      arr.push(id);
+    } else {
+      arr.splice(arr.indexOf(id), 1);
+    }
+  };
   React.useEffect(() => {
     setShowModal(show);
+    //
+    setRecipe_data(recipeData);
+    //
   }, [show]);
   const handleclick = () => {
+    handleClos();
+    arr.length > 0 && setRecipArr(arr)
+  };
+  const handleClos = () => {
     setShowModal(!showModal);
     toggleModal();
-    console.log(show);
   };
   return (
     <>
@@ -193,22 +132,27 @@ export function SupplementCard({ id, show, toggleModal }) {
             <label onClick={handleclick} className="btn btn-sm  btn-circle ">
               <AiOutlineCheckCircle className="w-full h-full" />
             </label>
-            <label onClick={handleclick} className="btn btn-sm btn-circle ">
+            <label onClick={handleClos} className="btn btn-sm btn-circle ">
               <AiOutlineCloseCircle className="w-full h-full" />
             </label>
           </div>
           <h3 className="font-bold text-lg">Choisissez ce que vous voulez!</h3>
           <div className="py-4">
-            {data_burger.map((el) => (
-              <CheckedItem
-                key={el.id}
-                isChecked={el.isChecked}
-                text={el.recip}
-              />
-            ))}
+            {recipe_data.map((el) => {
+              const { id, isChecked, recip } = el;
+              return (
+                <CheckedItem
+                  handleRecipChange={handleRecipChange}
+                  key={id}
+                  id={id}
+                  isChecked={isChecked}
+                  text={recip}
+                />
+              );
+            })}
 
             <div className="w-full">
-              <MyCarousel data={data} />
+              <MyCarousel data={Supplement} />
             </div>
           </div>
         </div>
@@ -217,12 +161,12 @@ export function SupplementCard({ id, show, toggleModal }) {
   );
 }
 
-function CheckedItem({ isChecked, text }) {
+function CheckedItem({ isChecked, text, id, handleRecipChange }) {
   const [checked, setChecked] = React.useState(isChecked);
   const handleChange = () => {
     setChecked(!checked);
+    handleRecipChange(id, !checked);
   };
-  
   return (
     <div className="sm:text-md md:text-xl ">
       <div className="form-control">

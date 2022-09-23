@@ -1,76 +1,22 @@
+import React, { useEffect, useContext, useState } from "react";
 import MenuItem from "../components/GridMenuItem";
-import BurgerImg from "../images/burger.png";
-import TacosImg from "../images/tacos.png";
-import pizzaImg from "../images/pizza.png";
-
-const data = [
-  {
-    id: 1,
-    category: "MENU KIDS",
-    image: BurgerImg,
-  },
-  {
-    id: 2,
-    category: "SANDWICHS",
-    image: BurgerImg,
-  },
-  {
-    id: 3,
-    category: "TACOS",
-    image: TacosImg,
-  },
-  {
-    id: 4,
-    category: "PIZAA",
-    image: pizzaImg,
-  },
-  {
-    id: 5,
-    category: "BURGER",
-    image: BurgerImg,
-  },
-  {
-    id: 6,
-    category: "DESSERT",
-    image: BurgerImg,
-  },
-  {
-    id: 7,
-    category: "TINY",
-    image: BurgerImg,
-  },
-  {
-    id: 8,
-    category: "SALADE",
-    image: BurgerImg,
-  },
-  {
-    id: 9,
-    category: "BOISSON",
-    image: BurgerImg,
-  },
-  {
-    id: 10,
-    category: "SALADE",
-    image: BurgerImg,
-  },
-  {
-    id: 11,
-    category: "assièttes",
-    image: BurgerImg,
-  },
-];
+import { Categories } from "../../context/category";
 
 export function GridSreenMenu({ handleHide }) {
+  const categories = useContext(Categories);
+  const [ContextData, setContextData] = useState(categories);
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-10 place-items-center md:m-20  ">
-      {data.map((el) => {
+      {ContextData.map((el) => {
+        const { id, name, img } = el;
+        console.log(id, name, img);
         return (
           <MenuItem
-            key={el.id}
-            itemName={el.category}
-            itemImg={el.image}
-            itemId={el.id}
+            key={id}
+            itemName={name}
+            itemImg={img}
+            itemId={id}
             handleHide={handleHide}
           />
         );

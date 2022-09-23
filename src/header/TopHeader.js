@@ -7,7 +7,7 @@ import CloseIco from "../icons/close.svg";
 import { useLocation } from "react-router-dom";
 
 // import { BiQrScan } from "react-icons/bi";
-const NavigationsLinks = ({ setisVisible }) => {
+export const NavigationsLinks = ({ setisVisible }) => {
   let location = useLocation();
   let activeClass = "text-[#FFC700] transition-all duration-300 ";
 
@@ -33,7 +33,7 @@ const NavigationsLinks = ({ setisVisible }) => {
       <li onClick={handleClick}>
         <Link
           className={`no-underline ${
-            location.pathname === "/menu" ? activeClass : ""
+            location.pathname.startsWith("/menu") ? activeClass : ""
           }`}
           to="menu"
         >
@@ -43,7 +43,7 @@ const NavigationsLinks = ({ setisVisible }) => {
       <li onClick={handleClick}>
         <Link
           className={`no-underline ${
-            location.pathname === "/contact" ? activeClass : ""
+            location.pathname.startsWith("/contact") ? activeClass : ""
           }`}
           to="contact"
         >

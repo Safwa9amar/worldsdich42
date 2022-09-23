@@ -14,6 +14,7 @@ const Checkout = () => {
     const [showTable, setshowTable] = React.useState(false);
   return (
     <div className="flex-col md:w-[95vw] md:mx-[2.5vw] bg-[#28231B] lg:p-14">
+        
       <div className="flex items-center justify-between w-full my-6">
         <div className="text-white w-full flex items-center justify-center gap-2 p-4 px-6 lg:m-2 rounded-lg border-t-2 border-t-blue-600 bg-[#252C30] ">
           <FaRegUser />
@@ -41,7 +42,7 @@ const Checkout = () => {
         <input onChange={() => setshowTable(!showTable)} type="checkbox" />
 
         <svg
-          className="swap-off fill-current"
+          className="swap-off fill-curren"
           xmlns="http://www.w3.org/2000/svg"
           width="32"
           height="32"
