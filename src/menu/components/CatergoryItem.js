@@ -1,7 +1,7 @@
 import React from "react";
 import ReactStars from "react-rating-stars-component";
 import { BsCartPlusFill } from "react-icons/bs";
-import { FaCartArrowDown } from "react-icons/fa";
+import { BsCartCheckFill } from "react-icons/bs";
 import menuImg from "../../images/Menu.png";
 import product_bg from "../../images/product_bg.jpg";
 import arcticons_manga from "../../icons/arcticons_manga-plus.svg";
@@ -54,21 +54,26 @@ export const CatergoryItem = (props) => {
   }
   //
   const addToCart = () => {
-    let arr = [
+    handleAddToCart([
       {
         id: id,
         isMenu: MenuPrice ? true : false,
       },
-    ];
-    ToggleCart && handleAddToCart(arr);
+    ]);
+    console.log([
+      {
+        id: id,
+        isMenu: MenuPrice ? true : false,
+      },
+    ]);
     setToggleCart(true);
   };
 
   //
-  const handleOptionclick = ()=>{
-    toggleModal()
-    reciveOptionclick(id)
-  }
+  const handleOptionclick = () => {
+    toggleModal();
+    reciveOptionclick(id);
+  };
 
   //
   return (
@@ -157,21 +162,28 @@ export const CatergoryItem = (props) => {
           </figure>
         </div>
         <div className=" flex flex-col  items-start gap-4 p-4 md:p-0">
-          <div className="flex justify-between w-full">
+          <div className="flex justify-between  w-full">
             <p className="text-xl flex items-center gap-2  ">
               {header}
               <sup className="text-[#5B6D5B]">({category})</sup>
             </p>
+            <BsCartCheckFill
+              className={`
+                w-[30px] h-[30px]
+                transition-all duration-300
+                ${
+                  !ToggleCart
+                    ? "scale-0 invisible"
+                    : "scale-1 visible fill-warning"
+                }
+                `}
+            />
+
             <label
               onClick={addToCart}
-              className={`${ToggleCart ? "" : ""} cursor-pointer`}
+              className={`${ToggleCart ? "hidden" : ""} cursor-pointer`}
             >
-              {!ToggleCart && (
-                <BsCartPlusFill className="w-[30px] h-[30px] swap-off" />
-              )}
-              {ToggleCart && (
-                <FaCartArrowDown className="w-[30px] h-[30px] fill-warning" />
-              )}
+              <BsCartPlusFill className={`w-[30px] h-[30px]`} />
             </label>
           </div>
 

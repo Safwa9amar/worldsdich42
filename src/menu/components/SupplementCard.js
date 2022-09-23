@@ -94,14 +94,15 @@ const MyCarousel = ({ data }) => {
 };
 
 export function SupplementCard(props) {
-  
   const { id, show, toggleModal, recipeData, handleSelectedSuplmnt } = props;
   const [showModal, setShowModal] = React.useState(false);
   const [recipe_data, setRecipe_data] = React.useState([]);
 
-  const [RecipArr, setRecipArr] = React.useState(undefined);
+  const [RecipArr, setRecipArr] = React.useState([]);
   const supplementData = React.useContext(Supplement);
+
   let arr = [];
+
   const handleRecipChange = (id, check) => {
     if (!check) {
       arr.push(id);
@@ -109,20 +110,25 @@ export function SupplementCard(props) {
       arr.splice(arr.indexOf(id), 1);
     }
   };
+
   React.useEffect(() => {
     setShowModal(show);
     //
     setRecipe_data(recipeData);
     //
-    handleSelectedSuplmnt(RecipArr);
+
+    handleSelectedSuplmnt({ foodId: id, sans_recip: RecipArr });
   }, [show, RecipArr]);
+
   const handleclick = () => {
+
     handleClos();
     arr.length > 0 && setRecipArr(arr);
   };
   const handleClos = () => {
     setShowModal(!showModal);
     toggleModal();
+    setRecipArr([])
   };
   return (
     <>
@@ -136,27 +142,30 @@ export function SupplementCard(props) {
       <div className="modal">
         <div className="modal-box relative ">
           <div className="flex gap-2 absolute right-4 top-2 ">
-            <label onClick={handleclick} className="btn btn-sm  btn-circle ">
-              <AiOutlineCheckCircle className="w-full h-full" />
-            </label>
-            <label onClick={handleClos} className="btn btn-sm btn-circle ">
-              <AiOutlineCloseCircle className="w-full h-full" />
-            </label>
+            <AiOutlineCheckCircle
+              onClick={handleclick}
+              className="w-[35px] h-[35px] btn btn-sm  btn-circle "
+            />
+            <AiOutlineCloseCircle
+              onClick={handleClos}
+              className="w-[35px] h-[35px]  btn btn-sm btn-circle"
+            />
           </div>
           <h3 className="font-bold text-lg">Choisissez ce que vous voulez!</h3>
           <div className="py-4">
-            {recipe_data.map((el) => {
-              const { id, isChecked, recip } = el;
-              return (
-                <CheckedItem
-                  handleRecipChange={handleRecipChange}
-                  key={id}
-                  id={id}
-                  isChecked={isChecked}
-                  text={recip}
-                />
-              );
-            })}
+            {showModal &&
+              recipe_data.map((el) => {
+                const { id, isChecked, recip } = el;
+                return (
+                  <CheckedItem
+                    handleRecipChange={handleRecipChange}
+                    key={id}
+                    id={id}
+                    isChecked={isChecked}
+                    text={recip}
+                  />
+                );
+              })}
 
             <div className="w-full">
               <MyCarousel data={supplementData} />
@@ -169,11 +178,18 @@ export function SupplementCard(props) {
 }
 
 function CheckedItem({ isChecked, text, id, handleRecipChange }) {
+  const storage = window.localStorage.getItem(`id_${id}`);
+
   const [checked, setChecked] = React.useState(isChecked);
   const handleChange = () => {
     setChecked(!checked);
     handleRecipChange(id, !checked);
+    window.localStorage.setItem(`id_${id}`, !checked ? "chcked" : "notChecked");
   };
+
+  React.useEffect(() => {
+    if (storage === "notChecked") setChecked(false);
+  }, [storage, checked]);
   return (
     <div className="sm:text-md md:text-xl ">
       <div className="form-control">

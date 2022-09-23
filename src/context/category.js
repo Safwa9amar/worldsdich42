@@ -6,7 +6,7 @@ export const Categories = createContext();
 const data = [
   {
     id: 1,
-    name: "burger",
+    name: "burgers",
     img: classicImg,
     list: [
       {

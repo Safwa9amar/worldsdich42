@@ -24,29 +24,33 @@ export default function Catergory() {
   const [RecipeData, setRecipeData] = React.useState([]);
 
   //set suppliment state
-  const [SelectedSuplement, setSelectedSuplement] = React.useState();
+  const [SelectedSuplement, setSelectedSuplement] = React.useState([]);
   const handleSelectedSuplmnt = (arr) => {
-    setSelectedSuplement(arr);
+    //  console.log(arr)
+     setSelectedSuplement(arr);
   };
   //set add to cart state
-  const [Cart, setCart] = React.useState();
+  const [Cart, setCart] = React.useState([]);
   const handleAddToCart = (arr) => {
-    setCart(arr);
+    setCart(Cart.concat(arr));
   };
-  //
-  let arrData = [];
-  //
 
+
+  //recive recip slected data from card of sup then add id to id
+  const [changedRecipID, setchangedRecipID] = React.useState();
   const reciveOptionclick = (id) => {
+    setchangedRecipID(id)
     const data = categoryItems.filter((el) => el.id === id);
     setRecipeData(data[0].recipes);
+
   };
+
   React.useEffect(() => {
     let newData = filterCategoryItems(categories, categoryId);
     //
     setcategoryItems(newData);
-    arrData.push(Cart);
-    
+    console.table(Cart );
+    // console.table(SelectedSuplement);
   }, [categories, categoryId, SelectedSuplement, Cart]);
 
   return (
@@ -54,7 +58,7 @@ export default function Catergory() {
       <HorizentalMenu />
       <SupplementCard
         recipeData={RecipeData}
-        id={10}
+        id={changedRecipID}
         show={ShowModel}
         toggleModal={toggleModal}
         handleSelectedSuplmnt={handleSelectedSuplmnt}
