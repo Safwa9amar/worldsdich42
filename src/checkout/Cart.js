@@ -2,8 +2,8 @@ import React from "react";
 import CloseOverlay from "../icons/close.svg";
 import classicImg from "../menu/images/category/classic.png";
 import {MdOutlineSwipe} from 'react-icons/md'
-import SwipeToDelete from "react-swipe-to-delete-component";
-import "react-swipe-to-delete-component/dist/swipe-to-delete.css";
+// import SwipeToDelete from "react-swipe-to-delete-component";
+// import "react-swipe-to-delete-component/dist/swipe-to-delete.css";
 import {Link } from "react-router-dom"
 const CartItem = ({ img, header, price }) => {
   const [count, setCount] = React.useState(0);
@@ -14,7 +14,7 @@ const CartItem = ({ img, header, price }) => {
     setCount(count - 1);
   };
   return (
-    <SwipeToDelete onDelete={()=>{console.log('deleted')}} classNameTag="rounded-xl !bg-blue-200 my-6">
+    // <SwipeToDelete onDelete={()=>{console.log('deleted')}} classNameTag="rounded-xl !bg-blue-200 my-6"></SwipeToDelete>
       <div className="w-full h-fit flex items-center justify-between bg-neutral rounded-xl px-2 ">
         <figure>
           <img className="h-[100px] w-[100px]" src={img} alt={header} />
@@ -31,7 +31,7 @@ const CartItem = ({ img, header, price }) => {
           </div>
         </div>
       </div>
-    </SwipeToDelete>
+    
   );
 };
 
