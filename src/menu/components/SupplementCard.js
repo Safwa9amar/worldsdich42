@@ -94,7 +94,7 @@ const MyCarousel = ({ data }) => {
 };
 
 export function SupplementCard(props) {
-  const { id, show, toggleModal, recipeData, handleSelectedSuplmnt } = props;
+  const { el_id, show, toggleModal, recipeData, handleSelectedSuplmnt } = props;
   const [showModal, setShowModal] = React.useState(false);
   const [recipe_data, setRecipe_data] = React.useState([]);
 
@@ -103,13 +103,13 @@ export function SupplementCard(props) {
 
   let arr = [];
 
-  const handleRecipChange = (id, check) => {
-    if (!check) {
-      arr.push(id);
-    } else {
-      arr.splice(arr.indexOf(id), 1);
-    }
-  };
+  // const handleRecipChange = (id, check) => {
+  //   if (!check) {
+  //     arr.push(id);
+  //   } else {
+  //     arr.splice(arr.indexOf(id), 1);
+  //   }
+  // };
 
   React.useEffect(() => {
     setShowModal(show);
@@ -117,18 +117,17 @@ export function SupplementCard(props) {
     setRecipe_data(recipeData);
     //
 
-    handleSelectedSuplmnt({ foodId: id, sans_recip: RecipArr });
+    // handleSelectedSuplmnt({ foodId: el_id, sans_recip: RecipArr });
   }, [show, RecipArr]);
 
   const handleclick = () => {
-
     handleClos();
     arr.length > 0 && setRecipArr(arr);
   };
   const handleClos = () => {
     setShowModal(!showModal);
     toggleModal();
-    setRecipArr([])
+    setRecipArr([]);
   };
   return (
     <>
@@ -158,9 +157,10 @@ export function SupplementCard(props) {
                 const { id, isChecked, recip } = el;
                 return (
                   <CheckedItem
-                    handleRecipChange={handleRecipChange}
+                    // handleRecipChange={handleRecipChange}
                     key={id}
                     id={id}
+                    el_id={el_id}
                     isChecked={isChecked}
                     text={recip}
                   />
@@ -177,14 +177,16 @@ export function SupplementCard(props) {
   );
 }
 
-function CheckedItem({ isChecked, text, id, handleRecipChange }) {
-  const storage = window.localStorage.getItem(`id_${id}`);
+function CheckedItem({ isChecked, text, id, el_id }) {
+  const storage = window.localStorage.getItem(`id_${id}_${el_id}`);
 
   const [checked, setChecked] = React.useState(isChecked);
   const handleChange = () => {
     setChecked(!checked);
-    handleRecipChange(id, !checked);
-    window.localStorage.setItem(`id_${id}`, !checked ? "chcked" : "notChecked");
+    // handleRecipChange(id, !checked);
+    checked
+      ? window.localStorage.setItem(`id_${id}_${el_id}`, "notChecked")
+      : window.localStorage.removeItem(`id_${id}_${el_id}`);
   };
 
   React.useEffect(() => {

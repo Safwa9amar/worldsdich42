@@ -50,6 +50,27 @@ const data = [
         ],
       },
       {
+        id: 3,
+        name: "Arabic",
+        prix: 7.5,
+        img: classicImg,
+        Categorie: "Burger",
+        rating: { stars: 2, count: 11 },
+        recipes: [
+          {
+            id: 1,
+            recip: "blkazj eazle jazklj eazoej",
+            isChecked: true,
+          },
+          {
+            id: 2,
+            recip: "test faz eaz eaz eazlme kazlmk",
+            isChecked: true,
+          }
+        
+        ],
+      },
+      {
         id: 2,
         name: "Turki",
         prix: 10.5,

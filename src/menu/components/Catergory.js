@@ -9,7 +9,7 @@ const filterCategoryItems = (arr, id) => {
   return arr.filter((el) => el.id === id)[0].list;
 };
 
-export default function Catergory() {
+export default function Catergory({ CheckaddToCart }) {
   const [ShowModel, setShowModel] = React.useState(false);
 
   const toggleModal = () => {
@@ -23,45 +23,67 @@ export default function Catergory() {
   const [categoryItems, setcategoryItems] = React.useState([]);
   const [RecipeData, setRecipeData] = React.useState([]);
 
-  //set suppliment state
-  const [SelectedSuplement, setSelectedSuplement] = React.useState([]);
-  const handleSelectedSuplmnt = (arr) => {
-    //  console.log(arr)
-     setSelectedSuplement(arr);
-  };
-  //set add to cart state
-  const [Cart, setCart] = React.useState([]);
-  const handleAddToCart = (arr) => {
-    setCart(Cart.concat(arr));
-  };
-
+  const storage = window.location;
 
   //recive recip slected data from card of sup then add id to id
   const [changedRecipID, setchangedRecipID] = React.useState();
+  // //set suppliment state
+  // const [SelectedSuplement, setSelectedSuplement] = React.useState([]);
+  // const handleSelectedSuplmnt = (arr) => {
+  //   //  console.log(arr)
+  //    setSelectedSuplement(arr);
+  // };
+  //set add to cart state
+  const [Cart, setCart] = React.useState([]);
+  const handleAddToCart = (data) => {
+    let { id, isMenu } = data;
+    console.log(data);
+    let keys = Object.keys(window.localStorage);
+    let new_arr = [];
+
+    keys.map((key) => {
+      const mathedKey = Math.abs(key.split("_")[2]);
+      mathedKey === changedRecipID && new_arr.push(Math.abs(key.split("_")[1]));
+    });
+    setCart(
+      Cart.concat([{ itemId: id, isMenu: isMenu, selectedREcips: new_arr }])
+    );
+    CheckaddToCart()
+  };
+  const setCartStorage = (CartData) => {
+    let storage = window.localStorage;
+    let oldStorage = JSON.parse(
+      storage.getItem("cartData") !== undefined || []
+    );
+    oldStorage?.length > 0
+      ? storage.setItem("cartData", JSON.stringify(oldStorage.concat(CartData)))
+      : storage.setItem("cartData", JSON.stringify(CartData));
+  };
+
   const reciveOptionclick = (id) => {
-    setchangedRecipID(id)
+    setchangedRecipID(id);
     const data = categoryItems.filter((el) => el.id === id);
     setRecipeData(data[0].recipes);
-
   };
 
   React.useEffect(() => {
     let newData = filterCategoryItems(categories, categoryId);
     //
     setcategoryItems(newData);
-    console.table(Cart );
+    console.table(Cart);
+    setCartStorage(Cart);
     // console.table(SelectedSuplement);
-  }, [categories, categoryId, SelectedSuplement, Cart]);
+  }, [categories, categoryId, Cart]);
 
   return (
     <div className="flex-col md:w-[95vw] md:mx-[2.5vw] px-[1vw] h-screen overflow-y-scroll md:h-fit md:overflow-auto scrollbar-thin scrollbar-thumb-gray-900 scrollbar-track-gray-600">
       <HorizentalMenu />
       <SupplementCard
         recipeData={RecipeData}
-        id={changedRecipID}
+        el_id={changedRecipID}
         show={ShowModel}
         toggleModal={toggleModal}
-        handleSelectedSuplmnt={handleSelectedSuplmnt}
+        // handleSelectedSuplmnt={handleSelectedSuplmnt}
       />
 
       <div className="grid grid-cols-2 xl:grid-cols-3 gap-2 md:gap-4 mt-20  my-14 place-items-center ">

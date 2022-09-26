@@ -6,7 +6,12 @@ import menuImg from "../../images/Menu.png";
 import product_bg from "../../images/product_bg.jpg";
 import arcticons_manga from "../../icons/arcticons_manga-plus.svg";
 
-function MenuBtn({ price = 2, updatePrice }) {
+function MenuBtn({
+  price = 2,
+  updatePrice,
+  ToggleCart,
+  isStoredInLocalStorage,
+}) {
   const [active, setactive] = React.useState(false);
   const handleClick = () => {
     setactive(!active);
@@ -18,7 +23,15 @@ function MenuBtn({ price = 2, updatePrice }) {
   return (
     <button
       onClick={handleClick}
-      className={`btn btn-sm ${active ? "" : "btn-outline"} btn-success`}
+      className={`
+      btn btn-sm 
+      ${active ? "" : "btn-outline"}
+      ${
+        ToggleCart || isStoredInLocalStorage
+          ? "pointer-events-none text-gray-600 "
+          : ""
+      }
+       btn-success`}
     >
       Menu + {price}€
     </button>
@@ -48,24 +61,30 @@ export const CatergoryItem = (props) => {
   const [ToggleCart, setToggleCart] = React.useState(false);
 
   //
+  const [isStoredInLocalStorage, setisStoredInLocalStorage] =
+    React.useState();
+  //
+  let cartData = JSON.parse(window.localStorage.getItem("cartData"));
+  const retriveStorageData = (data) => {
+     if (data.length > 0 && data != null ) {
+       data.map((el) => {
+         if (el.itemId === id) {
+           setisStoredInLocalStorage(true);
+         }
+       });
+     }
+  };
 
   function updatePrice(menuPrice) {
     setMenuPrice(menuPrice);
   }
   //
   const addToCart = () => {
-    handleAddToCart([
-      {
-        id: id,
-        isMenu: MenuPrice ? true : false,
-      },
-    ]);
-    console.log([
-      {
-        id: id,
-        isMenu: MenuPrice ? true : false,
-      },
-    ]);
+    handleAddToCart({
+      id: id,
+      isMenu: MenuPrice ? true : false,
+    });
+
     setToggleCart(true);
   };
 
@@ -76,6 +95,9 @@ export const CatergoryItem = (props) => {
   };
 
   //
+  React.useEffect(() => {
+    retriveStorageData(cartData);
+  }, [cartData]);
   return (
     <>
       <div className="md:hidden relative bg-[#28231B] w-[170px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg m-6 text-white">
@@ -167,24 +189,27 @@ export const CatergoryItem = (props) => {
               {header}
               <sup className="text-[#5B6D5B]">({category})</sup>
             </p>
+
             <BsCartCheckFill
               className={`
                 w-[30px] h-[30px]
                 transition-all duration-300
                 ${
-                  !ToggleCart
+                  !ToggleCart && !isStoredInLocalStorage
                     ? "scale-0 invisible"
                     : "scale-1 visible fill-warning"
                 }
                 `}
             />
 
-            <label
+            <button
               onClick={addToCart}
-              className={`${ToggleCart ? "hidden" : ""} cursor-pointer`}
+              className={`${
+                ToggleCart || isStoredInLocalStorage ? "hidden" : ""
+              } cursor-pointer`}
             >
               <BsCartPlusFill className={`w-[30px] h-[30px]`} />
-            </label>
+            </button>
           </div>
 
           <p className="text-[#888888] text-lg">
@@ -206,13 +231,21 @@ export const CatergoryItem = (props) => {
           <div className="flex justify-between gap-10 w-full">
             <div className="flex items-center gap-2">
               <p className="text-[#5B6D5B] font-bold text-xl">
-                €{Math.abs(Price) + Math.abs(MenuPrice)}€
+                €{Math.abs(Price) + Math.abs(MenuPrice)}
               </p>
-              <MenuBtn updatePrice={updatePrice} />
+              <MenuBtn
+                updatePrice={updatePrice}
+                ToggleCart={ToggleCart}
+                isStoredInLocalStorage={isStoredInLocalStorage}
+              />
             </div>
             <button
               onClick={handleOptionclick}
-              className="flex justify-end items-center  cursor-pointer hover:text-[#5B6D5B] "
+              className={`${
+                ToggleCart || isStoredInLocalStorage
+                  ? "pointer-events-none text-gray-600"
+                  : ""
+              } flex justify-end items-center  cursor-pointer hover:text-[#5B6D5B] `}
             >
               <p>OPTIONS</p>
               <svg

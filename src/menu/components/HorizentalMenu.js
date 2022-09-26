@@ -44,6 +44,7 @@ const HorizentalMenu = () => {
   return (
     <div className="sticky top-0 z-50 bg-[#1E1E1E]">
       <Carousel
+      keyBoardControl={true}
         containerClass="w-full   md:bg-[#1E1E1E] py-4 md:p-6 md:my-6 border-b-2 border-b-[#5B6D5B]"
         responsive={responsive}
       >
