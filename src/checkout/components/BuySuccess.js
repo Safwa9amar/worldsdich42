@@ -43,7 +43,7 @@ export default function BuySuccess() {
   );
 }
 
-function AlertInfo({}) {
+function AlertInfo() {
   return (
     <div className="alert alert-info shadow-lg">
       <div>
@@ -66,7 +66,7 @@ function AlertInfo({}) {
   );
 }
 
-function AlertSuccess({}) {
+function AlertSuccess() {
   return (
     <div className="alert alert-success shadow-lg">
       <div>
@@ -89,7 +89,7 @@ function AlertSuccess({}) {
   );
 }
 
-function AlertWarning({}) {
+function AlertWarning() {
   return (
     <div className="alert alert-warning shadow-lg">
       <div>
