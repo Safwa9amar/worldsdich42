@@ -1,10 +1,37 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 import CloseOverlay from "../icons/close.svg";
 import classicImg from "../menu/images/category/classic.png";
-import {MdOutlineSwipe} from 'react-icons/md'
-// import SwipeToDelete from "react-swipe-to-delete-component";
-// import "react-swipe-to-delete-component/dist/swipe-to-delete.css";
-import {Link } from "react-router-dom"
+import { MdDeleteForever } from "react-icons/md";
+import {
+  LeadingActions,
+  SwipeableList,
+  SwipeableListItem,
+  SwipeAction,
+  TrailingActions,
+} from "react-swipeable-list";
+import "react-swipeable-list/dist/styles.css";
+
+const leadingActions = () => (
+  <LeadingActions>
+    <SwipeAction onClick={() => console.info("swipe action triggered")}>
+      Action name
+    </SwipeAction>
+  </LeadingActions>
+);
+
+const trailingActions = () => (
+  <TrailingActions>
+    <SwipeAction
+      destructive={true}
+      onClick={() => console.info("swipe action triggered")}
+    >
+      Delete
+    </SwipeAction>
+  </TrailingActions>
+);
+
 const CartItem = ({ img, header, price }) => {
   const [count, setCount] = React.useState(0);
   const increment = () => {
@@ -14,24 +41,31 @@ const CartItem = ({ img, header, price }) => {
     setCount(count - 1);
   };
   return (
-    // <SwipeToDelete onDelete={()=>{console.log('deleted')}} classNameTag="rounded-xl !bg-blue-200 my-6"></SwipeToDelete>
-      <div className="w-full h-fit flex items-center justify-between bg-neutral rounded-xl px-2 ">
-        <figure>
-          <img className="h-[100px] w-[100px]" src={img} alt={header} />
-        </figure>
-        <p>{header}</p>
-        <p>€{price}</p>
-        <div className="flex justify-between gap-4 items-center bg-[#5B6D5B] px-4 rounded-md">
-          <div onClick={decrement} className="cursor-pointer font-bold">
-            -
+    <SwipeableList>
+      <SwipeableListItem
+        leadingActions={leadingActions()}
+        trailingActions={trailingActions()}
+      >
+        <div className="relative w-full h-fit flex items-center justify-between bg-neutral rounded-xl px-2 ">
+          Item content
+          <figure>
+            <img className="h-[100px] w-[100px]" src={img} alt={header} />
+          </figure>
+          <p>{header}</p>
+          <p>€{price}</p>
+          <div className="flex justify-between gap-4 items-center bg-[#5B6D5B] px-4 rounded-md">
+            <div onClick={decrement} className="cursor-pointer font-bold">
+              -
+            </div>
+            <div>{count}</div>
+            <div onClick={increment} className="cursor-pointer font-bold">
+              +
+            </div>
           </div>
-          <div>{count}</div>
-          <div onClick={increment} className="cursor-pointer font-bold">
-            +
-          </div>
+          <MdDeleteForever className="absolute top-0 right-2 fill-red-500 w-[25px] h-[25px]" />
         </div>
-      </div>
-    
+      </SwipeableListItem>
+    </SwipeableList>
   );
 };
 
@@ -55,10 +89,10 @@ function Cart({ isVisisble, setCartVisisble }) {
       </button>
       <div className="px-2 my-20 w-full h-full text-white   gap-10 flex flex-col items-center  text-center">
         <h1 className="text-2xl text-white font-bold">Cart</h1>
-        <p className="flex items-center gap-2">
+        {/* <p className="flex items-center gap-2">
           <MdOutlineSwipe />
           glisser pour supprimer l'élément
-        </p>
+        </p> */}
         <div className="w-full overflow-y-scroll">
           <CartItem img={classicImg} header="classic burger" price={"10"} />
         </div>

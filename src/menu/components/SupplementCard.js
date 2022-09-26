@@ -94,7 +94,7 @@ const MyCarousel = ({ data }) => {
 };
 
 export function SupplementCard(props) {
-  const { el_id, show, toggleModal, recipeData } = props;
+  const { el_id, show, toggleModal, recipeData, handleOptionChanges } = props;
   const [showModal, setShowModal] = React.useState(false);
   const [recipe_data, setRecipe_data] = React.useState([]);
 
@@ -116,7 +116,6 @@ export function SupplementCard(props) {
     //
     setRecipe_data(recipeData);
     //
-
   }, [show, RecipArr, recipeData]);
 
   const handleclick = () => {
@@ -156,12 +155,12 @@ export function SupplementCard(props) {
                 const { id, isChecked, recip } = el;
                 return (
                   <CheckedItem
-                    // handleRecipChange={handleRecipChange}
                     key={id}
                     id={id}
                     el_id={el_id}
                     isChecked={isChecked}
                     text={recip}
+                    handleOptionChanges={handleOptionChanges}
                   />
                 );
               })}
@@ -176,13 +175,12 @@ export function SupplementCard(props) {
   );
 }
 
-function CheckedItem({ isChecked, text, id, el_id }) {
-
-  const [checked] = React.useState(isChecked);
+function CheckedItem({ isChecked, text, id, el_id, handleOptionChanges }) {
+  const [checked, setChcked] = React.useState(isChecked);
   const handleChange = () => {
-  console.log(id, el_id)
+    setChcked(!checked);
+    handleOptionChanges(el_id, id, checked);
   };
-
 
   return (
     <div className="sm:text-md md:text-xl ">

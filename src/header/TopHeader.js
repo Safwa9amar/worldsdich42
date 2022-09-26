@@ -63,31 +63,36 @@ export const NavigationsLinks = ({ setisVisible }) => {
   );
 };
 
-const CartIndicator = ({ openCart }) => {
+const CartIndicator = ({ openCart, isAdedTocart }) => {
+  const [CartElementCount, setCartElementCount] = useState(0);
+  React.useEffect(() => {
+    let storage = JSON.parse(localStorage.getItem("cartData"));
+    setCartElementCount(storage?.length || 0);
+  }, [isAdedTocart]);
   return (
     <button onClick={openCart} className="lg:relative">
       <p className="absolute bottom-10 right-0 bg-[#5B6D5B] w-5 h-5 rounded-full text-sm ">
-        0
+        {CartElementCount}
       </p>
       <img className="w-[40px] h-[40px]" src={CartIcon} alt="cart" />
     </button>
   );
 };
 
-export const MdTopHeader = ({ openCart }) => {
+export const MdTopHeader = ({ openCart, isAdedTocart }) => {
   return (
     <div className="hidden lg:block lg:mx-4">
       <ul className="flex items-center gap-3 list-none text-xl">
         <NavigationsLinks />
         <li>
-          <CartIndicator openCart={openCart} />
+          <CartIndicator openCart={openCart} isAdedTocart={isAdedTocart} />
         </li>
       </ul>
     </div>
   );
 };
 
-export const SmTopHeader = ({ openCart, closeCart }) => {
+export const SmTopHeader = ({ openCart, closeCart, isAdedTocart }) => {
   const [isVisible, setisVisible] = useState(false);
   const handleClick = () => {
     setisVisible(!isVisible);
@@ -127,7 +132,7 @@ export const SmTopHeader = ({ openCart, closeCart }) => {
         </div>
         <div>
           <li>
-            <CartIndicator openCart={openCart} />
+            <CartIndicator openCart={openCart} isAdedTocart={isAdedTocart} />
           </li>
         </div>
       </div>

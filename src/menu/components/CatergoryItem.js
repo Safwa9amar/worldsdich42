@@ -47,9 +47,9 @@ export const CatergoryItem = (props) => {
     rating,
     price,
     toggleModal,
-    handleAddToCart,
     id,
     reciveOptionclick,
+    handleAddToCart,
   } = props;
   //
   const [Price] = React.useState(price);
@@ -61,18 +61,20 @@ export const CatergoryItem = (props) => {
   const [ToggleCart, setToggleCart] = React.useState(false);
 
   //
-  const [isStoredInLocalStorage] = React.useState(false);
+  const [isStoredInLocalStorage, setisStoredInLocalStorage] =
+    React.useState(false);
   //
-  // let cartData = JSON.parse(window.sessionStorage.getItem("cartData"));
-  // const retriveStorageData = (data) => {
-  //   if (data?.length > 0 && data != null) {
-  //     data.map((el) => {
-  //       if (el.itemId === id) {
-  //         setisStoredInLocalStorage(true);
-  //       }
-  //     });
-  //   }
-  // };
+  let cartData = JSON.parse(localStorage.getItem("cartData"));
+  const retriveStorageData = (data) => {
+    if (data?.length > 0 && data != null) {
+      data.map((el) => {
+        if (el.id === id) {
+          setisStoredInLocalStorage(true);
+        }
+        return false
+      });
+    }
+  };
 
   function updatePrice(menuPrice) {
     setMenuPrice(menuPrice);
@@ -83,6 +85,7 @@ export const CatergoryItem = (props) => {
       id: id,
       isMenu: MenuPrice ? true : false,
     });
+    console.log("add to cart clicked");
 
     setToggleCart(true);
   };
@@ -91,12 +94,13 @@ export const CatergoryItem = (props) => {
   const handleOptionclick = () => {
     toggleModal();
     reciveOptionclick(id);
+    console.log("option clicked");
   };
 
   //
   React.useEffect(() => {
-    // retriveStorageData(cartData);
-  }, []);
+    retriveStorageData(cartData);
+  });
   return (
     <>
       <div className="md:hidden relative bg-[#28231B] w-[170px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg m-6 text-white">

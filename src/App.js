@@ -15,8 +15,10 @@ import SupplementContextProvider from "./context/suplement";
 
 function App() {
   const [isVisisble, setCartVisisble] = React.useState(false);
- 
-
+  const [isAdedTocart, setIsAdedTocart] = React.useState(false);
+  const handleAdedTocart = () => {
+    setIsAdedTocart(!isAdedTocart);
+  };
   return (
     <SupplementContextProvider>
       <CategoryContextProvider>
@@ -28,6 +30,7 @@ function App() {
             <ScrollToTop>
               <Header
                 setCartVisisble={setCartVisisble}
+                isAdedTocart={isAdedTocart}
               />
               <Cart isVisisble={isVisisble} setCartVisisble={setCartVisisble} />
               <Routes>
@@ -35,7 +38,7 @@ function App() {
                 <Route
                   exact
                   path="/menu/category"
-                  element={<Catergory />}
+                  element={<Catergory handleAdedTocart ={handleAdedTocart}/>}
                 />
                 <Route exact path="/checkout" element={<Checkout />} />
                 <Route exact path="/menu" element={<Menu />} />
