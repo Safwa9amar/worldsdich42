@@ -23,42 +23,19 @@ export default function Catergory({ CheckaddToCart }) {
   const [categoryItems, setcategoryItems] = React.useState([]);
   const [RecipeData, setRecipeData] = React.useState([]);
 
-  const storage = window.location;
 
   //recive recip slected data from card of sup then add id to id
   const [changedRecipID, setchangedRecipID] = React.useState();
-  // //set suppliment state
-  // const [SelectedSuplement, setSelectedSuplement] = React.useState([]);
-  // const handleSelectedSuplmnt = (arr) => {
-  //   //  console.log(arr)
-  //    setSelectedSuplement(arr);
-  // };
-  //set add to cart state
-  const [Cart, setCart] = React.useState([]);
+ 
+
+  const [Cart] = React.useState([]);
+
+
   const handleAddToCart = (data) => {
     let { id, isMenu } = data;
-    console.log(data);
-    let keys = Object.keys(window.localStorage);
-    let new_arr = [];
-
-    keys.map((key) => {
-      const mathedKey = Math.abs(key.split("_")[2]);
-      mathedKey === changedRecipID && new_arr.push(Math.abs(key.split("_")[1]));
-    });
-    setCart(
-      Cart.concat([{ itemId: id, isMenu: isMenu, selectedREcips: new_arr }])
-    );
-    CheckaddToCart()
+    console.log(id, isMenu);
   };
-  const setCartStorage = (CartData) => {
-    let storage = window.localStorage;
-    let oldStorage = JSON.parse(
-      storage.getItem("cartData") !== undefined || []
-    );
-    oldStorage?.length > 0
-      ? storage.setItem("cartData", JSON.stringify(oldStorage.concat(CartData)))
-      : storage.setItem("cartData", JSON.stringify(CartData));
-  };
+ 
 
   const reciveOptionclick = (id) => {
     setchangedRecipID(id);
@@ -70,8 +47,8 @@ export default function Catergory({ CheckaddToCart }) {
     let newData = filterCategoryItems(categories, categoryId);
     //
     setcategoryItems(newData);
-    console.table(Cart);
-    setCartStorage(Cart);
+    //
+    console.log(Cart);
     // console.table(SelectedSuplement);
   }, [categories, categoryId, Cart]);
 

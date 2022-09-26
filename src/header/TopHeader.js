@@ -6,7 +6,6 @@ import nav_bg from "../images/nav_bg.jpg";
 import CloseIco from "../icons/close.svg";
 import { useLocation } from "react-router-dom";
 import React from "react";
-import useLocalStorage from "../helpers/useLocalStorage";
 // import { BiQrScan } from "react-icons/bi";
 export const NavigationsLinks = ({ setisVisible }) => {
   let location = useLocation();
@@ -64,34 +63,24 @@ export const NavigationsLinks = ({ setisVisible }) => {
   );
 };
 
-const CartIndicator = ({ openCart, isAddedTocart }) => {
-  const [storage, setstorage] = useState(() => {
-   return JSON.parse(window.localStorage.getItem("cartData"));
-  });
-
-  React.useEffect(() => {
-    let storage = JSON.parse(window.localStorage.getItem("cartData"));
-    setstorage(storage);
-    console.log(storage);
-  }, [isAddedTocart]);
-
+const CartIndicator = ({ openCart }) => {
   return (
     <button onClick={openCart} className="lg:relative">
       <p className="absolute bottom-10 right-0 bg-[#5B6D5B] w-5 h-5 rounded-full text-sm ">
-        {storage?.length || 0}
+        0
       </p>
       <img className="w-[40px] h-[40px]" src={CartIcon} alt="cart" />
     </button>
   );
 };
 
-export const MdTopHeader = ({ openCart, isAddedTocart }) => {
+export const MdTopHeader = ({ openCart }) => {
   return (
     <div className="hidden lg:block lg:mx-4">
       <ul className="flex items-center gap-3 list-none text-xl">
         <NavigationsLinks />
         <li>
-          <CartIndicator openCart={openCart} isAddedTocart={isAddedTocart} />
+          <CartIndicator openCart={openCart} />
         </li>
       </ul>
     </div>

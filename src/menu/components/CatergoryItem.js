@@ -61,19 +61,18 @@ export const CatergoryItem = (props) => {
   const [ToggleCart, setToggleCart] = React.useState(false);
 
   //
-  const [isStoredInLocalStorage, setisStoredInLocalStorage] =
-    React.useState();
+  const [isStoredInLocalStorage] = React.useState(false);
   //
-  let cartData = JSON.parse(window.localStorage.getItem("cartData"));
-  const retriveStorageData = (data) => {
-     if (data.length > 0 && data != null ) {
-       data.map((el) => {
-         if (el.itemId === id) {
-           setisStoredInLocalStorage(true);
-         }
-       });
-     }
-  };
+  // let cartData = JSON.parse(window.sessionStorage.getItem("cartData"));
+  // const retriveStorageData = (data) => {
+  //   if (data?.length > 0 && data != null) {
+  //     data.map((el) => {
+  //       if (el.itemId === id) {
+  //         setisStoredInLocalStorage(true);
+  //       }
+  //     });
+  //   }
+  // };
 
   function updatePrice(menuPrice) {
     setMenuPrice(menuPrice);
@@ -96,8 +95,8 @@ export const CatergoryItem = (props) => {
 
   //
   React.useEffect(() => {
-    retriveStorageData(cartData);
-  }, [cartData]);
+    // retriveStorageData(cartData);
+  }, []);
   return (
     <>
       <div className="md:hidden relative bg-[#28231B] w-[170px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg m-6 text-white">

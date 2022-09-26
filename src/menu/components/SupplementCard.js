@@ -94,7 +94,7 @@ const MyCarousel = ({ data }) => {
 };
 
 export function SupplementCard(props) {
-  const { el_id, show, toggleModal, recipeData, handleSelectedSuplmnt } = props;
+  const { el_id, show, toggleModal, recipeData } = props;
   const [showModal, setShowModal] = React.useState(false);
   const [recipe_data, setRecipe_data] = React.useState([]);
 
@@ -117,8 +117,7 @@ export function SupplementCard(props) {
     setRecipe_data(recipeData);
     //
 
-    // handleSelectedSuplmnt({ foodId: el_id, sans_recip: RecipArr });
-  }, [show, RecipArr]);
+  }, [show, RecipArr, recipeData]);
 
   const handleclick = () => {
     handleClos();
@@ -178,20 +177,13 @@ export function SupplementCard(props) {
 }
 
 function CheckedItem({ isChecked, text, id, el_id }) {
-  const storage = window.localStorage.getItem(`id_${id}_${el_id}`);
 
-  const [checked, setChecked] = React.useState(isChecked);
+  const [checked] = React.useState(isChecked);
   const handleChange = () => {
-    setChecked(!checked);
-    // handleRecipChange(id, !checked);
-    checked
-      ? window.localStorage.setItem(`id_${id}_${el_id}`, "notChecked")
-      : window.localStorage.removeItem(`id_${id}_${el_id}`);
+  console.log(id, el_id)
   };
 
-  React.useEffect(() => {
-    if (storage === "notChecked") setChecked(false);
-  }, [storage, checked]);
+
   return (
     <div className="sm:text-md md:text-xl ">
       <div className="form-control">
