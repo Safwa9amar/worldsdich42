@@ -15,7 +15,6 @@
     "react-rating-stars-component": "^2.2.0",
     "react-router-dom": "^6.4.0",
     "react-scripts": "5.0.1",
-    "react-swipeable-views": "^0.14.0",
     "react-touch-carousel": "^0.10.2",
     "tailwind-scrollbar": "^2.0.1",
     "web-vitals": "^2.1.4"
