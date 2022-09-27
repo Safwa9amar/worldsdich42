@@ -73,6 +73,7 @@ export const CatergoryItem = (props) => {
           if (el.hybrid_id === `${id}_${category_ID}`) {
             setisStoredInLocalStorage(true);
             console.log("rqual");
+            setToggleCart(true);
           }
           else {
             setisStoredInLocalStorage(false);
