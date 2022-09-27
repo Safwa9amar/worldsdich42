@@ -6,7 +6,7 @@ import { MdTopHeader, SmTopHeader } from "./TopHeader";
 import { useLocation } from "react-router-dom";
 import food_dilevery from "../images/food_dilevery.png";
 import food_dilevery2 from "../images/food_dilevery2.png";
-export default function Header({ setCartVisisble, isAdedTocart }) {
+export default function Header({ setCartVisisble, isAdedTocart, isDeletetedFromTocart }) {
   const Location = useLocation();
   const openCart = () => {
     setCartVisisble(true);
@@ -40,11 +40,13 @@ export default function Header({ setCartVisisble, isAdedTocart }) {
             closeCart={closeCart}
             openCart={openCart}
             isAdedTocart={isAdedTocart}
+            isDeletetedFromTocart={isDeletetedFromTocart}
           />
           <SmTopHeader
             closeCart={closeCart}
             openCart={openCart}
             isAdedTocart={isAdedTocart}
+            isDeletetedFromTocart={isDeletetedFromTocart}
           />
         </div>
         {!Location.pathname.startsWith("/menu") && (

@@ -16,8 +16,13 @@ import SupplementContextProvider from "./context/suplement";
 function App() {
   const [isVisisble, setCartVisisble] = React.useState(false);
   const [isAdedTocart, setIsAdedTocart] = React.useState(false);
+  const [isDeletetedFromTocart, setIsDeletetedFromTocart] =
+    React.useState(false);
   const handleAdedTocart = () => {
     setIsAdedTocart(!isAdedTocart);
+  };
+  const handleDeletetedFromTocart = () => {
+    setIsDeletetedFromTocart(!isDeletetedFromTocart);
   };
   return (
     <SupplementContextProvider>
@@ -31,14 +36,25 @@ function App() {
               <Header
                 setCartVisisble={setCartVisisble}
                 isAdedTocart={isAdedTocart}
+                isDeletetedFromTocart={isDeletetedFromTocart}
               />
-              <Cart isVisisble={isVisisble} setCartVisisble={setCartVisisble} />
+              <Cart
+                isVisisble={isVisisble}
+                setCartVisisble={setCartVisisble}
+                isAdedTocart={isAdedTocart}
+                handleDeletetedFromTocart={handleDeletetedFromTocart}
+              />
               <Routes>
                 <Route exact path="/" element={<Home />} />
                 <Route
                   exact
                   path="/menu/category"
-                  element={<Catergory handleAdedTocart ={handleAdedTocart}/>}
+                  element={
+                    <Catergory
+                      handleAdedTocart={handleAdedTocart}
+                      isDeletetedFromTocart={isDeletetedFromTocart}
+                    />
+                  }
                 />
                 <Route exact path="/checkout" element={<Checkout />} />
                 <Route exact path="/menu" element={<Menu />} />

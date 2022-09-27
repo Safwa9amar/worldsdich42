@@ -2,6 +2,8 @@ import React from "react";
 import { HorizentalMenuData } from "../icons/data";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { Link, useLocation } from "react-router-dom";
+import { Categories } from "../../context/category";
 
 const responsive = {
   superLargeDesktop: {
@@ -21,11 +23,15 @@ const responsive = {
     items: 3,
   },
 };
-const MenuItem = ({ icon, text, isActive }) => {
-  const color = isActive ? "[#5B6D5B]" : "white";
+const MenuItem = ({ icon, text, isActive, id }) => {
+  let { search } = useLocation();
+  let categoryId = Math.abs(search.replace(/^\D+/g, ""));
+  const color = categoryId === id ? "[#5B6D5B]" : "white";
+
   return (
-    <a
+    <Link
       href="/menu"
+      to={`/menu/category?id=${id}`}
       className={`flex items-center flex-1 gap-2 text-${color} ${
         isActive ? "font-bold shadow-md shadow-[#5B6D5B] " : ""
       }`}
@@ -36,20 +42,22 @@ const MenuItem = ({ icon, text, isActive }) => {
         alt={text}
       />
       <p className="text-md md:text-lg capitalize">{text}</p>
-    </a>
+    </Link>
   );
 };
 
 const HorizentalMenu = () => {
+  const categories = React.useContext(Categories);
+
   return (
     <div className="sticky top-0 z-50 bg-[#1E1E1E]">
       <Carousel
-      keyBoardControl={true}
+        keyBoardControl={true}
         containerClass="w-full   md:bg-[#1E1E1E] py-4 md:p-6 md:my-6 border-b-2 border-b-[#5B6D5B]"
         responsive={responsive}
       >
-        {HorizentalMenuData.map((el) => (
-          <MenuItem key={el.id} icon={el.icon} text={el.text} />
+        {categories.map((el) => (
+          <MenuItem key={el.id} id={el.id} icon={el.icon} text={el.name} />
         ))}
       </Carousel>
     </div>

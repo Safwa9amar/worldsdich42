@@ -2,14 +2,18 @@ import React from "react";
 import HorizentalMenu from "./HorizentalMenu";
 import { CatergoryItem } from "./CatergoryItem";
 import { SupplementCard } from "./SupplementCard";
-import {  useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Categories } from "../../context/category";
 
 const filterCategoryItems = (arr, id) => {
   return arr.filter((el) => el.id === id)[0].list;
 };
 
-export default function Catergory({ handleAdedTocart }) {
+export default function Catergory({
+  handleAdedTocart,
+  isDeletetedFromTocart,
+  isAdedTocart,
+}) {
   const [ShowModel, setShowModel] = React.useState(false);
 
   const toggleModal = () => {
@@ -54,16 +58,18 @@ export default function Catergory({ handleAdedTocart }) {
 
   const handleAddToCart = (obj) => {
     let storage = JSON.parse(localStorage.getItem("cartData") || "[]");
-    let optionData = OptionChanges.map((el) =>  {
+    let optionData = OptionChanges.map((el) => {
       let parent = el.split("-")[0].match(/\d+/g).join("");
       let unChecked = el.split("-")[1].match(/\d+/g).join("");
       console.log(el);
       if (Math.abs(parent) === Math.abs(obj.id)) return Math.abs(unChecked);
-      return false
+      return false;
     });
     let changes = {
       id: obj.id,
       isMenu: obj.isMenu,
+      hybrid_id: `${obj.id}_${categoryId}`,
+      category: categoryId,
       optionData: optionData.filter((el) => el !== undefined).sort(),
     }; //`id_${obj.id}-isMenu_${obj.isMenu}-options_${optionData}}`;
 
@@ -71,14 +77,14 @@ export default function Catergory({ handleAdedTocart }) {
 
     localStorage.setItem("cartData", JSON.stringify(storage));
     setCartData(storage);
-    handleAdedTocart()
+    handleAdedTocart();
   };
 
   React.useEffect(() => {
     let newData = filterCategoryItems(categories, categoryId);
     setcategoryItems(newData);
-    console.log(cartData);
-  }, [categories, categoryId, OptionChanges, cartData]);
+    // console.log(cartData);
+  }, [categories, categoryId, OptionChanges, cartData, isAdedTocart]);
 
   return (
     <div className="flex-col md:w-[95vw] md:mx-[2.5vw] px-[1vw] h-screen overflow-y-scroll md:h-fit md:overflow-auto scrollbar-thin scrollbar-thumb-gray-900 scrollbar-track-gray-600">
@@ -93,7 +99,16 @@ export default function Catergory({ handleAdedTocart }) {
 
       <div className="grid grid-cols-2 xl:grid-cols-3 gap-2 md:gap-4 mt-20  my-14 place-items-center ">
         {categoryItems.map((el) => {
-          const { id, name, Categorie, prix, rating, recipes, img } = el;
+          const {
+            id,
+            name,
+            Categorie,
+            prix,
+            categoryID,
+            rating,
+            recipes,
+            img,
+          } = el;
 
           return (
             <CatergoryItem
@@ -108,6 +123,8 @@ export default function Catergory({ handleAdedTocart }) {
               toggleModal={toggleModal}
               reciveOptionclick={reciveOptionclick}
               handleAddToCart={handleAddToCart}
+              category_ID={categoryID}
+              isDeletetedFromTocart={isDeletetedFromTocart}
             />
           );
         })}

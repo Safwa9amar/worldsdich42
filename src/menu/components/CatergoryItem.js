@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import ReactStars from "react-rating-stars-component";
 import { BsCartPlusFill } from "react-icons/bs";
 import { BsCartCheckFill } from "react-icons/bs";
@@ -43,6 +43,7 @@ export const CatergoryItem = (props) => {
     img,
     header,
     category,
+    category_ID,
     description,
     rating,
     price,
@@ -50,6 +51,7 @@ export const CatergoryItem = (props) => {
     id,
     reciveOptionclick,
     handleAddToCart,
+    // isDeletetedFromTocart,
   } = props;
   //
   const [Price] = React.useState(price);
@@ -64,18 +66,27 @@ export const CatergoryItem = (props) => {
   const [isStoredInLocalStorage, setisStoredInLocalStorage] =
     React.useState(false);
   //
-  let cartData = JSON.parse(localStorage.getItem("cartData"));
-  const retriveStorageData = (data) => {
-    if (data?.length > 0 && data != null) {
-      data.map((el) => {
-        if (el.id === id) {
-          setisStoredInLocalStorage(true);
-        }
-        return false
-      });
-    }
-  };
-
+  const retriveStorageData = useCallback(
+    (data) => {
+      if (data?.length > 0 && data != null) {
+        data.map((el) => {
+          if (el.hybrid_id === `${id}_${category_ID}`) {
+            setisStoredInLocalStorage(true);
+            console.log("rqual");
+          }
+          else {
+            setisStoredInLocalStorage(false);
+            // setToggleCart(false);
+          }
+          return false;
+        });
+      } else {
+        setisStoredInLocalStorage(false);
+        setToggleCart(false);
+      }
+    },
+    [ category_ID,id]
+  );
   function updatePrice(menuPrice) {
     setMenuPrice(menuPrice);
   }
@@ -85,7 +96,7 @@ export const CatergoryItem = (props) => {
       id: id,
       isMenu: MenuPrice ? true : false,
     });
-    console.log("add to cart clicked");
+    console.log("added to cart clicked");
 
     setToggleCart(true);
   };
@@ -94,13 +105,14 @@ export const CatergoryItem = (props) => {
   const handleOptionclick = () => {
     toggleModal();
     reciveOptionclick(id);
-    console.log("option clicked");
   };
 
   //
   React.useEffect(() => {
+    let cartData = JSON.parse(localStorage.getItem("cartData"));
     retriveStorageData(cartData);
   });
+  // ;
   return (
     <>
       <div className="md:hidden relative bg-[#28231B] w-[170px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg m-6 text-white">

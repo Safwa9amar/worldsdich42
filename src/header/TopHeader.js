@@ -63,12 +63,12 @@ export const NavigationsLinks = ({ setisVisible }) => {
   );
 };
 
-const CartIndicator = ({ openCart, isAdedTocart }) => {
+const CartIndicator = ({ openCart, isAdedTocart, isDeletetedFromTocart }) => {
   const [CartElementCount, setCartElementCount] = useState(0);
   React.useEffect(() => {
     let storage = JSON.parse(localStorage.getItem("cartData"));
     setCartElementCount(storage?.length || 0);
-  }, [isAdedTocart]);
+  }, [isAdedTocart, isDeletetedFromTocart]);
   return (
     <button onClick={openCart} className="lg:relative">
       <p className="absolute bottom-10 right-0 bg-[#5B6D5B] w-5 h-5 rounded-full text-sm ">
@@ -79,20 +79,29 @@ const CartIndicator = ({ openCart, isAdedTocart }) => {
   );
 };
 
-export const MdTopHeader = ({ openCart, isAdedTocart }) => {
+export const MdTopHeader = ({ openCart, isAdedTocart, isDeletetedFromTocart }) => {
   return (
     <div className="hidden lg:block lg:mx-4">
       <ul className="flex items-center gap-3 list-none text-xl">
         <NavigationsLinks />
         <li>
-          <CartIndicator openCart={openCart} isAdedTocart={isAdedTocart} />
+          <CartIndicator
+            openCart={openCart}
+            isAdedTocart={isAdedTocart}
+            isDeletetedFromTocart={isDeletetedFromTocart}
+          />
         </li>
       </ul>
     </div>
   );
 };
 
-export const SmTopHeader = ({ openCart, closeCart, isAdedTocart }) => {
+export const SmTopHeader = ({
+  openCart,
+  closeCart,
+  isAdedTocart,
+  isDeletetedFromTocart,
+}) => {
   const [isVisible, setisVisible] = useState(false);
   const handleClick = () => {
     setisVisible(!isVisible);
@@ -132,7 +141,7 @@ export const SmTopHeader = ({ openCart, closeCart, isAdedTocart }) => {
         </div>
         <div>
           <li>
-            <CartIndicator openCart={openCart} isAdedTocart={isAdedTocart} />
+            <CartIndicator openCart={openCart} isAdedTocart={isAdedTocart} isDeletetedFromTocart={isDeletetedFromTocart}/>
           </li>
         </div>
       </div>

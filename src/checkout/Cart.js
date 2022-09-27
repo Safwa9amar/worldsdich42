@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Categories } from "../context/category";
 
 import CloseOverlay from "../icons/close.svg";
-import classicImg from "../menu/images/category/classic.png";
-import { MdDeleteForever } from "react-icons/md";
+
+import { MdDeleteForever, MdOutlineSwipe } from "react-icons/md";
 import {
   LeadingActions,
   SwipeableList,
@@ -16,43 +17,64 @@ import "react-swipeable-list/dist/styles.css";
 const leadingActions = () => (
   <LeadingActions>
     <SwipeAction onClick={() => console.info("swipe action triggered")}>
-      Action name
+      Voire votre Commande
     </SwipeAction>
   </LeadingActions>
 );
 
-const trailingActions = () => (
+const trailingActions = (handleDelete) => (
   <TrailingActions>
-    <SwipeAction
-      destructive={true}
-      onClick={() => console.info("swipe action triggered")}
-    >
-      Delete
+    <SwipeAction destructive={true} onClick={handleDelete}>
+      <MdDeleteForever className="fill-red-500 w-[25px] h-full" />
     </SwipeAction>
   </TrailingActions>
 );
 
-const CartItem = ({ img, header, price }) => {
-  const [count, setCount] = React.useState(0);
+const CartItem = ({
+  id,
+  parent_id,
+  img,
+  header,
+  price,
+  isMenu,
+  handleDeletetedFromTocart,
+}) => {
+  const [count, setCount] = React.useState(1);
+  const [_price, set_price] = React.useState(price);
   const increment = () => {
     setCount(count + 1);
+    count >= 1 && set_price(_price + price);
   };
   const decrement = () => {
     setCount(count - 1);
+    count >= 1 && set_price(_price - price);
   };
+  const handleDelete = () => {
+    let storage = JSON.parse(localStorage.getItem("cartData"));
+    let newCartData = JSON.stringify(
+      storage.filter((el) => `${el.id}_${el.category}` !== `${id}_${parent_id}`)
+    );
+    localStorage.setItem("cartData", newCartData);
+    handleDeletetedFromTocart();
+  };
+  useEffect(() => {
+    set_price(_price);
+    console.log(_price);
+  }, [count, _price]);
   return (
-    <SwipeableList>
+    <SwipeableList className="overflow-hidden">
       <SwipeableListItem
         leadingActions={leadingActions()}
-        trailingActions={trailingActions()}
+        trailingActions={trailingActions(handleDelete)}
       >
-        <div className="relative w-full h-fit flex items-center justify-between bg-neutral rounded-xl px-2 ">
-          Item content
+        <div className=" w-full h-fit flex items-center justify-between bg-neutral rounded-xl px-2 select-none	cursor-grab ">
           <figure>
             <img className="h-[100px] w-[100px]" src={img} alt={header} />
           </figure>
           <p>{header}</p>
-          <p>€{price}</p>
+          <p>
+            €{_price} {isMenu ? "+ 2€" : ""}
+          </p>
           <div className="flex justify-between gap-4 items-center bg-[#5B6D5B] px-4 rounded-md">
             <div onClick={decrement} className="cursor-pointer font-bold">
               -
@@ -62,14 +84,46 @@ const CartItem = ({ img, header, price }) => {
               +
             </div>
           </div>
-          <MdDeleteForever className="absolute top-0 right-2 fill-red-500 w-[25px] h-[25px]" />
         </div>
       </SwipeableListItem>
     </SwipeableList>
   );
 };
 
-function Cart({ isVisisble, setCartVisisble }) {
+function Cart({
+  isVisisble,
+  setCartVisisble,
+  isAdedTocart,
+  handleDeletetedFromTocart,
+}) {
+  const categories = useContext(Categories);
+  const [storageData, setStorageData] = useState();
+
+  const retriveCartData = (_storageData, categoriesContext) => {
+    let arr = [];
+    _storageData?.map((el) => {
+      categoriesContext.map((_el) => {
+        if (_el.id === el.category) {
+          // console.log(_el.list);
+          _el.list.forEach((__el) => {
+            if (el.id === __el.id) {
+              Object.assign(__el, { isMenu: el.isMenu });
+              arr.push(__el);
+            }
+          });
+        }
+        return false;
+      });
+      return false;
+    });
+    setStorageData(arr);
+    return arr;
+  };
+
+  useEffect(() => {
+    let storage = JSON.parse(localStorage.getItem("cartData"));
+    retriveCartData(storage, categories);
+  }, [categories, isAdedTocart, isVisisble]);
   return (
     <div
       className={`
@@ -89,12 +143,27 @@ function Cart({ isVisisble, setCartVisisble }) {
       </button>
       <div className="px-2 my-20 w-full h-full text-white   gap-10 flex flex-col items-center  text-center">
         <h1 className="text-2xl text-white font-bold">Cart</h1>
-        {/* <p className="flex items-center gap-2">
+        <p className="flex items-center gap-2">
           <MdOutlineSwipe />
-          glisser pour supprimer l'élément
-        </p> */}
-        <div className="w-full overflow-y-scroll">
-          <CartItem img={classicImg} header="classic burger" price={"10"} />
+          glisser à gauche pour supprimer l'élément
+          <br />
+          glisser à droit pour voire votre cammande
+        </p>
+        <div className="w-full  h-full flex flex-col   gap-5 overflow-y-scroll">
+          {storageData?.map((el) => {
+            return (
+              <CartItem
+                key={`${el.id}_${el.category}`}
+                id={el.id}
+                parent_id={el.categoryID}
+                img={el.img}
+                header={el.name}
+                price={el.prix}
+                isMenu={el.isMenu}
+                handleDeletetedFromTocart={handleDeletetedFromTocart}
+              />
+            );
+          })}
         </div>
         <Link
           onClick={() => setCartVisisble(false)}

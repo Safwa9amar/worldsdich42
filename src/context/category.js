@@ -1,5 +1,10 @@
 import React, { createContext, useState, useEffect } from "react";
 import classicImg from "../menu/images/category/classic.png";
+import burger from "../menu/icons/burger.svg";
+import tacos from "../menu/icons/tacos.svg";
+
+
+
 
 export const Categories = createContext();
 
@@ -8,6 +13,7 @@ const data = [
     id: 1,
     name: "burgers",
     img: classicImg,
+    icon: burger,
     list: [
       {
         id: 1,
@@ -15,6 +21,7 @@ const data = [
         prix: 6.5,
         img: classicImg,
         Categorie: "tacos",
+        categoryID: 1,
         rating: { stars: 4, count: 20 },
         recipes: [
           {
@@ -55,6 +62,7 @@ const data = [
         prix: 7.5,
         img: classicImg,
         Categorie: "Burger",
+        categoryID: 1,
         rating: { stars: 2, count: 11 },
         recipes: [
           {
@@ -66,8 +74,7 @@ const data = [
             id: 2,
             recip: "test faz eaz eaz eazlme kazlmk",
             isChecked: true,
-          }
-        
+          },
         ],
       },
       {
@@ -76,6 +83,7 @@ const data = [
         prix: 10.5,
         img: classicImg,
         Categorie: "Burger",
+        categoryID: 1,
         rating: { stars: 5, count: 12 },
         recipes: [
           {
@@ -87,8 +95,7 @@ const data = [
             id: 2,
             recip: "test for  sauce gruyère",
             isChecked: true,
-          }
-        
+          },
         ],
       },
     ],
@@ -97,13 +104,15 @@ const data = [
     id: 2,
     name: "tacos",
     img: classicImg,
+    icon:tacos,
     list: [
       {
-        id: 1,
+        id: 10,
         name: "Turki",
         prix: 8.5,
         img: classicImg,
         Categorie: "tacos",
+        categoryID: 2,
         rating: { stars: 3, count: 113 },
         recipes: [
           {
