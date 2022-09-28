@@ -39,7 +39,6 @@ function App() {
   const handleStorageEdit = (data) => {
     setStorage(JSON.stringify(data));
   };
-  console.log(CategoryContext);
   return (
     <SupplementContextProvider>
         <CartDataContextProvider data={Storage}>

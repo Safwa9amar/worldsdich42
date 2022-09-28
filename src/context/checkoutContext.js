@@ -1,14 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
-// import { Categories } from "./categorycontext";
-// import { Cartstorage } from "./LocalStorageContext";
 
 export const Checkout = createContext();
 
 const CheckoutDataContextProvider = (props) => {
-  // const CartStorage = JSON.parse(useContext(Cartstorage));
-  // const CategoriesData = useContext(Categories);
-  // const [CartStorage] = useState(JSON.parse(useContext(Cartstorage)));
-  // const [CategoriesData] = useState(useContext(Categories));
 
   const [Cartdata, setCartdata] = useState(
     retriveCartData(JSON.parse(props.Storage), props.CategoryContext) || []
