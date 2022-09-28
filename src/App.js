@@ -10,60 +10,89 @@ import Cart from "./checkout/Cart";
 import Checkout from "./checkout/Checkout";
 import Catergory from "./menu/components/Catergory";
 import ScrollToTop from "./helpers/ScrollToTop";
-import CategoryContextProvider from "./context/category";
-import SupplementContextProvider from "./context/suplement";
+import CategoryContextProvider from "./context/categorycontext";
+import SupplementContextProvider from "./context/suplementContext";
+import CartDataContextProvider from "./context/LocalStorageContext";
+import CheckoutDataContextProvider from "./context/checkoutContext";
 
 function App() {
   const [isVisisble, setCartVisisble] = React.useState(false);
   const [isAdedTocart, setIsAdedTocart] = React.useState(false);
+  const [Storage, setStorage] = React.useState(
+    localStorage.getItem("cartData") !== null
+      ? localStorage.getItem("cartData")
+      : "[]"
+  );
   const [isDeletetedFromTocart, setIsDeletetedFromTocart] =
     React.useState(false);
+
+  const [hybrid_idFroDeletion, sethybrid_idFroDeletion] = React.useState();
   const handleAdedTocart = () => {
     setIsAdedTocart(!isAdedTocart);
   };
-  const handleDeletetedFromTocart = () => {
+  const handleDeletetedFromTocart = (hybrid_id) => {
     setIsDeletetedFromTocart(!isDeletetedFromTocart);
+    sethybrid_idFroDeletion(hybrid_id);
+    console.log(hybrid_id, "deleted from cart");
   };
+  const handleStorageEdit = (data) => {
+    setStorage(JSON.stringify(data));
+  };
+  React.useEffect(() => {
+    // console.log(Storage);
+  }, [Storage]);
   return (
     <SupplementContextProvider>
       <CategoryContextProvider>
-        <div
-          id="scroller"
-          className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
-        >
-          <BrowserRouter>
-            <ScrollToTop>
-              <Header
-                setCartVisisble={setCartVisisble}
-                isAdedTocart={isAdedTocart}
-                isDeletetedFromTocart={isDeletetedFromTocart}
-              />
-              <Cart
-                isVisisble={isVisisble}
-                setCartVisisble={setCartVisisble}
-                isAdedTocart={isAdedTocart}
-                handleDeletetedFromTocart={handleDeletetedFromTocart}
-              />
-              <Routes>
-                <Route exact path="/" element={<Home />} />
-                <Route
-                  exact
-                  path="/menu/category"
-                  element={
-                    <Catergory
-                      handleAdedTocart={handleAdedTocart}
-                      isDeletetedFromTocart={isDeletetedFromTocart}
+        <CartDataContextProvider data={Storage}>
+          <CheckoutDataContextProvider
+            isAdedTocart={isAdedTocart}
+            isVisisble={isVisisble}
+            isDeletetedFromTocart={isDeletetedFromTocart}
+            Storage={Storage}
+          >
+            <div
+              id="scroller"
+              className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
+            >
+              <BrowserRouter>
+                <ScrollToTop>
+                  <Header
+                    setCartVisisble={setCartVisisble}
+                    isAdedTocart={isAdedTocart}
+                    isDeletetedFromTocart={isDeletetedFromTocart}
+                  />
+                  <Cart
+                    isVisisble={isVisisble}
+                    setCartVisisble={setCartVisisble}
+                    isAdedTocart={isAdedTocart}
+                    handleDeletetedFromTocart={handleDeletetedFromTocart}
+                    handleStorageEdit={handleStorageEdit}
+                  />
+                  <Routes>
+                    <Route exact path="/" element={<Home />} />
+                    <Route
+                      exact
+                      path="/menu/category"
+                      element={
+                        <Catergory
+                          handleStorageEdit={handleStorageEdit}
+                          handleAdedTocart={handleAdedTocart}
+                          isDeletetedFromTocart={isDeletetedFromTocart}
+                          hybrid_idFroDeletion={hybrid_idFroDeletion}
+                        />
+                      }
                     />
-                  }
-                />
-                <Route exact path="/checkout" element={<Checkout />} />
-                <Route exact path="/menu" element={<Menu />} />
-                <Route exact path="/contact" element={<Contact />} />
-              </Routes>
-            </ScrollToTop>
-            <Footer />
-          </BrowserRouter>
-        </div>
+                    <Route exact path="/checkout" element={<Checkout />} />
+                    <Route exact path="/menu" element={<Menu />} />
+                    <Route exact path="/contact" element={<Contact />} />
+                  </Routes>
+                </ScrollToTop>
+                <Footer />
+              </BrowserRouter>
+            </div>
+          </CheckoutDataContextProvider>
+        </CartDataContextProvider>
       </CategoryContextProvider>
     </SupplementContextProvider>
   );

@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import CartIcon from "../icons/cart.svg";
 import menuHumberger from "../icons/menuHumberger.svg";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import nav_bg from "../images/nav_bg.jpg";
 import CloseIco from "../icons/close.svg";
 import { useLocation } from "react-router-dom";
 import React from "react";
+import { Cartstorage } from "../context/LocalStorageContext";
+
 // import { BiQrScan } from "react-icons/bi";
 export const NavigationsLinks = ({ setisVisible }) => {
   let location = useLocation();
@@ -64,22 +66,29 @@ export const NavigationsLinks = ({ setisVisible }) => {
 };
 
 const CartIndicator = ({ openCart, isAdedTocart, isDeletetedFromTocart }) => {
-  const [CartElementCount, setCartElementCount] = useState(0);
-  React.useEffect(() => {
-    let storage = JSON.parse(localStorage.getItem("cartData"));
-    setCartElementCount(storage?.length || 0);
-  }, [isAdedTocart, isDeletetedFromTocart]);
+  const CartStorage = JSON.parse(useContext(Cartstorage));
+
+  // const [CartElementCount, setCartElementCount] = useState(0);
+
+  // React.useEffect(() => {
+  //   let storage = JSON.parse(localStorage.getItem("cartData"));
+  //   setCartElementCount(storage?.length || 0);
+  // }, [isAdedTocart, isDeletetedFromTocart]);
   return (
     <button onClick={openCart} className="lg:relative">
       <p className="absolute bottom-10 right-0 bg-[#5B6D5B] w-5 h-5 rounded-full text-sm ">
-        {CartElementCount}
+        {CartStorage?.length || 0}
       </p>
       <img className="w-[40px] h-[40px]" src={CartIcon} alt="cart" />
     </button>
   );
 };
 
-export const MdTopHeader = ({ openCart, isAdedTocart, isDeletetedFromTocart }) => {
+export const MdTopHeader = ({
+  openCart,
+  isAdedTocart,
+  isDeletetedFromTocart,
+}) => {
   return (
     <div className="hidden lg:block lg:mx-4">
       <ul className="flex items-center gap-3 list-none text-xl">
@@ -141,7 +150,11 @@ export const SmTopHeader = ({
         </div>
         <div>
           <li>
-            <CartIndicator openCart={openCart} isAdedTocart={isAdedTocart} isDeletetedFromTocart={isDeletetedFromTocart}/>
+            <CartIndicator
+              openCart={openCart}
+              isAdedTocart={isAdedTocart}
+              isDeletetedFromTocart={isDeletetedFromTocart}
+            />
           </li>
         </div>
       </div>

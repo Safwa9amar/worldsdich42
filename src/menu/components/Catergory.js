@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import HorizentalMenu from "./HorizentalMenu";
 import { CatergoryItem } from "./CatergoryItem";
 import { SupplementCard } from "./SupplementCard";
 import { useLocation } from "react-router-dom";
-import { Categories } from "../../context/category";
+import { Categories } from "../../context/categorycontext";
+import { Cartstorage } from "../../context/LocalStorageContext";
 
 const filterCategoryItems = (arr, id) => {
   return arr.filter((el) => el.id === id)[0].list;
@@ -13,6 +14,8 @@ export default function Catergory({
   handleAdedTocart,
   isDeletetedFromTocart,
   isAdedTocart,
+  handleStorageEdit,
+  hybrid_idFroDeletion,
 }) {
   const [ShowModel, setShowModel] = React.useState(false);
 
@@ -20,6 +23,8 @@ export default function Catergory({
     setShowModel(!ShowModel);
   };
   //
+  const MyStorage = useContext(Cartstorage);
+
   let { search } = useLocation();
   let categoryId = Math.abs(search.replace(/^\D+/g, ""));
   const categories = React.useContext(Categories);
@@ -57,12 +62,13 @@ export default function Catergory({
   const [cartData, setCartData] = React.useState([]);
 
   const handleAddToCart = (obj) => {
-    let storage = JSON.parse(localStorage.getItem("cartData") || "[]");
+    let storage = JSON.parse(MyStorage);
     let optionData = OptionChanges.map((el) => {
       let parent = el.split("-")[0].match(/\d+/g).join("");
       let unChecked = el.split("-")[1].match(/\d+/g).join("");
       console.log(el);
       if (Math.abs(parent) === Math.abs(obj.id)) return Math.abs(unChecked);
+
       return false;
     });
     let changes = {
@@ -75,8 +81,11 @@ export default function Catergory({
 
     storage.push(changes);
 
-    localStorage.setItem("cartData", JSON.stringify(storage));
+    // localStorage.setItem("cartData", JSON.stringify(storage));
     setCartData(storage);
+
+    handleStorageEdit(storage);
+
     handleAdedTocart();
   };
 
@@ -125,6 +134,7 @@ export default function Catergory({
               handleAddToCart={handleAddToCart}
               category_ID={categoryID}
               isDeletetedFromTocart={isDeletetedFromTocart}
+              hybrid_idFroDeletion={hybrid_idFroDeletion}
             />
           );
         })}

@@ -1,13 +1,13 @@
 import React from "react";
 
-function TableRow({ avatar, header, category, price, totalPrice, amount }) {
+function TableRow({ avatar, header, category, price, amount }) {
   return (
     <tr>
       <td>
         <div className="flex items-center space-x-3">
           <div className="avatar">
             <div className="mask mask-squircle w-12 h-12">
-              <img src={avatar} alt="Avatar Tailwind CSS Component" />
+              <img src={avatar} alt={header} />
             </div>
           </div>
           <div>
@@ -16,15 +16,17 @@ function TableRow({ avatar, header, category, price, totalPrice, amount }) {
           </div>
         </div>
       </td>
-      <td>{price}</td>
-      <td>€{amount}</td>
+      <td>€ {price}</td>
+      <td>{amount || 1}</td>
       <th>
-        <button className="btn btn-ghost btn-xs">€{totalPrice}</button>
+        <button className="btn btn-ghost btn-xs">
+          € {price * amount || price || 0}
+        </button>
       </th>
     </tr>
   );
 }
-export function CheckOutTable({ burger, showTable, setshowTable }) {
+export function CheckOutTable({ showTable, data }) {
 
   return (
     <div
@@ -45,26 +47,52 @@ export function CheckOutTable({ burger, showTable, setshowTable }) {
       
       `}
     >
-      <table className="table w-full">
-        <thead>
-          <tr>
-            <th>Produit</th>
-            <th>Prix</th>
-            <th>Quantité</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <TableRow
-            avatar={burger}
-            header={"Classic"}
-            category={"burger"}
-            price={6.5}
-            totalPrice={13}
-            amount={2}
-          />
-        </tbody>
-      </table>
+      {data.length > 0 ? (
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th>Produit</th>
+              <th>Prix</th>
+              <th>Quantité</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((el) => {
+              return (
+                <TableRow
+                  key={`${el.id}_${el.category}`}
+                  avatar={el.img}
+                  header={el.name}
+                  category={el.Categorie}
+                  price={el.prix}
+                  totalPrice={13}
+                  amount={el.amount}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      ) : (
+        <div className="alert alert-info shadow-lg">
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              className="stroke-current flex-shrink-0 w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            <span>Vous n'avez pas ajouté d'articles</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

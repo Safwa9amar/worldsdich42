@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaRegUser } from "react-icons/fa";
 import { RiCoupon3Line } from "react-icons/ri";
 import burger from "../menu/images/burger.png";
@@ -7,14 +7,13 @@ import EmporterFoodIco from "../icons/emporter_food.svg";
 import DeliveryIco from "../icons/delivery.svg";
 import { CheckOutTable } from "./components/CheckOutTable";
 import { CartTotals } from "./components/CartTotals";
-
-
+import { Checkout as Mycheckout } from "../context/checkoutContext";
 
 const Checkout = () => {
-    const [showTable, setshowTable] = React.useState(false);
+  const Mycontext = useContext(Mycheckout);
+  const [showTable, setshowTable] = React.useState(false);
   return (
     <div className="flex-col md:w-[95vw] md:mx-[2.5vw] bg-[#28231B] lg:p-14">
-        
       <div className="flex items-center justify-between w-full my-6">
         <div className="text-white w-full flex items-center justify-center gap-2 p-4 px-6 lg:m-2 rounded-lg border-t-2 border-t-blue-600 bg-[#252C30] ">
           <FaRegUser />
@@ -27,17 +26,15 @@ const Checkout = () => {
           <p className="text-warning">Cliquez ici pour entrer votre code</p>
         </div>
       </div>
-
-      <CheckOutTable showTable={showTable} burger={burger} />
-
+      <CheckOutTable showTable={showTable} burger={burger} data={Mycontext} />
       <CartTotals
         surPlaceIco={surPlaceIco}
         EmporterFoodIco={EmporterFoodIco}
         DeliveryIco={DeliveryIco}
         subTotal="13"
         total="26"
+        Mycontext={Mycontext}
       />
-
       <label className="btn btn-circle swap swap-rotate fixed bottom-5 right-10 z-50 md:hidden">
         <input onChange={() => setshowTable(!showTable)} type="checkbox" />
 

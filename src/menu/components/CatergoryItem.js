@@ -1,10 +1,11 @@
-import React, { useCallback } from "react";
+import React, { useEffect } from "react";
 import ReactStars from "react-rating-stars-component";
 import { BsCartPlusFill } from "react-icons/bs";
 import { BsCartCheckFill } from "react-icons/bs";
 import menuImg from "../../images/Menu.png";
 import product_bg from "../../images/product_bg.jpg";
 import arcticons_manga from "../../icons/arcticons_manga-plus.svg";
+import { Cartstorage } from "../../context/LocalStorageContext";
 
 function MenuBtn({
   price = 2,
@@ -51,7 +52,8 @@ export const CatergoryItem = (props) => {
     id,
     reciveOptionclick,
     handleAddToCart,
-    // isDeletetedFromTocart,
+    isDeletetedFromTocart,
+    hybrid_idFroDeletion,
   } = props;
   //
   const [Price] = React.useState(price);
@@ -63,31 +65,12 @@ export const CatergoryItem = (props) => {
   const [ToggleCart, setToggleCart] = React.useState(false);
 
   //
-  const [isStoredInLocalStorage, setisStoredInLocalStorage] =
-    React.useState(false);
-  //
-  const retriveStorageData = useCallback(
-    (data) => {
-      if (data?.length > 0 && data != null) {
-        data.map((el) => {
-          if (el.hybrid_id === `${id}_${category_ID}`) {
-            setisStoredInLocalStorage(true);
-            console.log("rqual");
-            setToggleCart(true);
-          }
-          else {
-            setisStoredInLocalStorage(false);
-            // setToggleCart(false);
-          }
-          return false;
-        });
-      } else {
-        setisStoredInLocalStorage(false);
-        setToggleCart(false);
-      }
-    },
-    [ category_ID,id]
-  );
+  const MyCartstorage = React.useContext(Cartstorage);
+  useEffect(() => {
+    JSON.parse(MyCartstorage).map(
+      (el) => el.hybrid_id === `${id}_${category_ID}` && setToggleCart(true)
+    );
+  });
   function updatePrice(menuPrice) {
     setMenuPrice(menuPrice);
   }
@@ -97,8 +80,6 @@ export const CatergoryItem = (props) => {
       id: id,
       isMenu: MenuPrice ? true : false,
     });
-    console.log("added to cart clicked");
-
     setToggleCart(true);
   };
 
@@ -109,11 +90,11 @@ export const CatergoryItem = (props) => {
   };
 
   //
-  React.useEffect(() => {
-    let cartData = JSON.parse(localStorage.getItem("cartData"));
-    retriveStorageData(cartData);
-  });
-  // ;
+
+  useEffect(() => {
+    hybrid_idFroDeletion === `${id}_${category_ID}` && setToggleCart(false);
+  }, [isDeletetedFromTocart, hybrid_idFroDeletion, id, category_ID]);
+
   return (
     <>
       <div className="md:hidden relative bg-[#28231B] w-[170px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg m-6 text-white">
@@ -211,7 +192,7 @@ export const CatergoryItem = (props) => {
                 w-[30px] h-[30px]
                 transition-all duration-300
                 ${
-                  !ToggleCart && !isStoredInLocalStorage
+                  !ToggleCart
                     ? "scale-0 invisible"
                     : "scale-1 visible fill-warning"
                 }
@@ -220,9 +201,7 @@ export const CatergoryItem = (props) => {
 
             <button
               onClick={addToCart}
-              className={`${
-                ToggleCart || isStoredInLocalStorage ? "hidden" : ""
-              } cursor-pointer`}
+              className={`${ToggleCart ? "hidden" : ""} cursor-pointer`}
             >
               <BsCartPlusFill className={`w-[30px] h-[30px]`} />
             </button>
@@ -249,18 +228,12 @@ export const CatergoryItem = (props) => {
               <p className="text-[#5B6D5B] font-bold text-xl">
                 €{Math.abs(Price) + Math.abs(MenuPrice)}
               </p>
-              <MenuBtn
-                updatePrice={updatePrice}
-                ToggleCart={ToggleCart}
-                isStoredInLocalStorage={isStoredInLocalStorage}
-              />
+              <MenuBtn updatePrice={updatePrice} ToggleCart={ToggleCart} />
             </div>
             <button
               onClick={handleOptionclick}
               className={`${
-                ToggleCart || isStoredInLocalStorage
-                  ? "pointer-events-none text-gray-600"
-                  : ""
+                ToggleCart ? "pointer-events-none text-gray-600" : ""
               } flex justify-end items-center  cursor-pointer hover:text-[#5B6D5B] `}
             >
               <p>OPTIONS</p>

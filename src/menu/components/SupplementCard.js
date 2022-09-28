@@ -2,7 +2,7 @@ import * as React from "react";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { Supplement } from "../../context/suplement";
+import { Supplement } from "../../context/suplementContext";
 
 const responsive = {
   superLargeDesktop: {

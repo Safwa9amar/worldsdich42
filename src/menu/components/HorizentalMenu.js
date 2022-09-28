@@ -3,7 +3,7 @@ import { HorizentalMenuData } from "../icons/data";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link, useLocation } from "react-router-dom";
-import { Categories } from "../../context/category";
+import { Categories } from "../../context/categorycontext";
 
 const responsive = {
   superLargeDesktop: {

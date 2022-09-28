@@ -7,7 +7,7 @@ const Menu = () => {
   const [showGrid, setShowGrid] = useState(true);
   const handleHide = () => {
     setShowGrid(false)
-    console.log(showGrid);
+    return showGrid;
   };
   return (
     <div className="flex-col md:w-[95vw] md:mx-[2.5vw]  ">

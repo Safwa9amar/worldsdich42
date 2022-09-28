@@ -147,6 +147,88 @@ const data = [
           },
         ],
       },
+      {
+        id: 15,
+        name: "Paris",
+        prix: 9.5,
+        img: classicImg,
+        Categorie: "tacos",
+        categoryID: 2,
+        rating: { stars: 4, count: 5 },
+        recipes: [
+          {
+            id: 1,
+            recip: "Filet d'escalope",
+            isChecked: true,
+          },
+          {
+            id: 2,
+            recip: "lardinette avec sauce gruyère",
+            isChecked: true,
+          },
+          {
+            id: 3,
+            recip: " Crudités",
+            isChecked: true,
+          },
+          {
+            id: 4,
+            recip: "salade oignons rouge",
+            isChecked: true,
+          },
+          {
+            id: 5,
+            recip: "fromage cheddar",
+            isChecked: true,
+          },
+          {
+            id: 6,
+            recip: " 2 sauces au choix.",
+            isChecked: true,
+          },
+        ],
+      },
+      {
+        id: 33,
+        name: "Paris",
+        prix: 9.5,
+        img: classicImg,
+        Categorie: "tacos",
+        categoryID: 2,
+        rating: { stars: 4, count: 5 },
+        recipes: [
+          {
+            id: 1,
+            recip: "Filet d'escalope",
+            isChecked: true,
+          },
+          {
+            id: 2,
+            recip: "lardinette avec sauce gruyère",
+            isChecked: true,
+          },
+          {
+            id: 3,
+            recip: " Crudités",
+            isChecked: true,
+          },
+          {
+            id: 4,
+            recip: "salade oignons rouge",
+            isChecked: true,
+          },
+          {
+            id: 5,
+            recip: "fromage cheddar",
+            isChecked: true,
+          },
+          {
+            id: 6,
+            recip: " 2 sauces au choix.",
+            isChecked: true,
+          },
+        ],
+      },
     ],
   },
 ];

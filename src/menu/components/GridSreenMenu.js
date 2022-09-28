@@ -1,6 +1,6 @@
 import React, {  useContext } from "react";
 import MenuItem from "../components/GridMenuItem";
-import { Categories } from "../../context/category";
+import { Categories } from "../../context/categorycontext";
 
 export function GridSreenMenu({ handleHide }) {
   const categories = useContext(Categories);
