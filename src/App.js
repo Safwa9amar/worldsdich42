@@ -10,12 +10,13 @@ import Cart from "./checkout/Cart";
 import Checkout from "./checkout/Checkout";
 import Catergory from "./menu/components/Catergory";
 import ScrollToTop from "./helpers/ScrollToTop";
-import CategoryContextProvider from "./context/categorycontext";
+import { Categories } from "./context/categorycontext";
 import SupplementContextProvider from "./context/suplementContext";
 import CartDataContextProvider from "./context/LocalStorageContext";
 import CheckoutDataContextProvider from "./context/checkoutContext";
 
 function App() {
+  const CategoryContext = React.useContext(Categories);
   const [isVisisble, setCartVisisble] = React.useState(false);
   const [isAdedTocart, setIsAdedTocart] = React.useState(false);
   const [Storage, setStorage] = React.useState(
@@ -38,18 +39,16 @@ function App() {
   const handleStorageEdit = (data) => {
     setStorage(JSON.stringify(data));
   };
-  React.useEffect(() => {
-    // console.log(Storage);
-  }, [Storage]);
+  console.log(CategoryContext);
   return (
     <SupplementContextProvider>
-      <CategoryContextProvider>
         <CartDataContextProvider data={Storage}>
           <CheckoutDataContextProvider
             isAdedTocart={isAdedTocart}
             isVisisble={isVisisble}
             isDeletetedFromTocart={isDeletetedFromTocart}
             Storage={Storage}
+            CategoryContext={CategoryContext}
           >
             <div
               id="scroller"
@@ -93,7 +92,6 @@ function App() {
             </div>
           </CheckoutDataContextProvider>
         </CartDataContextProvider>
-      </CategoryContextProvider>
     </SupplementContextProvider>
   );
 }
