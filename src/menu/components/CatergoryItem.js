@@ -7,6 +7,7 @@ import product_bg from "../../images/product_bg.jpg";
 import arcticons_manga from "../../icons/arcticons_manga-plus.svg";
 import { Cartstorage } from "../../context/LocalStorageContext";
 
+
 function MenuBtn({
   price = 2,
   updatePrice,
@@ -54,6 +55,7 @@ export const CatergoryItem = (props) => {
     handleAddToCart,
     isDeletetedFromTocart,
     hybrid_idFroDeletion,
+    getCartBoudaries
   } = props;
   //
   const [Price] = React.useState(price);
@@ -81,6 +83,8 @@ export const CatergoryItem = (props) => {
       isMenu: MenuPrice ? true : false,
     });
     setToggleCart(true);
+     console.log(getCartBoudaries.getBoundingClientRect());
+
   };
 
   //

@@ -22,6 +22,8 @@ export function CartTotals({ Mycontext }) {
   const [isPlace, setPlace] = React.useState(false);
   const [isEmporter, setEmporter] = React.useState(false);
   const [isDelivery, setDelivery] = React.useState(false);
+  const [GetTotalPrice, setGetTotalPrice] = React.useState(0);
+
   const SurPlace = () => {
     setPlace(true);
     setEmporter(false);
@@ -45,15 +47,17 @@ export function CartTotals({ Mycontext }) {
       arrTotal.push(sum);
       return el
     });
+    console.log(arrTotal.reduce((curr, next) => curr + next))
     if (arrTotal.length > 0) return arrTotal.reduce((curr, next) => curr + next)
   };
   React.useEffect(() => {
+    setGetTotalPrice(getTotalPrice(Mycontext));
     const GetDamandeType =
       (isPlace && "sur place") ||
       (isEmporter && "emporter") ||
       (isDelivery && "livraison");
-    console.log(GetDamandeType);
-  }, [isPlace, isEmporter, isDelivery]);
+    console.log(GetTotalPrice);
+  }, [isPlace, isEmporter, isDelivery, Mycontext, GetTotalPrice]);
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
       <div className="hidden lg:block w-full">
@@ -83,15 +87,15 @@ export function CartTotals({ Mycontext }) {
       <div className="flex flex-col gap-4  w-full px-5">
         <div className="flex gap-2 justify-between">
           <p className="text-info">CART TOTALS</p>
-          <p>€{getTotalPrice(Mycontext) || 0}</p>
+          <p>€{GetTotalPrice || 0}</p>
         </div>
         <div className="flex gap-2 justify-between">
           <p className="text-info">Subtotal</p>
-          <p>€{getTotalPrice(Mycontext) || 0}</p>
+          <p>€{GetTotalPrice || 0}</p>
         </div>
         <div className="flex gap-2 justify-between">
           <p className="text-info">Total</p>
-          <p>€{getTotalPrice(Mycontext) || 0}</p>
+          <p>€{GetTotalPrice || 0}</p>
         </div>
         <div className="block lg:hidden">
           <ApplyCoupon />

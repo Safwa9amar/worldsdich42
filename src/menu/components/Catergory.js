@@ -16,6 +16,7 @@ export default function Catergory({
   isAdedTocart,
   handleStorageEdit,
   hybrid_idFroDeletion,
+  getCartBoudaries,
 }) {
   const [ShowModel, setShowModel] = React.useState(false);
 
@@ -76,6 +77,7 @@ export default function Catergory({
       isMenu: obj.isMenu,
       hybrid_id: `${obj.id}_${categoryId}`,
       category: categoryId,
+      amount: 1,
       optionData: optionData.filter((el) => el !== undefined).sort(),
     }; //`id_${obj.id}-isMenu_${obj.isMenu}-options_${optionData}}`;
 
@@ -87,6 +89,7 @@ export default function Catergory({
     handleStorageEdit(storage);
 
     handleAdedTocart();
+   
   };
 
   React.useEffect(() => {
@@ -135,6 +138,7 @@ export default function Catergory({
               category_ID={categoryID}
               isDeletetedFromTocart={isDeletetedFromTocart}
               hybrid_idFroDeletion={hybrid_idFroDeletion}
+              getCartBoudaries={getCartBoudaries}
             />
           );
         })}

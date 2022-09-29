@@ -65,17 +65,15 @@ export const NavigationsLinks = ({ setisVisible }) => {
   );
 };
 
-const CartIndicator = ({ openCart, isAdedTocart, isDeletetedFromTocart }) => {
+const CartIndicator = ({ openCart, handleCartBoudries }) => {
   const CartStorage = JSON.parse(useContext(Cartstorage));
 
-  // const [CartElementCount, setCartElementCount] = useState(0);
-
-  // React.useEffect(() => {
-  //   let storage = JSON.parse(localStorage.getItem("cartData"));
-  //   setCartElementCount(storage?.length || 0);
-  // }, [isAdedTocart, isDeletetedFromTocart]);
+  const handleLoad = (e) => {
+    handleCartBoudries(e.target);
+    // console.log(e.target.getBoundingClientRect());
+  };
   return (
-    <button onClick={openCart} className="lg:relative">
+    <button onClick={openCart} className="lg:relative" onLoad={handleLoad}>
       <p className="absolute bottom-10 right-0 bg-[#5B6D5B] w-5 h-5 rounded-full text-sm ">
         {CartStorage?.length || 0}
       </p>
@@ -88,6 +86,7 @@ export const MdTopHeader = ({
   openCart,
   isAdedTocart,
   isDeletetedFromTocart,
+  handleCartBoudries,
 }) => {
   return (
     <div className="hidden lg:block lg:mx-4">
@@ -98,6 +97,7 @@ export const MdTopHeader = ({
             openCart={openCart}
             isAdedTocart={isAdedTocart}
             isDeletetedFromTocart={isDeletetedFromTocart}
+            handleCartBoudries={handleCartBoudries}
           />
         </li>
       </ul>
@@ -110,6 +110,7 @@ export const SmTopHeader = ({
   closeCart,
   isAdedTocart,
   isDeletetedFromTocart,
+  handleCartBoudries,
 }) => {
   const [isVisible, setisVisible] = useState(false);
   const handleClick = () => {
@@ -154,6 +155,7 @@ export const SmTopHeader = ({
               openCart={openCart}
               isAdedTocart={isAdedTocart}
               isDeletetedFromTocart={isDeletetedFromTocart}
+              handleCartBoudries={handleCartBoudries}
             />
           </li>
         </div>
