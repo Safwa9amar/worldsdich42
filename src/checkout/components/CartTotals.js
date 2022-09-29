@@ -45,10 +45,11 @@ export function CartTotals({ Mycontext }) {
       let [price, amount, isMenu] = [el.prix, el.amount, el.isMenu];
       let sum = isMenu ? price + 2 * amount : price * amount;
       arrTotal.push(sum);
-      return el
+      return el;
     });
-    console.log(arrTotal.reduce((curr, next) => curr + next))
-    if (arrTotal.length > 0) return arrTotal.reduce((curr, next) => curr + next)
+    console.log(arrTotal.reduce((curr, next) => curr + next));
+    if (arrTotal.length > 0)
+      return arrTotal.reduce((curr, next) => curr + next);
   };
   React.useEffect(() => {
     setGetTotalPrice(getTotalPrice(Mycontext));
@@ -56,7 +57,7 @@ export function CartTotals({ Mycontext }) {
       (isPlace && "sur place") ||
       (isEmporter && "emporter") ||
       (isDelivery && "livraison");
-    console.log(GetTotalPrice);
+    console.log(GetDamandeType);
   }, [isPlace, isEmporter, isDelivery, Mycontext, GetTotalPrice]);
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
