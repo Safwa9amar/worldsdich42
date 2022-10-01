@@ -7,7 +7,7 @@ import { Categories } from "../../context/categorycontext";
 import { Cartstorage } from "../../context/LocalStorageContext";
 
 const filterCategoryItems = (arr, id) => {
-  return arr.filter((el) => el.id === id)[0].list;
+  return arr.filter((el) => el.id === id)[0]["list"];
 };
 
 export default function Catergory({
@@ -36,9 +36,9 @@ export default function Catergory({
   const [changedRecipID, setchangedRecipID] = React.useState();
 
   const reciveOptionclick = (id) => {
-    console.log("element id on option click : ", id);
     setchangedRecipID(id);
     const data = categoryItems.filter((el) => el.id === id);
+    console.log(data[0].recipes);
     setRecipeData(data[0].recipes);
   };
 
@@ -89,11 +89,11 @@ export default function Catergory({
     handleStorageEdit(storage);
 
     handleAdedTocart();
-   
   };
 
   React.useEffect(() => {
     let newData = filterCategoryItems(categories, categoryId);
+    console.log(RecipeData);
     setcategoryItems(newData);
     // console.log(cartData);
   }, [categories, categoryId, OptionChanges, cartData, isAdedTocart]);
@@ -119,14 +119,13 @@ export default function Catergory({
             categoryID,
             rating,
             recipes,
-            img,
+            img_url,
           } = el;
-
           return (
             <CatergoryItem
               key={id}
               id={id}
-              img={img}
+              img={img_url}
               header={name}
               category={Categorie}
               description={recipes}

@@ -163,7 +163,7 @@ function Cart({
                   key={`${el.id}_${el.categoryID}`}
                   id={el.id}
                   parent_id={el.categoryID}
-                  img={el.img}
+                  img={el.img_url}
                   header={el.name}
                   price={el.prix}
                   isMenu={el.isMenu}

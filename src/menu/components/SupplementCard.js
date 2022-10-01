@@ -152,14 +152,14 @@ export function SupplementCard(props) {
           <div className="py-4">
             {showModal &&
               recipe_data.map((el) => {
-                const { id, isChecked, recip } = el;
+                const { id, isCheked, name } = el;
                 return (
                   <CheckedItem
                     key={id}
                     id={id}
                     el_id={el_id}
-                    isChecked={isChecked}
-                    text={recip}
+                    isChecked={isCheked}
+                    text={name}
                     handleOptionChanges={handleOptionChanges}
                   />
                 );

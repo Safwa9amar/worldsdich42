@@ -109,7 +109,7 @@ export const CatergoryItem = (props) => {
         />
 
         <ReactStars
-          value={rating?.stars}
+          value={rating}
           count={5}
           size={20}
           activeColor="#ffd700"
@@ -213,14 +213,14 @@ export const CatergoryItem = (props) => {
 
           <p className="text-[#888888] text-lg">
             {description
-              .map((el) => el.recip + ", ")
+              .map((el) => el.name + ", ")
               .toString()
               .slice(0, 100)}
             ...
           </p>
           <div className="flex text-xl font-bold">
             <ReactStars
-              value={rating?.stars}
+              value={rating}
               count={5}
               size={24}
               activeColor="#ffd700"

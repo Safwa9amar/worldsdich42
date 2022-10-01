@@ -9,8 +9,9 @@ const CheckoutDataContextProvider = (props) => {
   );
 
   useEffect(() => {
+    console.log(props.Storage, props.CategoryContext);
     setCartdata(
-      retriveCartData(JSON.parse(props.Storage), props.CategoryContext)
+      retriveCartData(JSON.parse(props.Storage), props.CategoryContext) || []
     );
   }, [
     props.isAdedTocart,
