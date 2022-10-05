@@ -1,20 +1,72 @@
-import React from "react";
 import order_confirmed from "../../icons/order_confirmed.svg";
+import React, { useState, useEffect, useContext } from "react";
 
-export default function BuySuccess() {
+import io from "socket.io-client";
+import { Checkout } from "../../context/checkoutContext";
+import { Credentiel } from "../../context/CredentielContext";
+
+// const socket = io("http://localhost:5000/");
+
+export default function BuySuccess({ setcheckBoxState }) {
+  const { isloged } = useContext(Credentiel);
+  const [finaLoggin, setfinaLoggin] = useState(false);
+  // const CheckoutData = useContext(Checkout);
+  //  const [isConnected, setIsConnected] = useState(socket.connected);
+  //  const [lastPong, setLastPong] = useState(null);
+
+  const handleClick = () => {
+    console.log(isloged);
+    if (isloged) {
+      setfinaLoggin(true);
+    } else {
+      setcheckBoxState(true);
+    }
+    //    socket.emit("message", JSON.stringify(CheckoutData));
+  };
+  // useEffect(() => {
+  //   socket.on("message", (data) => {
+  //     console.log(data)
+  //   });
+  //   socket.on("connect", () => {
+  //     setIsConnected(true);
+  //   });
+
+  //   socket.on("disconnect", () => {
+  //     setIsConnected(false);
+  //   });
+
+  //   socket.on("pong", () => {
+  //     setLastPong(new Date().toISOString());
+  //   });
+
+  //   return () => {
+  //     socket.off("connect");
+  //     socket.off("disconnect");
+  //     socket.off("pong");
+  //   };
+  // }, []);
+
   return (
     <>
       <label
+        onClick={handleClick}
         htmlFor="my-modal-3"
         className="btn rounded-md bg-[#5B6D5B] w-1/2 mb-4 modal-button text-white"
       >
         Commandez maintenant
       </label>
-      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <input
+        type="checkbox"
+        checked={finaLoggin}
+        id="my-modal-3"
+        className="modal-toggle"
+      />
       <div className="modal ">
         <div className="modal-box relative">
           <label
-            htmlFor="my-modal-3"
+            onClick={() => {
+              setfinaLoggin(false);
+            }}
             className="btn btn-sm btn-circle absolute right-2 top-2"
           >
             ✕

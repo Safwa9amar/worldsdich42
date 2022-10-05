@@ -7,7 +7,6 @@ import { Link, } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import data from "./carouselData";
-
 const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
@@ -31,7 +30,7 @@ const responsive = {
 const Home = () => {
 
   return (
-    <div className="md:w-[95vw] md:mx-[2.5vw] flex flex-col items-center gap-10">
+    <div className="md:w-[95vw] md:mx-[2.5vw] flex flex-col items-center gap-10 bg-[#28231B]">
       <div className=" mt-10 mx-10 flex flex-col items-center sm:prose-sm md:prose-md  text-center text-white">
         <h1 className="capitalize">Restaurant rapide halal </h1>
         <img className="w-1/2 md:w-auto" src={line} alt="line" />

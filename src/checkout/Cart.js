@@ -34,7 +34,7 @@ const trailingActions = (
       onClick={() => {
         let storage = JSON.parse(localStorage.getItem("cartData"));
         let newCartData = JSON.stringify(
-          storage.filter((el) => el.hybrid_id !== hybrid_id)
+          storage.filter((el) => `${el.id}_${el.category}` !== hybrid_id)
         );
         handleStorageEdit(JSON.parse(newCartData));
         localStorage.setItem("cartData", newCartData);
@@ -63,19 +63,17 @@ const CartItem = (props) => {
     count >= 1 &&
       count <= 9 &&
       setCount(count + 1) &&
-      set_price(_price + price)
-      count <= 9 && handleStorageEdit(addArticleAmount(MyContext, count + 1));
+      set_price(_price + price);
+    count <= 9 && handleStorageEdit(addArticleAmount(MyContext, count + 1));
   };
   const decrement = () => {
-    count > 1 &&
-      setCount(count - 1) &&
-      set_price(_price - price) 
-      count > 1 && handleStorageEdit(addArticleAmount(MyContext, count - 1));
+    count > 1 && setCount(count - 1) && set_price(_price - price);
+    count > 1 && handleStorageEdit(addArticleAmount(MyContext, count - 1));
   };
   const addArticleAmount = useCallback(
     (data, count) => {
       return data.map((el) => {
-        if (el.hybrid_id === `${id}_${parent_id}`) {
+        if (`${el.id}_${el.category}` === `${id}_${parent_id}`) {
           // console.log(count);
           if ("amount" in el) {
             el.amount = count;
@@ -99,7 +97,7 @@ const CartItem = (props) => {
       </figure>
       <p>{header}</p>
       <p>
-        €{_price} {isMenu ? "+ 2€" : ""}
+        €{_price * count} {isMenu ? "+ 2€" : ""}
       </p>
       <div className="cursor-default flex justify-between gap-4 items-center bg-[#5B6D5B] px-4 rounded-md">
         <div onClick={decrement} className=" font-bold">
@@ -154,15 +152,15 @@ function Cart({
                 className="my-4"
                 leadingActions={leadingActions()}
                 trailingActions={trailingActions(
-                  `${el.id}_${el.categoryID}`,
+                  `${el.id}_${el.category}`,
                   handleDeletetedFromTocart,
                   handleStorageEdit
                 )}
               >
                 <CartItem
-                  key={`${el.id}_${el.categoryID}`}
+                  key={`${el.id}_${el.category}`}
                   id={el.id}
-                  parent_id={el.categoryID}
+                  parent_id={el.category}
                   img={el.img_url}
                   header={el.name}
                   price={el.prix}

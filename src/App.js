@@ -14,11 +14,13 @@ import { Categories } from "./context/categorycontext";
 import SupplementContextProvider from "./context/suplementContext";
 import CartDataContextProvider from "./context/LocalStorageContext";
 import CheckoutDataContextProvider from "./context/checkoutContext";
-
+import CredentielModel from "./helpers/CredentielModel";
 function App() {
   const CategoryContext = React.useContext(Categories);
   const [isVisisble, setCartVisisble] = React.useState(false);
   const [isAdedTocart, setIsAdedTocart] = React.useState(false);
+  const [checkBoxState, setcheckBoxState] = React.useState(false);
+
   const [Storage, setStorage] = React.useState(
     localStorage.getItem("cartData") !== null
       ? localStorage.getItem("cartData")
@@ -63,6 +65,10 @@ function App() {
             className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
           >
             <BrowserRouter>
+              <CredentielModel
+                setcheckBoxState={setcheckBoxState}
+                checkBoxState={checkBoxState}
+              />
               <ScrollToTop>
                 <Header
                   setCartVisisble={setCartVisisble}
@@ -92,7 +98,16 @@ function App() {
                       />
                     }
                   />
-                  <Route exact path="/checkout" element={<Checkout />} />
+                  <Route
+                    exact
+                    path="/checkout"
+                    element={
+                      <Checkout
+                        setcheckBoxState={setcheckBoxState}
+                        checkBoxState={checkBoxState}
+                      />
+                    }
+                  />
                   <Route exact path="/menu" element={<Menu />} />
                   <Route exact path="/contact" element={<Contact />} />
                 </Routes>

@@ -9,7 +9,7 @@ const CheckoutDataContextProvider = (props) => {
   );
 
   useEffect(() => {
-    console.log(props.Storage, props.CategoryContext);
+    // console.log(props.Storage, props.CategoryContext);
     setCartdata(
       retriveCartData(JSON.parse(props.Storage), props.CategoryContext) || []
     );

@@ -20,6 +20,8 @@
     "react-scripts": "5.0.1",
     "react-swipeable-list": "^1.6.0",
     "react-touch-carousel": "^0.10.2",
+    "socket.io": "^4.5.2",
+    "socket.io-client": "^4.5.2",
     "tailwind-scrollbar": "^2.0.1",
     "web-vitals": "^2.1.4"
   },

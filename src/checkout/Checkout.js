@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { FaRegUser } from "react-icons/fa";
 import { RiCoupon3Line } from "react-icons/ri";
+import { BiLogOut } from "react-icons/bi";
 import burger from "../menu/images/burger.png";
 import surPlaceIco from "../icons/table_food.svg";
 import EmporterFoodIco from "../icons/emporter_food.svg";
@@ -8,22 +9,58 @@ import DeliveryIco from "../icons/delivery.svg";
 import { CheckOutTable } from "./components/CheckOutTable";
 import { CartTotals } from "./components/CartTotals";
 import { Checkout as Mycheckout } from "../context/checkoutContext";
+import { Credentiel } from "../context/CredentielContext";
 
-const Checkout = () => {
+const Checkout = ({setcheckBoxState, checkBoxState}) => {
   const Mycontext = useContext(Mycheckout);
+  const { isloged, setiLoged, UserData } = useContext(Credentiel);
   const [showTable, setshowTable] = React.useState(false);
   return (
     <div className="flex-col md:w-[95vw] md:mx-[2.5vw] bg-[#28231B] lg:p-14">
       <div className="flex items-center justify-between w-full my-6">
         <div className="text-white w-full flex items-center justify-center gap-2 p-4 px-6 lg:m-2 rounded-lg border-t-2 border-t-blue-600 bg-[#252C30] ">
           <FaRegUser />
-          <p>Déjà client? </p>
-          <p className="text-warning">Cliquez ici pour vous identifier</p>
+          {isloged && (
+            <>
+              Bienvenue <p>{UserData.username}</p>
+              <button
+                className="text-error cursor-pointer flex items-center"
+                onClick={() => {
+                  localStorage.removeItem("refrech");
+                  localStorage.removeItem("jwt");
+                  setiLoged(false);
+                }}
+              >
+                <BiLogOut className="mx-2" />
+                (déconnexion)
+              </button>
+            </>
+          )}
+          {!isloged && (
+            <>
+              <p>Déjà client? </p>
+              <button
+                onClick={() => {
+                  setcheckBoxState(true);
+                }}
+                className="text-warning"
+              >
+                <label
+                  htmlFor="loginModel"
+                  className="text-warning cursor-pointer"
+                >
+                  Cliquez ici pour identifier
+                </label>
+              </button>
+            </>
+          )}
         </div>
         <div className="text-white hidden w-full lg:flex items-center justify-center gap-2 p-4 px-6 m-2 rounded-lg border-t-2 border-t-blue-600 bg-[#252C30] ">
           <RiCoupon3Line />
           <p>Avez-vous un coupon?</p>
-          <p className="text-warning">Cliquez ici pour entrer votre code</p>
+          <label htmlFor="applycopon" className="text-warning cursor-pointer">
+            Cliquez ici pour entrer votre code
+          </label>
         </div>
       </div>
       <CheckOutTable showTable={showTable} burger={burger} data={Mycontext} />
@@ -34,6 +71,7 @@ const Checkout = () => {
         subTotal="13"
         total="26"
         Mycontext={Mycontext}
+        setcheckBoxState={setcheckBoxState}
       />
       <label className="btn btn-circle swap swap-rotate fixed bottom-5 right-10 z-50 md:hidden">
         <input onChange={() => setshowTable(!showTable)} type="checkbox" />

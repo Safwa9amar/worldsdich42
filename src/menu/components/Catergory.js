@@ -93,7 +93,6 @@ export default function Catergory({
 
   React.useEffect(() => {
     let newData = filterCategoryItems(categories, categoryId);
-    console.log(RecipeData);
     setcategoryItems(newData);
     // console.log(cartData);
   }, [categories, categoryId, OptionChanges, cartData, isAdedTocart]);
@@ -116,7 +115,7 @@ export default function Catergory({
             name,
             Categorie,
             prix,
-            categoryID,
+            category,
             rating,
             recipes,
             img_url,
@@ -134,7 +133,7 @@ export default function Catergory({
               toggleModal={toggleModal}
               reciveOptionclick={reciveOptionclick}
               handleAddToCart={handleAddToCart}
-              category_ID={categoryID}
+              category_ID={category}
               isDeletetedFromTocart={isDeletetedFromTocart}
               hybrid_idFroDeletion={hybrid_idFroDeletion}
               getCartBoudaries={getCartBoudaries}

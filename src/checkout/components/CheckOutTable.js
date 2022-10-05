@@ -62,7 +62,7 @@ export function CheckOutTable({ showTable, data }) {
               return (
                 <TableRow
                   key={`${el.id}_${el.category}`}
-                  avatar={el.img}
+                  avatar={el.img_url}
                   header={el.name}
                   category={el.Categorie}
                   price={el.prix}

@@ -7,6 +7,7 @@ function ApplyCoupon() {
       <div className="input-group">
         <input
           type="text"
+          id="applycopon"
           placeholder="code coupon"
           className="input input-bordered w-full lg:w-auto"
         />
@@ -18,7 +19,7 @@ function ApplyCoupon() {
   );
 }
 
-export function CartTotals({ Mycontext }) {
+export function CartTotals({ Mycontext, setcheckBoxState }) {
   const [isPlace, setPlace] = React.useState(false);
   const [isEmporter, setEmporter] = React.useState(false);
   const [isDelivery, setDelivery] = React.useState(false);
@@ -47,7 +48,7 @@ export function CartTotals({ Mycontext }) {
       arrTotal.push(sum);
       return el;
     });
-    console.log(arrTotal.reduce((curr, next) => curr + next));
+    // console.log(arrTotal.reduce((curr, next) => curr + next));
     if (arrTotal.length > 0)
       return arrTotal.reduce((curr, next) => curr + next);
   };
@@ -57,7 +58,7 @@ export function CartTotals({ Mycontext }) {
       (isPlace && "sur place") ||
       (isEmporter && "emporter") ||
       (isDelivery && "livraison");
-    console.log(GetDamandeType);
+    // console.log(GetDamandeType);
   }, [isPlace, isEmporter, isDelivery, Mycontext, GetTotalPrice]);
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
@@ -102,7 +103,7 @@ export function CartTotals({ Mycontext }) {
           <ApplyCoupon />
         </div>
         <br />
-        <BuySuccess />
+        <BuySuccess setcheckBoxState={setcheckBoxState}/>
       </div>
     </div>
   );
