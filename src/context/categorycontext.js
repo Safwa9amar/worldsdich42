@@ -8,7 +8,7 @@ const CategoryContextProvider = (props) => {
   );
 
   async function getCaegories() {
-    const data = await fetch("https://myworlddwich.herokuapp.com/api").then(
+    const data = await fetch("http://astrobdaboy.pythonanywhere.com//api").then(
       (res) => res.json()
     );
     // console.log(data)
