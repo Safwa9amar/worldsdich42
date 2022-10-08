@@ -13,7 +13,7 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
   const [codeStatus, setcodeStatus] = useState();
 
   const [Displaylogger, setDisplaylogger] = useState(true);
-  const url = "http://127.0.0.1:5000/registre";
+  const url = "https://myworlddwich.herokuapp.com/registre";
   const handleSubmit = async (e) => {
     e.preventDefault();
     let form = e.target;
