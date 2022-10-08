@@ -1,6 +1,6 @@
 import React from "react";
 
-function TableRow({ avatar, header, category, price, amount }) {
+function TableRow({ avatar, header, category, price, amount, isMenu }) {
   return (
     <tr>
       <td>
@@ -20,14 +20,13 @@ function TableRow({ avatar, header, category, price, amount }) {
       <td>{amount || 1}</td>
       <th>
         <button className="btn btn-ghost btn-xs">
-          € {price * amount || price || 0}
+          € {price * amount || price || 0} {isMenu ? `+ ${amount} x 2€` : ""}
         </button>
       </th>
     </tr>
   );
 }
 export function CheckOutTable({ showTable, data }) {
-
   return (
     <div
       className={`
@@ -66,6 +65,7 @@ export function CheckOutTable({ showTable, data }) {
                   header={el.name}
                   category={el.Categorie}
                   price={el.prix}
+                  isMenu={el.isMenu}
                   totalPrice={13}
                   amount={el.amount}
                 />

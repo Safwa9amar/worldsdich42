@@ -38,7 +38,6 @@ export default function Catergory({
   const reciveOptionclick = (id) => {
     setchangedRecipID(id);
     const data = categoryItems.filter((el) => el.id === id);
-    console.log(data[0].recipes);
     setRecipeData(data[0].recipes);
   };
 
@@ -47,7 +46,7 @@ export default function Catergory({
   const [OptionChanges, setOptionChanges] = React.useState([]);
   const handleOptionChanges = (parent_id, child_id, checked) => {
     let storage = JSON.parse(localStorage.getItem("optionsData") || "[]");
-    let changes = `p_id${parent_id}-ch_id${child_id}}`;
+    let changes = `p_id${parent_id}-ch_id${child_id}`;
     let index = storage.indexOf(changes);
     if (checked) {
       storage.push(changes);
@@ -78,12 +77,14 @@ export default function Catergory({
       hybrid_id: `${obj.id}_${categoryId}`,
       category: categoryId,
       amount: 1,
-      optionData: optionData.filter((el) => el !== undefined).sort(),
+      optionData: optionData
+        .filter((el) => el !== undefined && el !== false)
+        .sort(),
     }; //`id_${obj.id}-isMenu_${obj.isMenu}-options_${optionData}}`;
 
     storage.push(changes);
 
-    // localStorage.setItem("cartData", JSON.stringify(storage));
+    localStorage.removeItem("optionsData");
     setCartData(storage);
 
     handleStorageEdit(storage);
@@ -106,6 +107,7 @@ export default function Catergory({
         show={ShowModel}
         toggleModal={toggleModal}
         handleOptionChanges={handleOptionChanges}
+        categoryId={categoryId}
       />
 
       <div className="grid grid-cols-2 xl:grid-cols-3 gap-2 md:gap-4 mt-20  my-14 place-items-center ">

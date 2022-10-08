@@ -3,7 +3,6 @@ import React, { createContext, useState, useEffect } from "react";
 export const Checkout = createContext();
 
 const CheckoutDataContextProvider = (props) => {
-
   const [Cartdata, setCartdata] = useState(
     retriveCartData(JSON.parse(props.Storage), props.CategoryContext) || []
   );
@@ -36,6 +35,7 @@ const retriveCartData = (_storageData, categoriesContext) => {
           if (el.id === __el.id) {
             Object.assign(__el, { isMenu: el.isMenu });
             Object.assign(__el, { amount: el.amount });
+            Object.assign(__el, { unSelectedRecipes: el.optionData });
             arr.push(__el);
           }
         });

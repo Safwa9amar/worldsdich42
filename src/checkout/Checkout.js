@@ -29,6 +29,7 @@ const Checkout = ({setcheckBoxState, checkBoxState}) => {
                   localStorage.removeItem("refrech");
                   localStorage.removeItem("jwt");
                   setiLoged(false);
+                  setcheckBoxState(false)
                 }}
               >
                 <BiLogOut className="mx-2" />

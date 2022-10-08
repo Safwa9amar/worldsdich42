@@ -1,61 +1,59 @@
 import order_confirmed from "../../icons/order_confirmed.svg";
 import React, { useState, useEffect, useContext } from "react";
-
 import io from "socket.io-client";
 import { Checkout } from "../../context/checkoutContext";
 import { Credentiel } from "../../context/CredentielContext";
 
-// const socket = io("http://localhost:5000/");
+const socket = io("http://localhost:5000/");
 
-export default function BuySuccess({ setcheckBoxState }) {
+export default function BuySuccess({ setcheckBoxState, DamandeType }) {
+  // const userCredentiel = useContext(Credentiel);
   const { isloged } = useContext(Credentiel);
   const [finaLoggin, setfinaLoggin] = useState(false);
-  // const CheckoutData = useContext(Checkout);
-  //  const [isConnected, setIsConnected] = useState(socket.connected);
-  //  const [lastPong, setLastPong] = useState(null);
-
+  const CheckoutData = useContext(Checkout);
+  const command_type = DamandeType.filter((el) => el.bol === true)[0];
   const handleClick = () => {
-    console.log(isloged);
     if (isloged) {
       setfinaLoggin(true);
     } else {
       setcheckBoxState(true);
     }
-    //    socket.emit("message", JSON.stringify(CheckoutData));
+    socket.emit("order", {
+      user: localStorage.getItem("refrech"),
+      order: CheckoutData,
+      DamandeType: command_type,
+    });
   };
-  // useEffect(() => {
-  //   socket.on("message", (data) => {
-  //     console.log(data)
-  //   });
-  //   socket.on("connect", () => {
-  //     setIsConnected(true);
-  //   });
 
-  //   socket.on("disconnect", () => {
-  //     setIsConnected(false);
-  //   });
+  useEffect(() => {
+    if (isloged) {
+      setfinaLoggin(true);
+    }
+  }, [isloged]);
 
-  //   socket.on("pong", () => {
-  //     setLastPong(new Date().toISOString());
-  //   });
+  useEffect(() => {
+    socket.on("message", (data) => {
+      console.log(data);
+    });
 
-  //   return () => {
-  //     socket.off("connect");
-  //     socket.off("disconnect");
-  //     socket.off("pong");
-  //   };
-  // }, []);
+    return () => {
+      socket.off("message");
+    };
+  }, []);
 
   return (
     <>
-      <label
-        onClick={handleClick}
-        htmlFor="my-modal-3"
-        className="btn rounded-md bg-[#5B6D5B] w-1/2 mb-4 modal-button text-white"
-      >
-        Commandez maintenant
-      </label>
+      {command_type?.bol && (
+        <label
+          onClick={handleClick}
+          htmlFor="my-modal-3"
+          className="btn rounded-md bg-[#5B6D5B] w-1/2 mb-4 modal-button text-white"
+        >
+          Commandez maintenant
+        </label>
+      )}
       <input
+        readOnly
         type="checkbox"
         checked={finaLoggin}
         id="my-modal-3"

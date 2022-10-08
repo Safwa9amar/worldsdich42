@@ -111,6 +111,7 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
         <>
           <input
             checked={checkBoxState}
+            readOnly
             type="checkbox"
             id="loginModel"
             className="modal-toggle"
@@ -334,7 +335,7 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
                   ) : codeStatus === 300 ? (
                     <>
                       Email ou téléphone est déjà utilisé,
-                      <a href="#" className="text-primary">
+                      <a href="#mymodel" className="text-primary">
                         Cliquez ici pour Récupérer votre mot de passe
                       </a>
                     </>

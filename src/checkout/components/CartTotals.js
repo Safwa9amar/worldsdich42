@@ -7,7 +7,6 @@ function ApplyCoupon() {
       <div className="input-group">
         <input
           type="text"
-          id="applycopon"
           placeholder="code coupon"
           className="input input-bordered w-full lg:w-auto"
         />
@@ -24,7 +23,11 @@ export function CartTotals({ Mycontext, setcheckBoxState }) {
   const [isEmporter, setEmporter] = React.useState(false);
   const [isDelivery, setDelivery] = React.useState(false);
   const [GetTotalPrice, setGetTotalPrice] = React.useState(0);
-
+  let DamandeType = [
+    { id: 1, type: "sur place", bol: isPlace },
+    { id: 2, type: "à Emporter", bol: isEmporter },
+    { id: 3, type: "En livraison", bol: isDelivery },
+  ];
   const SurPlace = () => {
     setPlace(true);
     setEmporter(false);
@@ -43,22 +46,18 @@ export function CartTotals({ Mycontext, setcheckBoxState }) {
   const getTotalPrice = (data) => {
     let arrTotal = [0];
     data.map((el) => {
-      let [price, amount, isMenu] = [el.prix, el.amount, el.isMenu];
-      let sum = isMenu ? price + 2 * amount : price * amount;
+      let [price, amount, isMenu] = [Math.abs(el.prix), el.amount, el.isMenu];
+      let sum = isMenu ? (price + 2) * amount : price * amount;
       arrTotal.push(sum);
       return el;
     });
+    // console.log(arrTotal);
     // console.log(arrTotal.reduce((curr, next) => curr + next));
     if (arrTotal.length > 0)
       return arrTotal.reduce((curr, next) => curr + next);
   };
   React.useEffect(() => {
     setGetTotalPrice(getTotalPrice(Mycontext));
-    const GetDamandeType =
-      (isPlace && "sur place") ||
-      (isEmporter && "emporter") ||
-      (isDelivery && "livraison");
-    // console.log(GetDamandeType);
   }, [isPlace, isEmporter, isDelivery, Mycontext, GetTotalPrice]);
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
@@ -89,21 +88,24 @@ export function CartTotals({ Mycontext, setcheckBoxState }) {
       <div className="flex flex-col gap-4  w-full px-5">
         <div className="flex gap-2 justify-between">
           <p className="text-info">CART TOTALS</p>
-          <p>€{GetTotalPrice || 0}</p>
+          <p>€{GetTotalPrice}</p>
         </div>
         <div className="flex gap-2 justify-between">
           <p className="text-info">Subtotal</p>
-          <p>€{GetTotalPrice || 0}</p>
+          <p>€{GetTotalPrice}</p>
         </div>
         <div className="flex gap-2 justify-between">
           <p className="text-info">Total</p>
-          <p>€{GetTotalPrice || 0}</p>
+          <p>€{GetTotalPrice}</p>
         </div>
         <div className="block lg:hidden">
           <ApplyCoupon />
         </div>
         <br />
-        <BuySuccess setcheckBoxState={setcheckBoxState}/>
+        <BuySuccess
+          setcheckBoxState={setcheckBoxState}
+          DamandeType={DamandeType}
+        />
       </div>
     </div>
   );

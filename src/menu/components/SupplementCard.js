@@ -15,7 +15,7 @@ const responsive = {
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
-    items: 2,
+    items: 3,
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
@@ -23,7 +23,7 @@ const responsive = {
   },
 };
 
-const CarouselItems = ({ src, name, status, id }) => {
+const CarouselItems = ({ src, name, status, id, parent }) => {
   const [count, setCount] = React.useState(0);
   const increment = () => {
     setCount(count + 1);
@@ -37,7 +37,7 @@ const CarouselItems = ({ src, name, status, id }) => {
   }, [count]);
 
   return (
-    <div className="indicator carousel-item flex flex-col  items-center">
+    <div className="indicator carousel-item flex flex-col  items-center capitalize">
       <span
         className={`indicator-item badge ${
           status ? "badge-primary" : "badge-neutral"
@@ -53,6 +53,9 @@ const CarouselItems = ({ src, name, status, id }) => {
         alt={name}
       />
       <p>{name}</p>
+      <p className={`badge badge-xs ${status ? "badge-primary" : ""} my-2`}>
+        {parent}
+      </p>
       {status && (
         <div className="flex justify-between gap-4 items-center bg-[#5B6D5B] px-4 rounded-md">
           <div onClick={decrement} className="cursor-pointer font-bold">
@@ -68,48 +71,48 @@ const CarouselItems = ({ src, name, status, id }) => {
   );
 };
 
-const MyCarousel = ({ data }) => {
+const MyCarousel = ({ data, name, id, categoryId }) => {
   return (
     <>
-      <div className="text-xl font-medium">
-        <h2 className="">Fromage</h2>
-      </div>
-      <Carousel
-        containerClass="w-full h-[200px]"
-        showDots={true}
-        responsive={responsive}
-      >
-        {data.map((el) => (
-          <CarouselItems
-            key={el.id}
-            id={el.id}
-            src={el.img}
-            name={el.text}
-            status={el.isAvaliable}
-          />
-        ))}
+      {/* <div className="text-xl font-medium">
+        <h2 className="">{name}</h2>
+      </div> */}
+      <Carousel containerClass="w-full h-fit py-2" responsive={responsive}>
+        {data.map((el) => {
+          let arr = el.categoryIDs.match(/\d+/g).map((cat) => parseInt(cat));
+          if (!arr.includes(categoryId)) return false;
+          return (
+            <CarouselItems
+              key={`${el.id}_${id}`}
+              id={el.id}
+              src={el.img_url}
+              name={el.name}
+              status={el.isAvailable}
+              parent={name}
+            />
+          );
+        })}
       </Carousel>
     </>
   );
 };
 
 export function SupplementCard(props) {
-  const { el_id, show, toggleModal, recipeData, handleOptionChanges } = props;
+  const {
+    el_id,
+    show,
+    toggleModal,
+    recipeData,
+    handleOptionChanges,
+    categoryId,
+  } = props;
   const [showModal, setShowModal] = React.useState(false);
   const [recipe_data, setRecipe_data] = React.useState([]);
-
-  const [RecipArr, setRecipArr] = React.useState([]);
   const supplementData = React.useContext(Supplement);
 
-  let arr = [];
+  const [RecipArr, setRecipArr] = React.useState([]);
 
-  // const handleRecipChange = (id, check) => {
-  //   if (!check) {
-  //     arr.push(id);
-  //   } else {
-  //     arr.splice(arr.indexOf(id), 1);
-  //   }
-  // };
+  let arr = [];
 
   React.useEffect(() => {
     setShowModal(show);
@@ -120,6 +123,7 @@ export function SupplementCard(props) {
 
   const handleclick = () => {
     handleClos();
+    console.log(arr);
     arr.length > 0 && setRecipArr(arr);
   };
   const handleClos = () => {
@@ -127,6 +131,7 @@ export function SupplementCard(props) {
     toggleModal();
     setRecipArr([]);
   };
+
   return (
     <>
       <input
@@ -166,7 +171,17 @@ export function SupplementCard(props) {
               })}
 
             <div className="w-full">
-              <MyCarousel data={supplementData} />
+              {supplementData.map((el) => {
+                return (
+                  <MyCarousel
+                    data={el.item_supplement}
+                    id={el.id}
+                    key={`${el.name}_${el.id}`}
+                    name={el.name}
+                    categoryId={categoryId}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
@@ -179,8 +194,15 @@ function CheckedItem({ isChecked, text, id, el_id, handleOptionChanges }) {
   const [checked, setChcked] = React.useState(isChecked);
   const handleChange = () => {
     setChcked(!checked);
+
     handleOptionChanges(el_id, id, checked);
   };
+  React.useEffect(() => {
+    let storage = JSON.parse(localStorage.getItem("optionsData") || "[]");
+    let changes = `p_id${el_id}-ch_id${id}`;
+    let index = storage.indexOf(changes);
+    index !== -1 && setChcked(false);
+  }, [el_id, id]);
 
   return (
     <div className="sm:text-md md:text-xl ">
