@@ -1,12 +1,15 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
+import { SERVER_URI } from "../helpers/UrlProvider";
 
 export const Credentiel = createContext();
 
 const CredentielContextProvider = (props) => {
   const [iLoged, setiLoged] = useState(false);
   const [UserData, setUserData] = useState([]);
+  const REGISTRE_SERVER_URI = useContext(SERVER_URI);
 
-  const url = "https://myworlddwich.herokuapp.com/registre";
+  // const url = "https://myworlddwich.herokuapp.com/registre";
+  const url = `${REGISTRE_SERVER_URI}/registre`;
 
   useEffect(() => {
     try {
@@ -25,7 +28,7 @@ const CredentielContextProvider = (props) => {
         })
         .then((data) => setUserData(data));
     } catch (error) {}
-  }, [iLoged]);
+  }, [iLoged, url]);
 
   return (
     <Credentiel.Provider

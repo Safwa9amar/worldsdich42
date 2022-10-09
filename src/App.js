@@ -15,6 +15,7 @@ import SupplementContextProvider from "./context/suplementContext";
 import CartDataContextProvider from "./context/LocalStorageContext";
 import CheckoutDataContextProvider from "./context/checkoutContext";
 import CredentielModel from "./helpers/CredentielModel";
+
 function App() {
   const CategoryContext = React.useContext(Categories);
   const [isVisisble, setCartVisisble] = React.useState(false);

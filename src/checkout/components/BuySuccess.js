@@ -3,10 +3,12 @@ import React, { useState, useEffect, useContext } from "react";
 import io from "socket.io-client";
 import { Checkout } from "../../context/checkoutContext";
 import { Credentiel } from "../../context/CredentielContext";
-
-const socket = io("https://myworlddwich.herokuapp.com/");
+import { SERVER_URI } from "../../helpers/UrlProvider";
 
 export default function BuySuccess({ setcheckBoxState, DamandeType }) {
+  const BUY_SERVER_URI = useContext(SERVER_URI);
+  const socket = io(BUY_SERVER_URI);
+
   // const userCredentiel = useContext(Credentiel);
   const { isloged } = useContext(Credentiel);
   const [finaLoggin, setfinaLoggin] = useState(false);
@@ -32,14 +34,18 @@ export default function BuySuccess({ setcheckBoxState, DamandeType }) {
   }, [isloged]);
 
   useEffect(() => {
-    socket.on("message", (data) => {
-      console.log(data);
-    });
+    try {
+      socket.on("message", (data) => {
+        console.log(data);
+      });
+    } catch (error) {
+      console.log("buy socket ", error);
+    }
 
     return () => {
       socket.off("message");
     };
-  }, []);
+  }, [socket]);
 
   return (
     <>

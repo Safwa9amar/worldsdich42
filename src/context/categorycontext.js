@@ -1,25 +1,25 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
+
+import { SERVER_URI } from "../helpers/UrlProvider";
 
 export const Categories = createContext();
 
 const CategoryContextProvider = (props) => {
+  const API_SERVER_URI = useContext(SERVER_URI);
   const [categories, setCategories] = useState(
     JSON.parse(sessionStorage.getItem("categories")) || []
   );
 
   async function getCaegories() {
-    const data = await fetch("https://myworlddwich.herokuapp.com").then((res) =>
-      res.json()
-    );
-    // console.log(data)
+    const data = await fetch(`${API_SERVER_URI}/api`).then((res) => res.json());
+    console.log(data);
     sessionStorage.setItem("categories", JSON.stringify(data));
     setCategories(data);
   }
 
   useEffect(() => {
     getCaegories();
-    // console.log("updated");
-  }, []);
+  });
   return (
     <Categories.Provider value={categories}>
       {props.children}
