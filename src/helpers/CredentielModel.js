@@ -13,7 +13,7 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
   const [codeStatus, setcodeStatus] = useState();
 
   const [Displaylogger, setDisplaylogger] = useState(true);
-  const url = "http://astrobdaboy.pythonanywhere.com/registre";
+  const url = "https://myworlddwich.herokuapp.com//registre";
   const handleSubmit = async (e) => {
     e.preventDefault();
     let form = e.target;

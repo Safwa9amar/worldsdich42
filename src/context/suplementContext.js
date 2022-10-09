@@ -4,7 +4,7 @@ import io from "socket.io-client";
 export const Supplement = createContext();
 
 const SupplementContextProvider = (props) => {
-  const socket = io("http://astrobdaboy.pythonanywhere.com/");
+  const socket = io("https://myworlddwich.herokuapp.com");
   const [supp, setSupp] = useState([]);
 
   useEffect(() => {

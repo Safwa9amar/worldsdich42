@@ -4,7 +4,7 @@ import io from "socket.io-client";
 import { Checkout } from "../../context/checkoutContext";
 import { Credentiel } from "../../context/CredentielContext";
 
-const socket = io("http://localhost:5000/");
+const socket = io("https://myworlddwich.herokuapp.com/");
 
 export default function BuySuccess({ setcheckBoxState, DamandeType }) {
   // const userCredentiel = useContext(Credentiel);

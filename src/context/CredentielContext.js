@@ -6,7 +6,7 @@ const CredentielContextProvider = (props) => {
   const [iLoged, setiLoged] = useState(false);
   const [UserData, setUserData] = useState([]);
 
-  const url = "http://astrobdaboy.pythonanywhere.com/registre";
+  const url = "https://myworlddwich.herokuapp.com/registre";
 
   useEffect(() => {
     try {

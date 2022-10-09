@@ -8,8 +8,8 @@ const CategoryContextProvider = (props) => {
   );
 
   async function getCaegories() {
-    const data = await fetch("http://astrobdaboy.pythonanywhere.com//api").then(
-      (res) => res.json()
+    const data = await fetch("https://myworlddwich.herokuapp.com").then((res) =>
+      res.json()
     );
     // console.log(data)
     sessionStorage.setItem("categories", JSON.stringify(data));
