@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import CartIcon from "../icons/cart.svg";
 import menuHumberger from "../icons/menuHumberger.svg";
 import { useState, useContext } from "react";
-import nav_bg from "../images/nav_bg.jpg";
+// import nav_bg from "../images/nav_bg.jpg";
 import CloseIco from "../icons/close.svg";
 import { useLocation } from "react-router-dom";
 import React from "react";
