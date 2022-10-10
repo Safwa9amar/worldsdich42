@@ -165,7 +165,7 @@ export const CatergoryItem = (props) => {
             />
           </svg>
           <figure>
-            <img className="w-[250px] lg:w-[350px]  " src={img} alt="classic" />
+            <img className="w-[250px] lg:w-[350px]  " src={img} alt={header} />
           </figure>
           <figure>
             <img

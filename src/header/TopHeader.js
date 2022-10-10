@@ -132,10 +132,10 @@ export const SmTopHeader = ({
           <img className="w-full h-full" src={menuHumberger} alt="menu" />
         </button>
         <div
-          style={{
-            backgroundImage: `url(${nav_bg})`,
-            backgroundSize: "100% 100%",
-          }}
+          // style={{
+          //   backgroundImage: `url(${nav_bg})`,
+          //   backgroundSize: "100% 100%",
+          // }}
           className={`bg-red-400 fixed z-[9999999] ${
             isVisible ? "" : "opacity-0 pointer-events-none"
           } transition-opacity duration-500 h-screen w-screen z-50 top-0 left-0

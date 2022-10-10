@@ -1,7 +1,9 @@
 import React, { useState, useContext } from "react";
 import { Credentiel } from "../context/CredentielContext";
+import { SERVER_URI } from "../helpers/UrlProvider";
 
 export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
+  const CREDENTIEL_SERVER_URI = useContext(SERVER_URI);
   const { isloged, setiLoged, setUserData } = useContext(Credentiel);
   const [login, setlogin] = useState(true);
   const [regsitre, setRegsitre] = useState(false);
@@ -13,7 +15,8 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
   const [codeStatus, setcodeStatus] = useState();
 
   const [Displaylogger, setDisplaylogger] = useState(true);
-  const url = "http://localhost:5000/registre";
+  const [RememberMe, setRememberMe] = useState(false);
+  const url = CREDENTIEL_SERVER_URI + "/registre";
   const handleSubmit = async (e) => {
     e.preventDefault();
     let form = e.target;
@@ -43,9 +46,14 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
           return response.json();
         })
         .then((data) => {
-          isloged && setUserData(data.userData);
-          localStorage.setItem("jwt", data.access_token);
-          localStorage.setItem("refrech", data.refresh_token);
+          if (isloged) setUserData(data.userData);
+          if (RememberMe) {
+            localStorage.setItem("jwt", data.access_token);
+            localStorage.setItem("refrech", data.refresh_token);
+          } else {
+            sessionStorage.setItem("jwt", data.access_token);
+            sessionStorage.setItem("refrech", data.refresh_token);
+          }
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -80,9 +88,13 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
           })
           .then((data) => {
             isloged && setUserData(data.userData);
-
-            localStorage.setItem("jwt", data.access_token);
-            localStorage.setItem("refrech", data.refresh_token);
+            if (RememberMe) {
+              localStorage.setItem("jwt", data.access_token);
+              localStorage.setItem("refrech", data.refresh_token);
+            } else {
+              sessionStorage.setItem("jwt", data.access_token);
+              sessionStorage.setItem("refrech", data.refresh_token);
+            }
           })
           .catch((error) => {
             console.error("Error:", error);
@@ -173,7 +185,16 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
                       </label>
                     </div>
                   </div>
-
+                  <div className="form-control">
+                    <label className="label cursor-pointer flex gap-4 justify-start">
+                      <input
+                        onChange={() => setRememberMe(true)}
+                        type="checkbox"
+                        className="checkbox"
+                      />
+                      <span className="label-text">Rester se connecter</span>
+                    </label>
+                  </div>
                   <button className="btn btn-outline btn-success my-4">
                     submit
                   </button>
@@ -296,12 +317,22 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
                       Le mot de passe ne correspond pas, veuillez vérifier
                     </p>
                   </div>
-
+                  <div className="form-control">
+                    <label className="label cursor-pointer flex gap-4 justify-start">
+                      <input
+                        onChange={() => setRememberMe(true)}
+                        type="checkbox"
+                        className="checkbox"
+                      />
+                      <span className="label-text">Rester se connecter</span>
+                    </label>
+                  </div>
                   <button className="btn btn-outline btn-success my-4">
                     Créer
                   </button>
                 </form>
               )}
+
               {/* sign up */}
               {Displaylogger && (
                 <p

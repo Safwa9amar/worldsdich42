@@ -16,7 +16,7 @@ import CartDataContextProvider from "./context/LocalStorageContext";
 import CheckoutDataContextProvider from "./context/checkoutContext";
 import CredentielModel from "./helpers/CredentielModel";
 
-function App() {
+function App({ URI }) {
   const CategoryContext = React.useContext(Categories);
   const [isVisisble, setCartVisisble] = React.useState(false);
   const [isAdedTocart, setIsAdedTocart] = React.useState(false);

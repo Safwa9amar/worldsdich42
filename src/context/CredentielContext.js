@@ -3,13 +3,13 @@ import { SERVER_URI } from "../helpers/UrlProvider";
 
 export const Credentiel = createContext();
 
-const CredentielContextProvider = (props) => {
+const CredentielContextProvider = ({ URI, children }) => {
+  const CC_SERVER_URI = useContext(SERVER_URI);
+
   const [iLoged, setiLoged] = useState(false);
   const [UserData, setUserData] = useState([]);
-  const REGISTRE_SERVER_URI = useContext(SERVER_URI);
 
-  // const url = "https://myworlddwich.herokuapp.com/registre";
-  const url = `${REGISTRE_SERVER_URI}/registre`;
+  const url = `${CC_SERVER_URI}/registre`;
 
   useEffect(() => {
     try {
@@ -19,16 +19,20 @@ const CredentielContextProvider = (props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ refrech: localStorage.getItem("refrech") }),
+        body: JSON.stringify({
+          refrech:
+            localStorage.getItem("refrech") ||
+            sessionStorage.getItem("refrech"),
+        }),
       })
         .then((response) => {
           let code = response.status;
-          code === 200 && setiLoged(true);
+          if (code === 200) setiLoged(true);
           return response.json();
         })
         .then((data) => setUserData(data));
     } catch (error) {}
-  }, [iLoged, url]);
+  }, [url]);
 
   return (
     <Credentiel.Provider
@@ -39,7 +43,7 @@ const CredentielContextProvider = (props) => {
         setUserData: setUserData,
       }}
     >
-      {props.children}
+      {children}
     </Credentiel.Provider>
   );
 };
