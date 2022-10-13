@@ -7,6 +7,7 @@ import { Categories } from "../../context/categorycontext";
 import { Cartstorage } from "../../context/LocalStorageContext";
 
 const filterCategoryItems = (arr, id) => {
+  console.log(arr.filter((el) => el.id === id));
   return arr.filter((el) => el.id === id)[0]["list"];
 };
 
@@ -80,10 +81,11 @@ export default function Catergory({
       optionData: optionData
         .filter((el) => el !== undefined && el !== false)
         .sort(),
+      suppData: JSON.parse(localStorage.getItem(`foodSupp_${obj.id}`)),
     }; //`id_${obj.id}-isMenu_${obj.isMenu}-options_${optionData}}`;
 
     storage.push(changes);
-
+    localStorage.removeItem(`foodSupp_${obj.id}`);
     localStorage.removeItem("optionsData");
     setCartData(storage);
 
@@ -95,6 +97,8 @@ export default function Catergory({
   React.useEffect(() => {
     let newData = filterCategoryItems(categories, categoryId);
     setcategoryItems(newData);
+    // localStorage.getItem("suppData") || localStorage.setItem("suppData", "[]");
+
     // console.log(cartData);
   }, [categories, categoryId, OptionChanges, cartData, isAdedTocart]);
 
@@ -112,7 +116,6 @@ export default function Catergory({
 
       <div className="grid grid-cols-2 xl:grid-cols-3 gap-2 md:gap-4 mt-20  my-14 place-items-center ">
         {categoryItems.map((el) => {
-          console.log(el);
           const {
             id,
             name,
@@ -122,6 +125,7 @@ export default function Catergory({
             rating,
             recipes,
             img_url,
+            with_menu,
           } = el;
           return (
             <CatergoryItem
@@ -140,6 +144,7 @@ export default function Catergory({
               isDeletetedFromTocart={isDeletetedFromTocart}
               hybrid_idFroDeletion={hybrid_idFroDeletion}
               getCartBoudaries={getCartBoudaries}
+              with_menu={with_menu}
             />
           );
         })}

@@ -23,23 +23,82 @@ const responsive = {
   },
 };
 
-const CarouselItems = ({ src, name, status, id, parent }) => {
+const CarouselItems = ({
+  src,
+  name,
+  status,
+  id,
+  parent,
+  parent_id,
+  supp,
+  Prix,
+  suppData,
+  setsuppData,
+}) => {
   const [count, setCount] = React.useState(0);
+  React.useEffect(() => {
+    setCount(() => {
+      let storage = JSON.parse(localStorage.getItem(`foodSupp_${parent_id}`));
+      try {
+        return storage.filter((el) => el.item_id === id)[0].count;
+      } catch (error) {
+        return 0;
+      }
+    });
+  }, [parent_id, id]);
+  let obj = React.useMemo(() => {
+    let obj = {
+      // food_id: parent_id,
+      item_id: id,
+      // name: name,
+      supp_id: supp,
+      // supp_name: parent,
+      count: count,
+      price: Prix * count,
+    };
+    return obj;
+  }, [count, id, supp, Prix]);
+
   const increment = () => {
-    setCount(count + 1);
+    count >= 0 && count <= 2 && setCount(count + 1);
   };
   const decrement = () => {
-    setCount(count - 1);
+    count > 0 && setCount(count - 1);
   };
 
   React.useEffect(() => {
-    // console.log(id);
-  }, [count]);
+    if (
+      parent_id !== undefined &&
+      !localStorage.getItem(`foodSupp_${parent_id}`)
+    ) {
+      localStorage.setItem(`foodSupp_${parent_id}`, "[]");
+    }
+    try {
+      let storage = JSON.parse(localStorage.getItem(`foodSupp_${parent_id}`));
+
+      let arr = storage.map((el) => {
+        if (el.item_id === obj.item_id) {
+          el = obj;
+        }
+        return el;
+      });
+      if (count === 0) {
+        localStorage.setItem(
+          `foodSupp_${parent_id}`,
+          JSON.stringify(arr.filter((el) => el.item_id !== obj.item_id))
+        );
+      }
+      if (count <= 0) return;
+      if (!arr.includes(obj)) arr.push(obj);
+
+      localStorage.setItem(`foodSupp_${parent_id}`, JSON.stringify(arr));
+    } catch (error) {}
+  }, [count, obj, parent_id]);
 
   return (
     <div className="indicator carousel-item flex flex-col  items-center capitalize">
       <span
-        className={`indicator-item badge ${
+        className={`indicator-item badge badge-xs ${
           status ? "badge-primary" : "badge-neutral"
         }`}
       >
@@ -52,7 +111,10 @@ const CarouselItems = ({ src, name, status, id, parent }) => {
         src={src}
         alt={name}
       />
-      <p>{name}</p>
+      <p>
+        {name}
+        <sup className="font-bold">( +€{Prix} )</sup>
+      </p>
       <p className={`badge badge-xs ${status ? "badge-primary" : ""} my-2`}>
         {parent}
       </p>
@@ -71,7 +133,16 @@ const CarouselItems = ({ src, name, status, id, parent }) => {
   );
 };
 
-const MyCarousel = ({ data, name, id, categoryId }) => {
+const MyCarousel = ({
+  data,
+  name,
+  id,
+  parent_id,
+  categoryId,
+  supp,
+  suppData,
+  setsuppData,
+}) => {
   return (
     <>
       {/* <div className="text-xl font-medium">
@@ -89,6 +160,11 @@ const MyCarousel = ({ data, name, id, categoryId }) => {
               name={el.name}
               status={el.isAvailable}
               parent={name}
+              parent_id={parent_id}
+              supp={supp}
+              Prix={el.Prix}
+              suppData={suppData}
+              setsuppData={setsuppData}
             />
           );
         })}
@@ -111,15 +187,17 @@ export function SupplementCard(props) {
   const supplementData = React.useContext(Supplement);
 
   const [RecipArr, setRecipArr] = React.useState([]);
+  const [suppData, setsuppData] = React.useState([]);
 
   let arr = [];
 
   React.useEffect(() => {
+    console.log(suppData);
     setShowModal(show);
     //
     setRecipe_data(recipeData);
     //
-  }, [show, RecipArr, recipeData]);
+  }, [show, RecipArr, recipeData, suppData]);
 
   const handleclick = () => {
     handleClos();
@@ -130,6 +208,7 @@ export function SupplementCard(props) {
     setShowModal(!showModal);
     toggleModal();
     setRecipArr([]);
+    // localStorage.setItem("suppData", "[]");
   };
 
   return (
@@ -155,6 +234,7 @@ export function SupplementCard(props) {
           </div>
           <h3 className="font-bold text-lg">Choisissez ce que vous voulez!</h3>
           <div className="py-4">
+            {/* <div className="grid grid-cols-2 p-4 place-content-center"> */}
             {showModal &&
               recipe_data.map((el) => {
                 const { id, isCheked, name } = el;
@@ -169,16 +249,20 @@ export function SupplementCard(props) {
                   />
                 );
               })}
-
+            {/* </div> */}
             <div className="w-full">
               {supplementData.map((el) => {
                 return (
                   <MyCarousel
                     data={el.item_supplement}
                     id={el.id}
+                    supp={el.id}
+                    parent_id={el_id}
                     key={`${el.name}_${el.id}`}
                     name={el.name}
                     categoryId={categoryId}
+                    suppData={suppData}
+                    setsuppData={setsuppData}
                   />
                 );
               })}

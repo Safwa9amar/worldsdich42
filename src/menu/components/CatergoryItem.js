@@ -25,7 +25,7 @@ function MenuBtn({
     <button
       onClick={handleClick}
       className={`
-      btn btn-sm 
+      btn btn-xs 
       ${active ? "" : "btn-outline"}
       ${
         ToggleCart || isStoredInLocalStorage
@@ -55,6 +55,7 @@ export const CatergoryItem = (props) => {
     isDeletetedFromTocart,
     hybrid_idFroDeletion,
     getCartBoudaries,
+    with_menu,
   } = props;
   //
   const [Price] = React.useState(price);
@@ -137,9 +138,8 @@ export const CatergoryItem = (props) => {
       bg-[#28231B] 
       text-white 
       md:visible
-      flex flex-col md:flex-row
-      
-      items-stretch gap-4 
+      flex flex-col md:flex-row justify-between 
+      items-stretch 
       md:rounded-lg  md:p-4 w-full
       
       `}
@@ -150,7 +150,7 @@ export const CatergoryItem = (props) => {
             backgroundSize: "100% 100%",
             backgroundRepeat: "no-repeat",
           }}
-          className=" rounded-t-[2.5rem] relative overflow-hidden bg-[#9E9995] md:rounded-md flex items-center justify-center  "
+          className="  rounded-t-[2.5rem] relative overflow-hidden bg-[#9E9995] md:rounded-md flex items-center justify-center  "
         >
           <svg
             onClick={() => setMobileToggleView(!mobileToggleView)}
@@ -165,7 +165,7 @@ export const CatergoryItem = (props) => {
             />
           </svg>
           <figure>
-            <img className="w-[250px] lg:w-[350px]  " src={img} alt={header} />
+            <img className="w-[200px] lg:w-[150px]  " src={img} alt={header} />
           </figure>
           <figure>
             <img
@@ -177,8 +177,8 @@ export const CatergoryItem = (props) => {
             />
           </figure>
         </div>
-        <div className=" flex flex-col  items-start gap-4 p-4 md:p-0">
-          <div className="flex justify-between  w-full">
+        <div className=" flex flex-col  items-start justify-between w-4/6 gap-4 p-4 md:p-0 md:mx-4">
+          <div className="flex justify-between  w-full gap-6">
             <p className="text-xl flex items-center gap-2  ">
               {header}
               <sup className="text-[#5B6D5B]">({category})</sup>
@@ -225,7 +225,9 @@ export const CatergoryItem = (props) => {
               <p className="text-[#5B6D5B] font-bold text-xl">
                 €{Math.abs(Price) + Math.abs(MenuPrice)}
               </p>
-              <MenuBtn updatePrice={updatePrice} ToggleCart={ToggleCart} />
+              {with_menu && (
+                <MenuBtn updatePrice={updatePrice} ToggleCart={ToggleCart} />
+              )}
             </div>
             <button
               onClick={handleOptionclick}

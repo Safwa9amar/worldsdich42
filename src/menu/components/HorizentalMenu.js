@@ -32,7 +32,7 @@ const MenuItem = ({ icon, text, isActive, id }) => {
     <Link
       href="/menu"
       to={`/menu/category?id=${id}`}
-      className={`flex items-center flex-1 gap-2 text-${color} ${
+      className={` flex items-center  flex-1 gap-2 text-${color} ${
         isActive ? "font-bold shadow-md shadow-[#5B6D5B] " : ""
       }`}
     >
@@ -53,7 +53,7 @@ const HorizentalMenu = () => {
     <div className="sticky top-0 z-50 bg-[#1E1E1E]">
       <Carousel
         keyBoardControl={true}
-        containerClass="w-full   md:bg-[#1E1E1E] py-4 md:p-6 md:my-6 border-b-2 border-b-[#5B6D5B]"
+        containerClass="w-full  md:bg-[#1E1E1E] py-4 md:p-6 md:my-6 border-b-2 border-b-[#5B6D5B]"
         responsive={responsive}
       >
         {categories.map((el) => (

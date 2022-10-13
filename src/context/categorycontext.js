@@ -13,16 +13,16 @@ const CategoryContextProvider = ({ children }) => {
   const CATEGORIES_SERVER_URI = useContext(SERVER_URI);
 
   const [categories, setCategories] = useState(
-    JSON.parse(sessionStorage.getItem("categories")) || []
+    JSON.parse(localStorage.getItem("categories")) || []
   );
 
   let getCaegories = useCallback(async () => {
     const data = await fetch(`${CATEGORIES_SERVER_URI}/api`).then((res) =>
       res.json()
     );
-    console.log(data);
-    sessionStorage.setItem("categories", JSON.stringify(data));
     setCategories(data);
+    console.log(data);
+    localStorage.setItem("categories", JSON.stringify(data));
   }, [CATEGORIES_SERVER_URI]);
 
   useEffect(() => {

@@ -46,8 +46,18 @@ export function CartTotals({ Mycontext, setcheckBoxState }) {
   const getTotalPrice = (data) => {
     let arrTotal = [0];
     data.map((el) => {
-      let [price, amount, isMenu] = [Math.abs(el.prix), el.amount, el.isMenu];
-      let sum = isMenu ? (price + 2) * amount : price * amount;
+      let [price, amount, isMenu, supp] = [
+        Math.abs(el.prix),
+        el.amount,
+        el.isMenu,
+        el.supplement !== null
+          ? el.supplement
+              .map((el) => el.price)
+              .reduce((curr, next) => curr + next)
+          : [],
+      ];
+      console.log(supp);
+      let sum = isMenu ? (price + 2 + supp) * amount : (price + supp) * amount;
       arrTotal.push(sum);
       return el;
     });

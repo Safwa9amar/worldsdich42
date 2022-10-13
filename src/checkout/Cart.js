@@ -57,6 +57,19 @@ const CartItem = (props) => {
     });
     return arr[0] || 1;
   });
+  const [supp, setSupp] = React.useState(() => {
+    let arr = [];
+    MyContext.forEach((el) => {
+      if (el.hybrid_id === `${id}_${parent_id}`) arr.push(el.suppData);
+    });
+    try {
+      return (
+        arr[0].map((el) => el.price).reduce((curr, next) => curr + next) || 0
+      );
+    } catch (error) {
+      return 0;
+    }
+  });
 
   const [_price, set_price] = React.useState(price);
   const increment = () => {
@@ -64,6 +77,7 @@ const CartItem = (props) => {
       count <= 9 &&
       setCount(count + 1) &&
       set_price(_price + price);
+
     count <= 9 && handleStorageEdit(addArticleAmount(MyContext, count + 1));
   };
   const decrement = () => {
@@ -96,8 +110,12 @@ const CartItem = (props) => {
         <img className="h-[100px] w-[100px]" src={img} alt={header} />
       </figure>
       <p>{header}</p>
-      <p>
-        €{_price * count} {isMenu ? "+ 2€" : ""}
+      <p className="flex flex-col">
+        <span>
+          ({price}€ x {count}) article
+        </span>
+        <span>{isMenu ? `+ ( 2€ x ${count} ) Menu  ` : ""} </span>
+        <span>{supp ? `+ ( ${supp}€ x ${count} ) Supplément ` : ""}</span>
       </p>
       <div className="cursor-default flex justify-between gap-4 items-center bg-[#5B6D5B] px-4 rounded-md">
         <div onClick={decrement} className=" font-bold">

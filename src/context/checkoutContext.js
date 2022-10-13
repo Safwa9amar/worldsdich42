@@ -36,6 +36,7 @@ const retriveCartData = (_storageData, categoriesContext) => {
             Object.assign(__el, { isMenu: el.isMenu });
             Object.assign(__el, { amount: el.amount });
             Object.assign(__el, { unSelectedRecipes: el.optionData });
+            Object.assign(__el, { supplement: el.suppData });
             arr.push(__el);
           }
         });

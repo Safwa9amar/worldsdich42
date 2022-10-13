@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-function TableRow({ avatar, header, category, price, amount, isMenu }) {
+function TableRow({ avatar, header, category, price, amount, isMenu, supp }) {
+  const [Supp, setSupp] = useState(0);
+
+  useEffect(() => {
+    if (supp !== null) {
+      let totalSupp = supp
+        .map((el) => el.price)
+        .reduce((curr, next) => curr + next);
+      setSupp(totalSupp);
+    }
+  }, [supp]);
   return (
     <tr>
       <td>
@@ -18,11 +28,14 @@ function TableRow({ avatar, header, category, price, amount, isMenu }) {
       </td>
       <td>€ {price}</td>
       <td>{amount || 1}</td>
-      <th>
-        <button className="btn btn-ghost btn-xs">
-          € {price * amount || price || 0} {isMenu ? `+ ${amount} x 2€` : ""}
-        </button>
+      <th className="hidden md:flex flex-col h-[100px]">
+        <span>
+          ({price}€ x {amount}) article
+        </span>
+        <span>{isMenu ? `+ ( 2€ x ${amount} ) Menu  ` : ""} </span>
+        <span>{Supp ? `+ ( ${Supp}€ x ${amount} ) Supplément ` : ""}</span>
       </th>
+      <th>{price * amount + (isMenu ? 2 * amount : 0) + Supp * amount} €</th>
     </tr>
   );
 }
@@ -53,11 +66,13 @@ export function CheckOutTable({ showTable, data }) {
               <th>Produit</th>
               <th>Prix</th>
               <th>Quantité</th>
+              <th className="hidden md:block h-full">L'article</th>
               <th>Total</th>
             </tr>
           </thead>
           <tbody>
             {data.map((el) => {
+              console.log(el);
               return (
                 <TableRow
                   key={`${el.id}_${el.category}`}
@@ -68,6 +83,7 @@ export function CheckOutTable({ showTable, data }) {
                   isMenu={el.isMenu}
                   totalPrice={13}
                   amount={el.amount}
+                  supp={el.supplement}
                 />
               );
             })}

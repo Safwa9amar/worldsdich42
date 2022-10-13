@@ -19,9 +19,6 @@ const SupplementContextProvider = ({ URI, children }) => {
     const data = await fetch(`${SUPP_SERVER_URI}/getSuppdata`).then((res) =>
       res.json()
     );
-    console.log("zeazeze");
-    console.log(data);
-    // sessionStorage.setItem("categories", JSON.stringify(data));
 
     try {
       const { itemSuppData, suppData } = data;
@@ -38,7 +35,6 @@ const SupplementContextProvider = ({ URI, children }) => {
         el.item_supplement = new_item_supplement;
         return el;
       });
-      console.log(finalData);
 
       setSupp(finalData);
     } catch (error) {
