@@ -177,7 +177,7 @@ export const CatergoryItem = (props) => {
             />
           </figure>
         </div>
-        <div className=" flex flex-col  items-start justify-between w-4/6 gap-4 p-4 md:p-0 md:mx-4">
+        <div className=" flex flex-col  items-start justify-between md:w-4/6 gap-4 p-4 md:p-0 md:mx-4">
           <div className="flex justify-between  w-full gap-6">
             <p className="text-xl flex items-center gap-2  ">
               {header}
