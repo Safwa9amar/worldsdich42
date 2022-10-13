@@ -57,7 +57,7 @@ const CartItem = (props) => {
     });
     return arr[0] || 1;
   });
-  const [supp, setSupp] = React.useState(() => {
+  const [supp] = React.useState(() => {
     let arr = [];
     MyContext.forEach((el) => {
       if (el.hybrid_id === `${id}_${parent_id}`) arr.push(el.suppData);
