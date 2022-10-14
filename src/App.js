@@ -96,6 +96,7 @@ function App({ URI }) {
                         isDeletetedFromTocart={isDeletetedFromTocart}
                         hybrid_idFroDeletion={hybrid_idFroDeletion}
                         getCartBoudaries={getCartBoudaries}
+                        setcheckBoxState={setcheckBoxState}
                       />
                     }
                   />

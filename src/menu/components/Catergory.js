@@ -7,7 +7,6 @@ import { Categories } from "../../context/categorycontext";
 import { Cartstorage } from "../../context/LocalStorageContext";
 
 const filterCategoryItems = (arr, id) => {
-  console.log(arr.filter((el) => el.id === id));
   return arr.filter((el) => el.id === id)[0]["list"];
 };
 
@@ -18,6 +17,7 @@ export default function Catergory({
   handleStorageEdit,
   hybrid_idFroDeletion,
   getCartBoudaries,
+  setcheckBoxState,
 }) {
   const [ShowModel, setShowModel] = React.useState(false);
 
@@ -145,6 +145,7 @@ export default function Catergory({
               hybrid_idFroDeletion={hybrid_idFroDeletion}
               getCartBoudaries={getCartBoudaries}
               with_menu={with_menu}
+              setcheckBoxState={setcheckBoxState}
             />
           );
         })}

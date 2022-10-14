@@ -192,7 +192,6 @@ export function SupplementCard(props) {
   let arr = [];
 
   React.useEffect(() => {
-    console.log(suppData);
     setShowModal(show);
     //
     setRecipe_data(recipeData);

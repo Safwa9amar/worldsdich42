@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import ReactStars from "react-rating-stars-component";
 import { BsCartPlusFill } from "react-icons/bs";
 import { BsCartCheckFill } from "react-icons/bs";
@@ -6,6 +6,8 @@ import menuImg from "../../images/Menu.png";
 import product_bg from "../../images/product_bg.jpg";
 import arcticons_manga from "../../icons/arcticons_manga-plus.svg";
 import { Cartstorage } from "../../context/LocalStorageContext";
+import { Credentiel } from "../../context/CredentielContext";
+import { SERVER_URI } from "../../helpers/UrlProvider";
 
 function MenuBtn({
   price = 2,
@@ -46,7 +48,7 @@ export const CatergoryItem = (props) => {
     category,
     category_ID,
     description,
-    rating,
+    setcheckBoxState,
     price,
     toggleModal,
     id,
@@ -66,6 +68,12 @@ export const CatergoryItem = (props) => {
   //
   const [ToggleCart, setToggleCart] = React.useState(false);
 
+  //
+  const { UserData } = useContext(Credentiel);
+  //
+  const RATE_SERVER_URI = useContext(SERVER_URI);
+  //
+  const [MaxRating, setMaxRating] = useState(false);
   //
   const MyCartstorage = React.useContext(Cartstorage);
   useEffect(() => {
@@ -93,10 +101,52 @@ export const CatergoryItem = (props) => {
   };
 
   //
-
+  const ratingChanged = (newRating) => {
+    console.log(newRating);
+    fetch(`${RATE_SERVER_URI}rating`, {
+      mode: "cors", // no-cors, *cors, same-origins
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        user: UserData.id,
+        rating: newRating,
+        food_id: id,
+      }),
+    }).then((res) => {
+      if (res.status === 401) {
+        console.log(res.status);
+        setcheckBoxState(true);
+      }
+    });
+  };
   useEffect(() => {
     hybrid_idFroDeletion === `${id}_${category_ID}` && setToggleCart(false);
-  }, [isDeletetedFromTocart, hybrid_idFroDeletion, id, category_ID]);
+  }, [
+    isDeletetedFromTocart,
+    hybrid_idFroDeletion,
+    id,
+    category_ID,
+    RATE_SERVER_URI,
+  ]);
+  useEffect(() => {
+    fetch(`${RATE_SERVER_URI}/rating?get_rate_data=${id}`, {
+      mode: "cors",
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        let maxRate = data.rating.filter((el) =>
+          Math.max(Object.values(el))
+        )[0];
+        setMaxRating({
+          stars: parseInt(Object.keys(maxRate)[0]),
+          rate: Math.ceil((Object.values(maxRate) / data.tatalRating) * 100),
+          count: Object.values(maxRate),
+        });
+      });
+  }, [RATE_SERVER_URI, id]);
 
   return (
     <>
@@ -107,7 +157,14 @@ export const CatergoryItem = (props) => {
           alt={img}
         />
 
-        <ReactStars value={rating} count={5} size={20} activeColor="#ffd700" />
+        {MaxRating && (
+          <ReactStars
+            value={MaxRating.stars}
+            count={5}
+            size={20}
+            activeColor="#ffd700"
+          />
+        )}
         <h3 className="lg:text-2xl text-md font-bold tracking-widest capitalize">
           {header.toLowerCase()}
         </h3>
@@ -212,13 +269,17 @@ export const CatergoryItem = (props) => {
             ...
           </p>
           <div className="flex text-xl font-bold">
-            <ReactStars
-              value={rating}
-              count={5}
-              size={24}
-              activeColor="#ffd700"
-            />
-            <sup className="text-[#5B6D5B]">( {rating?.count} )</sup>
+            {MaxRating && (
+              <ReactStars
+                // edit={isloged}
+                onChange={ratingChanged}
+                value={MaxRating.stars}
+                count={5}
+                size={24}
+                activeColor="#ffd700"
+              />
+            )}
+            <sup className="text-[#5B6D5B]">( {MaxRating.rate || 0} %)</sup>
           </div>
           <div className="flex justify-between gap-10 w-full">
             <div className="flex items-center gap-2">

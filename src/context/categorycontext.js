@@ -21,7 +21,6 @@ const CategoryContextProvider = ({ children }) => {
       res.json()
     );
     setCategories(data);
-    console.log(data);
     localStorage.setItem("categories", JSON.stringify(data));
   }, [CATEGORIES_SERVER_URI]);
 

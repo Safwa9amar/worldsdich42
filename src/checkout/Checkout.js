@@ -11,7 +11,7 @@ import { CartTotals } from "./components/CartTotals";
 import { Checkout as Mycheckout } from "../context/checkoutContext";
 import { Credentiel } from "../context/CredentielContext";
 
-const Checkout = ({setcheckBoxState, checkBoxState}) => {
+const Checkout = ({ setcheckBoxState, checkBoxState }) => {
   const Mycontext = useContext(Mycheckout);
   const { isloged, setiLoged, UserData } = useContext(Credentiel);
   const [showTable, setshowTable] = React.useState(false);
@@ -29,7 +29,7 @@ const Checkout = ({setcheckBoxState, checkBoxState}) => {
                   localStorage.removeItem("refrech");
                   localStorage.removeItem("jwt");
                   setiLoged(false);
-                  setcheckBoxState(false)
+                  setcheckBoxState(false);
                 }}
               >
                 <BiLogOut className="mx-2" />
