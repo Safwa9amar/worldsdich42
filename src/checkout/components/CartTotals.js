@@ -50,7 +50,7 @@ export function CartTotals({ Mycontext, setcheckBoxState, setStorage }) {
         Math.abs(el.prix),
         el.amount,
         el.isMenu,
-        el.supplement !== null
+        el.supplement !== null && el.supplement.length > 0
           ? el.supplement
               .map((el) => el.price)
               .reduce((curr, next) => curr + next)
