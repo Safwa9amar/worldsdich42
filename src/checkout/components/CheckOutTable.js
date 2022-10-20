@@ -59,56 +59,35 @@ export function CheckOutTable({ showTable, data }) {
       
       `}
     >
-      {data.length > 0 ? (
-        <table className="table w-full">
-          <thead>
-            <tr>
-              <th>Produit</th>
-              <th>Prix</th>
-              <th>Quantité</th>
-              <th className="hidden md:block h-full">L'article</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((el) => {
-              console.log(el);
-              return (
-                <TableRow
-                  key={`${el.id}_${el.category}`}
-                  avatar={el.img_url}
-                  header={el.name}
-                  category={el.Categorie}
-                  price={el.prix}
-                  isMenu={el.isMenu}
-                  totalPrice={13}
-                  amount={el.amount}
-                  supp={el.supplement}
-                />
-              );
-            })}
-          </tbody>
-        </table>
-      ) : (
-        <div className="alert alert-info shadow-lg">
-          <div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              className="stroke-current flex-shrink-0 w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
-            <span>Vous n'avez pas ajouté d'articles</span>
-          </div>
-        </div>
-      )}
+      <table className="table w-full">
+        <thead>
+          <tr>
+            <th>Produit</th>
+            <th>Prix</th>
+            <th>Quantité</th>
+            <th className="hidden md:block h-full">L'article</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((el) => {
+            console.log(el);
+            return (
+              <TableRow
+                key={`${el.id}_${el.category}`}
+                avatar={el.img_url}
+                header={el.name}
+                category={el.Categorie}
+                price={el.prix}
+                isMenu={el.isMenu}
+                totalPrice={13}
+                amount={el.amount}
+                supp={el.supplement}
+              />
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }

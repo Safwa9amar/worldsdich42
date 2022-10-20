@@ -50,11 +50,12 @@ const CredentielContextProvider = ({ URI, children }) => {
         })
         .then((data) => {
           setUserData(data);
+          // console.log(data);
           // getRating(data.id);
         });
     } catch (error) {}
     // getRating();
-  }, [url, iLoged]);
+  }, [url]);
 
   return (
     <Credentiel.Provider

@@ -12,7 +12,7 @@ const responsive = {
   },
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: HorizentalMenuData.length,
+    items: 7,
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
@@ -32,7 +32,7 @@ const MenuItem = ({ icon, text, isActive, id }) => {
     <Link
       href="/menu"
       to={`/menu/category?id=${id}`}
-      className={` flex items-center  flex-1 gap-2 text-${color} ${
+      className={` flex items-center  flex-1 gap-2 mx-6 lg:w-60 text-${color} ${
         isActive ? "font-bold shadow-md shadow-[#5B6D5B] " : ""
       }`}
     >
@@ -41,7 +41,7 @@ const MenuItem = ({ icon, text, isActive, id }) => {
         src={icon}
         alt={text}
       />
-      <p className="text-md md:text-lg capitalize">{text}</p>
+      <p className="text-md md:text-lg capitalize w-full">{text}</p>
     </Link>
   );
 };
@@ -53,8 +53,9 @@ const HorizentalMenu = () => {
     <div className="sticky top-0 z-50 bg-[#1E1E1E]">
       <Carousel
         keyBoardControl={true}
-        containerClass="w-full  md:bg-[#1E1E1E] py-4 md:p-6 md:my-6 border-b-2 border-b-[#5B6D5B]"
+        containerClass="w-full md:bg-[#1E1E1E] py-4 md:p-6 md:my-6 border-b-2 border-b-[#5B6D5B]"
         responsive={responsive}
+        itemClass="w-fit"
       >
         {categories.map((el) => (
           <MenuItem key={el.id} id={el.id} icon={el.icon} text={el.name} />

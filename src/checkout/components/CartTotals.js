@@ -1,24 +1,24 @@
 import React from "react";
 import BuySuccess from "./BuySuccess";
 
-function ApplyCoupon() {
-  return (
-    <div className="form-control ">
-      <div className="input-group">
-        <input
-          type="text"
-          placeholder="code coupon"
-          className="input input-bordered w-full lg:w-auto"
-        />
-        <button className="btn bg-[#5B6D5B] w-1/2 lg:w-auto">
-          APPLIQUER COUPON
-        </button>
-      </div>
-    </div>
-  );
-}
+// function ApplyCoupon() {
+//   return (
+//     <div className="form-control ">
+//       <div className="input-group">
+//         <input
+//           type="text"
+//           placeholder="code coupon"
+//           className="input input-bordered w-full lg:w-auto"
+//         />
+//         <button className="btn bg-[#5B6D5B] w-1/2 lg:w-auto">
+//           APPLIQUER COUPON
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
 
-export function CartTotals({ Mycontext, setcheckBoxState }) {
+export function CartTotals({ Mycontext, setcheckBoxState, setStorage }) {
   const [isPlace, setPlace] = React.useState(false);
   const [isEmporter, setEmporter] = React.useState(false);
   const [isDelivery, setDelivery] = React.useState(false);
@@ -71,11 +71,7 @@ export function CartTotals({ Mycontext, setcheckBoxState }) {
   }, [isPlace, isEmporter, isDelivery, Mycontext, GetTotalPrice]);
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
-      <div className="hidden lg:block w-full">
-        <ApplyCoupon />
-      </div>
-
-      <div className="w-full text-white  text-sm  lg:text-xl flex md:flex-col items-center lg:items-start justify-between  p-4 ">
+      <div className="w-full text-white  text-sm  lg:text-xl flex md:flex-col items-center lg:items-start justify-between  p-4 md:gap-6">
         <ApplyMethode
           isActive={isPlace}
           SetActive={SurPlace}
@@ -108,11 +104,10 @@ export function CartTotals({ Mycontext, setcheckBoxState }) {
           <p className="text-info">Total</p>
           <p>€{GetTotalPrice}</p>
         </div>
-        <div className="block lg:hidden">
-          <ApplyCoupon />
-        </div>
+
         <br />
         <BuySuccess
+          setStorage={setStorage}
           setcheckBoxState={setcheckBoxState}
           DamandeType={DamandeType}
         />

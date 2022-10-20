@@ -3,9 +3,18 @@ import React from "react";
 import botiqueFronImg from "../asstes/botiqueFronImg.jpg";
 import { FiPhoneCall } from "react-icons/fi";
 // import { BiTime } from "react-icons/bi";
+import { motion } from "framer-motion";
+
 const Contact = () => {
   return (
-    <div
+    <motion.div
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: [0.5, 0.7, 0.9, 1],
+        translateY: ["120px", "0px"],
+      }}
       style={{
         backgroundImage: `url(${botiqueFronImg})`,
         backgroundAttachment: "fixed",
@@ -78,7 +87,7 @@ const Contact = () => {
           </div>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

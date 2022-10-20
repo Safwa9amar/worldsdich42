@@ -13,6 +13,7 @@ const CheckoutDataContextProvider = (props) => {
       retriveCartData(JSON.parse(props.Storage), props.CategoryContext) || []
     );
   }, [
+    props.cleanCartData,
     props.isAdedTocart,
     props.isVisisble,
     props.isDeletetedFromTocart,

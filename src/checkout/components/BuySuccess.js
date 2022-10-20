@@ -6,9 +6,13 @@ import { Checkout } from "../../context/checkoutContext";
 import { Credentiel } from "../../context/CredentielContext";
 import { SERVER_URI } from "../../helpers/UrlProvider";
 
-export default function BuySuccess({ setcheckBoxState, DamandeType }) {
+export default function BuySuccess({
+  setcheckBoxState,
+  DamandeType,
+  setStorage,
+}) {
   const BUY_SERVER_URI = useContext(SERVER_URI);
-  // const socket = io(BUY_SERVER_URI);
+  // const socket = io(`${BUY_SERVER_URI}/test`);
 
   // const userCredentiel = useContext(Credentiel);
   const { isloged } = useContext(Credentiel);
@@ -27,11 +31,8 @@ export default function BuySuccess({ setcheckBoxState, DamandeType }) {
       setcheckBoxState(true);
     }
     sendBuyData();
-    // socket.emit("order", {
-    //   user: localStorage.getItem("refrech"),
-    //   order: CheckoutData,
-    //   DamandeType: command_type,
-    // });
+
+    // socket.emit("message", "hello");
   };
 
   const sendBuyData = useCallback(async () => {
@@ -59,11 +60,7 @@ export default function BuySuccess({ setcheckBoxState, DamandeType }) {
     if (data?.isConfirmed === true) {
       setReq(false);
       setOk(true);
-      setTimeout(() => {
-        setOk(false);
-        setfinalResResult(true);
-        setorderNum(data.OrderNum);
-      }, 2000);
+      setorderNum(data.OrderNum);
       // setfinalResResult(false);
     }
     console.table(data);
@@ -98,6 +95,10 @@ export default function BuySuccess({ setcheckBoxState, DamandeType }) {
           <label
             onClick={() => {
               setfinaLoggin(false);
+              setOk(false);
+              setfinalResResult(true);
+              setStorage("[]");
+              localStorage.removeItem("cartData");
             }}
             className="btn btn-sm btn-circle absolute right-2 top-2"
           >
@@ -172,7 +173,10 @@ function AlertSuccess() {
             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
-        <span> Votre commande a été confirmée</span>
+        <span>
+          Votre commande a été envoyée avec succès <br /> Merci d'utiliser notre
+          service 😇
+        </span>
       </div>
     </div>
   );

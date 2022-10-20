@@ -163,6 +163,7 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
                       <label className="input-group input-group-vertical">
                         <span>Email | Username</span>
                         <input
+                          autoFocus
                           required
                           id="username"
                           name="username"
@@ -210,6 +211,7 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
                         <label className="input-group input-group-vertical">
                           <span>Nom</span>
                           <input
+                            autoFocus
                             required
                             name="nom"
                             type="text"

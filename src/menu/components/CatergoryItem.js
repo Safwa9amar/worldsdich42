@@ -150,13 +150,18 @@ export const CatergoryItem = (props) => {
 
   return (
     <>
-      <div className="md:hidden relative bg-[#28231B] w-[170px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg m-6 text-white">
+      <div
+        onClick={() => {
+          setMobileToggleView(true);
+        }}
+        className="md:hidden relative bg-[#28231B] w-[170px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg m-6 text-white"
+      >
         <img
-          className={`w-[100px] h-[150px] translate-y-10 `}
+          className={`w-[100px] h-[150px] translate-y-15`}
           src={img}
           alt={img}
         />
-
+        {/* 
         {MaxRating && (
           <ReactStars
             value={MaxRating.stars}
@@ -164,7 +169,7 @@ export const CatergoryItem = (props) => {
             size={20}
             activeColor="#ffd700"
           />
-        )}
+        )} */}
         <h3 className="lg:text-2xl text-md font-bold tracking-widest capitalize">
           {header.toLowerCase()}
         </h3>
@@ -172,9 +177,6 @@ export const CatergoryItem = (props) => {
           €{Math.abs(Price) + Math.abs(MenuPrice)}
         </p>
         <img
-          onClick={() => {
-            setMobileToggleView(true);
-          }}
           className="absolute bottom-4 right-4"
           src={arcticons_manga}
           alt="plus"

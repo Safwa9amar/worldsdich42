@@ -138,7 +138,7 @@ export const SmTopHeader = ({
           // }}
           className={`bg-red-400 fixed z-[9999999] ${
             isVisible ? "" : "opacity-0 pointer-events-none"
-          } transition-opacity duration-500 h-screen w-screen z-50 top-0 left-0
+          } transition-opacity duration-300 h-screen w-screen z-50 top-0 left-0
           text-4xl text-center overflow-hidden
         `}
         >

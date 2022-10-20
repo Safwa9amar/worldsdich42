@@ -43,7 +43,6 @@ function App({ URI }) {
   const handleDeletetedFromTocart = (hybrid_id) => {
     setIsDeletetedFromTocart(!isDeletetedFromTocart);
     sethybrid_idFroDeletion(hybrid_id);
-    console.log(hybrid_id, "deleted from cart");
   };
   const handleStorageEdit = (data) => {
     setStorage(JSON.stringify(data));
@@ -107,6 +106,7 @@ function App({ URI }) {
                       <Checkout
                         setcheckBoxState={setcheckBoxState}
                         checkBoxState={checkBoxState}
+                        setStorage={setStorage}
                       />
                     }
                   />
