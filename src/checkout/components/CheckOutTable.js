@@ -9,7 +9,7 @@ function TableRow({ avatar, header, category, price, amount, isMenu, supp }) {
         .map((el) => el.price)
         .reduce((curr, next) => curr + next);
       setSupp(totalSupp);
-    } else if (supp.length === 0) {
+    } else {
       setSupp(0);
     }
   }, [supp]);
