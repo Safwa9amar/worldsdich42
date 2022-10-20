@@ -4,12 +4,16 @@ function TableRow({ avatar, header, category, price, amount, isMenu, supp }) {
   const [Supp, setSupp] = useState(0);
 
   useEffect(() => {
-    if (supp !== null && supp.length > 0) {
-      let totalSupp = supp
-        .map((el) => el.price)
-        .reduce((curr, next) => curr + next);
-      setSupp(totalSupp);
-    } else {
+    try {
+      if (supp !== null && supp.length > 0) {
+        let totalSupp = supp
+          .map((el) => el.price)
+          .reduce((curr, next) => curr + next);
+        setSupp(totalSupp);
+      } else {
+        setSupp(0);
+      }
+    } catch (error) {
       setSupp(0);
     }
   }, [supp]);
