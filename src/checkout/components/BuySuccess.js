@@ -27,10 +27,10 @@ export default function BuySuccess({
   const handleClick = () => {
     if (isloged) {
       setfinaLoggin(true);
+      sendBuyData();
     } else {
       setcheckBoxState(true);
     }
-    sendBuyData();
 
     // socket.emit("message", "hello");
   };

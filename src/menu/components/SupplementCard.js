@@ -32,8 +32,9 @@ const CarouselItems = ({
   parent_id,
   supp,
   Prix,
-  suppData,
-  setsuppData,
+  el_max,
+  max,
+  setMax,
 }) => {
   const [count, setCount] = React.useState(0);
   React.useEffect(() => {
@@ -60,10 +61,17 @@ const CarouselItems = ({
   }, [count, id, supp, Prix]);
 
   const increment = () => {
-    count >= 0 && count <= 2 && setCount(count + 1);
+    if (max === el_max) return;
+    if (count >= 0 && count < el_max) {
+      setCount(count + 1);
+      setMax(max + 1);
+    }
   };
   const decrement = () => {
-    count > 0 && setCount(count - 1);
+    if (count > 0) {
+      setCount(count - 1);
+      setMax(max - 1);
+    }
   };
 
   React.useEffect(() => {
@@ -119,14 +127,14 @@ const CarouselItems = ({
         {parent}
       </p>
       {status && (
-        <div className="flex justify-between gap-4 items-center bg-[#5B6D5B] px-4 rounded-md">
-          <div onClick={decrement} className="cursor-pointer font-bold">
+        <div className="flex justify-between gap-4 items-center bg-[#5B6D5B] px-4 rounded-md text-xl">
+          <button onClick={decrement} className="font-bold">
             -
-          </div>
+          </button>
           <div>{count}</div>
-          <div onClick={increment} className="cursor-pointer font-bold">
+          <button onClick={increment} className="font-bold">
             +
-          </div>
+          </button>
         </div>
       )}
     </div>
@@ -143,6 +151,7 @@ const MyCarousel = ({
   suppData,
   setsuppData,
 }) => {
+  const [max, setMax] = React.useState(0);
   return (
     <>
       {/* <div className="text-xl font-medium">
@@ -165,6 +174,9 @@ const MyCarousel = ({
               Prix={el.Prix}
               suppData={suppData}
               setsuppData={setsuppData}
+              el_max={el.max}
+              max={max}
+              setMax={setMax}
             />
           );
         })}
