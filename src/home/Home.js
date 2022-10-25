@@ -77,12 +77,12 @@ const Home = () => {
       >
         <p className=" md:text-2xl">
           Restaurant rapide halal <br />
-          vous propose sandwich tacos au four burger fait maison pizza sur place
-          ou à emporter et en livraison, avec des produits frais.
+          vous propose sandwichs tacos au four burgers fait maison pizza sur
+          place ou à emporter et en livraison, avec des produits frais.
           <br />
           (Escalope, kefta maison...) Une salle climatisée.
           <br />
-          On dispose de 34 places assises. On dispose également de deux chaises
+          On dispose de 24 places assises. On dispose également de deux chaises
           hautes pour bébé.
           <br />
           Une Télé est à votre disposition en attendant votre commande.
@@ -90,7 +90,7 @@ const Home = () => {
       </div>
       <img className="w-1/2 md:w-auto" src={line} alt="line" />
 
-      <div className="flex flex-row justify-evenly items-center w-full text-white">
+      <div className="flex flex-row justify-evenly items-center w-full text-white capitalize">
         <div
           className="text-center flex flex-col items-center"
           ref={ref}

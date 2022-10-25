@@ -14,10 +14,11 @@ export default function Footer() {
       <div className="lg:py-4 flex flex-col lg:flex-row items-center ">
         <div className="flex flex-col items-center lg:w-1/4 text-center text-[#888888] lg:border-r-2 lg:border-b-0 mb-3 border-b-2  border-[#888888] lg:pr-5">
           <img className="w-[150px]" src={Logo} alt="logo" />
-          <p>11 am - 14 am | 18 pm - 2 am</p>
+          <p>Lundi au jeudi et dimanche 11h30-14h 18h30-1h</p>
+          <p>vendredi, samedi 18h30-4h30</p>
           <p>
-            livraison a partir de 15 € sur saint-étienne selon le secteur +
-            frais de livraison 2.5€
+            livraison a partir de 20 € sur saint-étienne selon le secteur +
+            frais de livraison 2.50€
           </p>
         </div>
         <div className="grid grid-row-2 gap-3 text-white lg:p-10 ">
