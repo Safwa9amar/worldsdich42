@@ -48,6 +48,7 @@ const Home = () => {
 
         {/* <h2>PAS SEULEMENT UNE RESTAURANT, MAIS UN STYLE DE VIE</h2> */}
       </div>
+
       <Carousel
         infinite={true}
         autoPlay={true}
@@ -63,6 +64,7 @@ const Home = () => {
           />
         ))}
       </Carousel>
+
       <div
         className="mt-10 mx-10 flex flex-col items-center sm:prose-sm md:prose-md  text-center text-white"
         ref={ref}

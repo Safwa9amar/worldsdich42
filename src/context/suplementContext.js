@@ -43,7 +43,6 @@ const SupplementContextProvider = ({ URI, children }) => {
   }, [SUPP_SERVER_URI]);
   useEffect(() => {
     getCaegories();
-    console.log(supp);
     // socket.on("getSuppdata", (data) => {
     //   console.log("after");
     // return () => {
