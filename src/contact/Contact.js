@@ -1,11 +1,43 @@
-import React from "react";
+import React, { useRef } from "react";
 // import bg_title from "../asstes/bg_title.jpg";
 import botiqueFronImg from "../asstes/botiqueFronImg.jpg";
 import { FiPhoneCall } from "react-icons/fi";
 // import { BiTime } from "react-icons/bi";
 import { motion } from "framer-motion";
 
+import emailjs from "@emailjs/browser";
+import { useState } from "react";
+
 const Contact = () => {
+  const form = useRef();
+  const [isEmailSent, setisEmailSent] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const sendEmail = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    emailjs
+      .sendForm(
+        "service_rxn0bar",
+        "template_0usr1zj",
+        form.current,
+        "fAA9vgLJK9IaNRTSG"
+      )
+      .then(
+        (result) => {
+          if (result.status === 200) {
+            form.current.reset();
+            setisEmailSent(true);
+            setLoading(false);
+          }
+          console.log(result);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  };
+
   return (
     <motion.div
       initial={{
@@ -58,33 +90,57 @@ const Contact = () => {
         ></iframe>
         <br />
         <br />
-        <form className="flex flex-col gap-4 ">
+        <form ref={form} onSubmit={sendEmail} className="flex flex-col gap-4 ">
           <div className="md:flex justify-between  gap-2 ">
             <div className="flex flex-1 flex-col gap-1">
               <label>Nom</label>
               <input
-                className="focus:text-xl rounded-md bg-[#cacaca]  transition-all duration-75 outline-none p-2 "
+                name="sender_name"
+                className="rounded-md bg-[#cacaca]  transition-all duration-75 outline-none p-2 "
                 type="text"
+                required
               />
             </div>
             <div className="flex flex-1 flex-col gap-1">
               <label>Email</label>
               <input
-                className="focus:text-xl rounded-md bg-[#cacaca]  transition-all duration-75 outline-none p-2 "
+                className="rounded-md bg-[#cacaca]  transition-all duration-75 outline-none p-2 "
                 type="text"
+                name="email"
+                required
               />
             </div>
           </div>
           <div className=" flex flex-col gap-1">
             <label>Message</label>
             <textarea
-              className=" focus:text-xl rounded-md min-h-[150px] bg-[#cacaca] transition-all duration-75 outline-none p-2 "
+              required
+              name="message"
+              className=" rounded-md min-h-[150px] bg-[#cacaca] transition-all duration-75 outline-none p-2 "
               minLength="10"
             ></textarea>
           </div>
-          <div className="self-end text-white bg-[#1D2326] p-3 rounded-md">
-            <input type="submit" value="Envoyer" />
-          </div>
+          {isEmailSent && (
+            <div className="text-success">
+              Votre message a été bien envoyé, nous vous répondrons dans les
+              plus brefs délais.
+            </div>
+          )}
+          <button
+            type="submit"
+            className=" self-end flex gap-1 text-white bg-[#1D2326] p-3 rounded-md cursor-pointer"
+          >
+            {isLoading ? (
+              <>
+                <p className="animate-spin h-5 w-5 mr-3 rounded-full border-b-2 border-white"></p>
+                Processing...
+              </>
+            ) : (
+              "Envoyer"
+            )}
+          </button>
+
+          {/* <input className=" self-end text-white bg-[#1D2326] p-3 rounded-md cursor-pointer" type="submit" value="Envoyer" /> */}
         </form>
       </div>
     </motion.div>

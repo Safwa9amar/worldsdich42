@@ -30,8 +30,8 @@ const MenuItem = ({ icon, text, isActive, id }) => {
 
   return (
     <Link
-      href="/menu"
-      to={`/menu/category?id=${id}`}
+      href="/store/menu"
+      to={`/store/menu/category?id=${id}`}
       className={` flex items-center  flex-1 gap-2 mx-6 lg:w-60 text-${color} ${
         isActive ? "font-bold shadow-md shadow-[#5B6D5B] " : ""
       }`}

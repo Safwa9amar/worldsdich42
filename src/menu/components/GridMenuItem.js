@@ -16,7 +16,7 @@ export default function MenuItem({ itemName, itemImg, itemId, handleHide }) {
   return (
     <Link
       onClick={handleclick}
-      to={`/menu/category?id=${itemId}`}
+      to={`/store/menu/category?id=${itemId}`}
       onMouseEnter={AnimatEnenter}
       onMouseLeave={AnimatEnLeave}
       className="text-center bg-[#28231B] w-[150px] lg:w-[250px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg m-4 text-white"

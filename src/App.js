@@ -84,10 +84,11 @@ function App({ URI }) {
                   handleStorageEdit={handleStorageEdit}
                 />
                 <Routes>
-                  <Route exact path="/" element={<Home />} />
+                  <Route exact path="/store/*" element={<Home />} />
+                  <Route exact path="/store/" element={<Home />} />
                   <Route
                     exact
-                    path="/menu/category"
+                    path="/store/menu/category"
                     element={
                       <Catergory
                         handleStorageEdit={handleStorageEdit}
@@ -101,7 +102,7 @@ function App({ URI }) {
                   />
                   <Route
                     exact
-                    path="/checkout"
+                    path="/store/checkout"
                     element={
                       <Checkout
                         setcheckBoxState={setcheckBoxState}
@@ -110,8 +111,8 @@ function App({ URI }) {
                       />
                     }
                   />
-                  <Route exact path="/menu" element={<Menu />} />
-                  <Route exact path="/contact" element={<Contact />} />
+                  <Route exact path="/store/menu" element={<Menu />} />
+                  <Route exact path="/store/contact" element={<Contact />} />
                 </Routes>
               </ScrollToTop>
               <Footer />

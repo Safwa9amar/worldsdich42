@@ -17,7 +17,7 @@ const CategoryContextProvider = ({ children }) => {
   );
 
   let getCaegories = useCallback(async () => {
-    const data = await fetch(`${CATEGORIES_SERVER_URI}/api`).then((res) =>
+    const data = await fetch(`${CATEGORIES_SERVER_URI}api`).then((res) =>
       res.json()
     );
     setCategories(data);

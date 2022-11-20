@@ -159,7 +159,7 @@ const Home = () => {
       </div>
       <Link
         className="bg-[#5B6D5B] w-fit py-4 px-8 my-4 text-white rounded-md"
-        to="/menu"
+        to="/store/menu"
       >
         VOIRE LE MENU
       </Link>

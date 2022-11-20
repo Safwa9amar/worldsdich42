@@ -37,11 +37,11 @@ export default function Footer() {
               </p>
             </a>
             <a
-              href="mailto:worlddwich42@gmail.com"
+              href="mailto:support@worlds-dwich42.com"
               className="flex  items-center gap-2 lg:text-lg"
             >
               <AiOutlineMail className="w-[30px] h-[30px]" />
-              <p> worlddwich42@gmail.com</p>
+              <p> support@worlds-dwich42.com</p>
             </a>
             <a
               href="tel:+04 87 66 92 67"

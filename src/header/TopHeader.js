@@ -25,9 +25,9 @@ export const NavigationsLinks = ({ setisVisible }) => {
       <li onClick={handleClick}>
         <Link
           className={`no-underline ${
-            location.pathname === "/" ? activeClass : ""
+            location.pathname === "/store/" ? activeClass : ""
           }`}
-          to="/"
+          to="/store/"
         >
           Accueil
         </Link>
@@ -35,9 +35,9 @@ export const NavigationsLinks = ({ setisVisible }) => {
       <li onClick={handleClick}>
         <Link
           className={`no-underline ${
-            location.pathname.startsWith("/menu") ? activeClass : ""
+            location.pathname.startsWith("/store/menu") ? activeClass : ""
           }`}
-          to="menu"
+          to="store/menu"
         >
           Menu
         </Link>
@@ -45,9 +45,9 @@ export const NavigationsLinks = ({ setisVisible }) => {
       <li onClick={handleClick}>
         <Link
           className={`no-underline ${
-            location.pathname.startsWith("/contact") ? activeClass : ""
+            location.pathname.startsWith("/store/contact") ? activeClass : ""
           }`}
-          to="contact"
+          to="store/contact"
         >
           Contact
         </Link>
