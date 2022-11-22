@@ -103,7 +103,7 @@ export const CatergoryItem = (props) => {
   //
   const ratingChanged = (newRating) => {
     console.log(newRating);
-    fetch(`${RATE_SERVER_URI}rating`, {
+    fetch(`${RATE_SERVER_URI}/rating`, {
       mode: "cors", // no-cors, *cors, same-origins
       method: "POST",
       headers: {
@@ -140,11 +140,12 @@ export const CatergoryItem = (props) => {
         let maxRate = data.rating.filter((el) =>
           Math.max(Object.values(el))
         )[0];
-        setMaxRating({
+        maxRate && setMaxRating({
           stars: parseInt(Object.keys(maxRate)[0]),
           rate: Math.ceil((Object.values(maxRate) / data.tatalRating) * 100),
           count: Object.values(maxRate),
         });
+
       });
   }, [RATE_SERVER_URI, id]);
 
@@ -238,7 +239,7 @@ export const CatergoryItem = (props) => {
         </div>
         <div className=" flex flex-col  items-start justify-between md:w-4/6 gap-4 p-4 md:p-0 md:mx-4">
           <div className="flex justify-between  w-full gap-6">
-            <p className="text-xl flex items-center gap-2  ">
+            <p className="text-xl flex items-center gap-2 ">
               {header}
               <sup className="text-[#5B6D5B]">({category})</sup>
             </p>
@@ -263,24 +264,26 @@ export const CatergoryItem = (props) => {
             </button>
           </div>
 
-          <p className="text-[#888888] text-lg">
-            {description
-              .map((el) => el.name + ", ")
-              .toString()
-              .slice(0, 100)}
-            ...
-          </p>
+          {description && (
+            <p className="text-[#888888] text-lg">
+              {description
+                .map((el) => el.name + ", ")
+                .toString()
+                .slice(0, 100)}
+              ...
+            </p>
+          )}
           <div className="flex text-xl font-bold">
-            {MaxRating && (
+            {(
               <ReactStars
                 // edit={isloged}
                 onChange={ratingChanged}
-                value={MaxRating.stars}
+                value={MaxRating.stars || 5}
                 count={5}
                 size={24}
                 activeColor="#ffd700"
               />
-            )}
+            ) }
             <sup className="text-[#5B6D5B]">( {MaxRating.rate || 0} %)</sup>
           </div>
           <div className="flex justify-between gap-10 w-full">

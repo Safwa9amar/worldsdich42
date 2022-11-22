@@ -158,7 +158,7 @@ function OrderStatus({ UserData }) {
   };
   useEffect(() => {
     if (startCheck) {
-      fetch(`${url}checkOrderStatus/${UserData.id}`)
+      fetch(`${url}/checkOrderStatus/${UserData.id}`)
         .then((res) => res.json())
         .then((data) => {
           console.log(data);

@@ -36,7 +36,7 @@ export default function BuySuccess({
   };
 
   const sendBuyData = useCallback(async () => {
-    let data = await fetch(BUY_SERVER_URI + "get_client_order", {
+    let data = await fetch(BUY_SERVER_URI + "/get_client_order", {
       mode: "cors",
       method: "POST",
       headers: {

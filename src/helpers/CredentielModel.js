@@ -67,7 +67,6 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
         register_form.forEach((value, key) => (object[key] = value));
         await fetch(url, {
           mode: "cors", // no-cors, *cors, same-origin
-
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -75,6 +74,8 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
           body: JSON.stringify(object),
         })
           .then((response) => {
+          console.log(response)
+
             let code = response.status;
             setcodeStatus(code);
             setDisplaylogger(true);
