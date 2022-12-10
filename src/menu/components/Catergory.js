@@ -126,6 +126,7 @@ export default function Catergory({
             recipes,
             img_url,
             with_menu,
+            etat
           } = el;
           return (
             <CatergoryItem
@@ -146,6 +147,7 @@ export default function Catergory({
               getCartBoudaries={getCartBoudaries}
               with_menu={with_menu}
               setcheckBoxState={setcheckBoxState}
+              etat={etat}
             />
           );
         })}

@@ -27,6 +27,12 @@ const CategoryContextProvider = ({ children }) => {
   useEffect(() => {
     getCaegories();
   }, [getCaegories]);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    getCaegories();
+  });
+
+  
   return (
     <Categories.Provider value={categories}>{children}</Categories.Provider>
   );

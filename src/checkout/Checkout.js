@@ -157,7 +157,9 @@ function OrderStatus({ UserData }) {
     }).then((res) => console.log(res));
   };
   useEffect(() => {
-    if (startCheck) {
+    // if (startCheck) {
+      setTimeout(() => {
+        
       fetch(`${url}/checkOrderStatus/${UserData.id}`)
         .then((res) => res.json())
         .then((data) => {
@@ -174,7 +176,9 @@ function OrderStatus({ UserData }) {
             }, 1000);
           }
         });
-    }
+      }, 2000);
+
+    // }
   }, [startCheck, url, UserData, orderStatus]);
 
   return (

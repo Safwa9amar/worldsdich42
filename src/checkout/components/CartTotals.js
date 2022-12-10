@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import BuySuccess from "./BuySuccess";
-
+import { SERVER_URI } from "../../helpers/UrlProvider";
 // function ApplyCoupon() {
 //   return (
 //     <div className="form-control ">
@@ -19,10 +19,12 @@ import BuySuccess from "./BuySuccess";
 // }
 
 export function CartTotals({ Mycontext, setcheckBoxState, setStorage }) {
+  const CammndUri = `${useContext(SERVER_URI)}/CommandType`;
   const [isPlace, setPlace] = React.useState(false);
   const [isEmporter, setEmporter] = React.useState(false);
   const [isDelivery, setDelivery] = React.useState(false);
   const [GetTotalPrice, setGetTotalPrice] = React.useState(0);
+  const [CammndType, setCammndType] = useState([]);
   let DamandeType = [
     { id: 1, type: "sur place", bol: isPlace },
     { id: 2, type: "à Emporter", bol: isEmporter },
@@ -69,27 +71,52 @@ export function CartTotals({ Mycontext, setcheckBoxState, setStorage }) {
   React.useEffect(() => {
     setGetTotalPrice(getTotalPrice(Mycontext));
   }, [isPlace, isEmporter, isDelivery, Mycontext, GetTotalPrice]);
+
+  useEffect(() => {
+    fetch(CammndUri, {
+      method: "GET",
+      cors: "same-origin",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setCammndType(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
       <div className="w-full text-white  text-sm  lg:text-xl flex md:flex-col items-center lg:items-start justify-between  p-4 md:gap-6">
-        <ApplyMethode
-          isActive={isPlace}
-          SetActive={SurPlace}
-          type="place"
-          text={"Sur Place"}
-        />
-        <ApplyMethode
-          isActive={isEmporter}
-          SetActive={emporter}
-          type="emporter"
-          text={"à Emporter"}
-        />
-        <ApplyMethode
-          isActive={isDelivery}
-          SetActive={delivery}
-          type="livraison"
-          text={"En livraison"}
-        />
+        {CammndType.map((el) => {
+          if (el.id === 1 && el.isCheked) {
+            return (
+              <ApplyMethode
+                isActive={isPlace}
+                SetActive={SurPlace}
+                type="place"
+                text={"Sur Place"}
+              />
+            );
+          } else if (el.id === 2 && el.isCheked) {
+            return (
+              <ApplyMethode
+                isActive={isEmporter}
+                SetActive={emporter}
+                type="emporter"
+                text={"à Emporter"}
+              />
+            );
+          } else if (el.id === 3 && el.isCheked) {
+            return (
+              <ApplyMethode
+                isActive={isDelivery}
+                SetActive={delivery}
+                type="livraison"
+                text={"En livraison"}
+              />
+            );
+          }
+        })}
       </div>
       <div className="flex flex-col gap-4  w-full px-5">
         <div className="flex gap-2 justify-between">

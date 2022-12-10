@@ -58,6 +58,7 @@ export const CatergoryItem = (props) => {
     hybrid_idFroDeletion,
     getCartBoudaries,
     with_menu,
+    etat,
   } = props;
   //
   const [Price] = React.useState(price);
@@ -140,12 +141,12 @@ export const CatergoryItem = (props) => {
         let maxRate = data.rating.filter((el) =>
           Math.max(Object.values(el))
         )[0];
-        maxRate && setMaxRating({
-          stars: parseInt(Object.keys(maxRate)[0]),
-          rate: Math.ceil((Object.values(maxRate) / data.tatalRating) * 100),
-          count: Object.values(maxRate),
-        });
-
+        maxRate &&
+          setMaxRating({
+            stars: parseInt(Object.keys(maxRate)[0]),
+            rate: Math.ceil((Object.values(maxRate) / data.tatalRating) * 100),
+            count: Object.values(maxRate),
+          });
       });
   }, [RATE_SERVER_URI, id]);
 
@@ -195,7 +196,9 @@ export const CatergoryItem = (props) => {
       transition-all duration-300 
       overflow-hidden 
       md:static 
-      bg-[#28231B] 
+      ${
+        etat ? 'bg-[#28231B]' : 'bg-[#1b1812]'
+      } 
       text-white 
       md:visible
       flex flex-col md:flex-row justify-between 
@@ -244,8 +247,10 @@ export const CatergoryItem = (props) => {
               <sup className="text-[#5B6D5B]">({category})</sup>
             </p>
 
-            <BsCartCheckFill
-              className={`
+            {etat && (
+              <>
+                <BsCartCheckFill
+                  className={`
                 w-[30px] h-[30px]
                 transition-all duration-300
                 ${
@@ -254,14 +259,16 @@ export const CatergoryItem = (props) => {
                     : "scale-1 visible fill-warning"
                 }
                 `}
-            />
+                />
 
-            <button
-              onClick={addToCart}
-              className={`${ToggleCart ? "hidden" : ""} cursor-pointer`}
-            >
-              <BsCartPlusFill className={`w-[30px] h-[30px]`} />
-            </button>
+                <button
+                  onClick={addToCart}
+                  className={`${ToggleCart ? "hidden" : ""} cursor-pointer`}
+                >
+                  <BsCartPlusFill className={`w-[30px] h-[30px]`} />
+                </button>
+              </>
+            )}
           </div>
 
           {description && (
@@ -274,7 +281,7 @@ export const CatergoryItem = (props) => {
             </p>
           )}
           <div className="flex text-xl font-bold">
-            {(
+            {
               <ReactStars
                 // edit={isloged}
                 onChange={ratingChanged}
@@ -283,7 +290,7 @@ export const CatergoryItem = (props) => {
                 size={24}
                 activeColor="#ffd700"
               />
-            ) }
+            }
             <sup className="text-[#5B6D5B]">( {MaxRating.rate || 0} %)</sup>
           </div>
           <div className="flex justify-between gap-10 w-full">
@@ -291,29 +298,38 @@ export const CatergoryItem = (props) => {
               <p className="text-[#5B6D5B] font-bold text-xl">
                 €{Math.abs(Price) + Math.abs(MenuPrice)}
               </p>
-              {with_menu && (
+              {with_menu && etat && (
                 <MenuBtn updatePrice={updatePrice} ToggleCart={ToggleCart} />
               )}
             </div>
-            <button
-              onClick={handleOptionclick}
-              className={`${
-                ToggleCart ? "pointer-events-none text-gray-600" : ""
-              } flex justify-end items-center  cursor-pointer hover:text-[#5B6D5B] `}
-            >
-              <p>OPTIONS</p>
-              <svg
-                className="w-[50px] h-[25px]"
-                viewBox="0 0 46 50"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            {etat && (
+              <button
+                onClick={handleOptionclick}
+                className={`${
+                  ToggleCart ? "pointer-events-none text-gray-600" : ""
+                } flex justify-end items-center  cursor-pointer hover:text-[#5B6D5B] `}
               >
-                <path
-                  d="M16.3875 5.2085L13.4167 8.43766L28.6542 25.0002L13.4167 41.5627L16.3875 44.7918L34.5 25.0002L16.3875 5.2085Z"
-                  fill="#5B6D5B"
-                />
-              </svg>
-            </button>
+                <p>OPTIONS</p>
+                <svg
+                  className="w-[50px] h-[25px]"
+                  viewBox="0 0 46 50"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16.3875 5.2085L13.4167 8.43766L28.6542 25.0002L13.4167 41.5627L16.3875 44.7918L34.5 25.0002L16.3875 5.2085Z"
+                    fill="#5B6D5B"
+                  />
+                </svg>
+              </button>
+            )}
+            {
+              !etat && (
+                <p className="text-[#5B6D5B] font-bold text-xl">
+                  Indisponible
+                </p>
+              )
+            }
           </div>
         </div>
       </div>
