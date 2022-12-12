@@ -3,11 +3,12 @@ import ReactStars from "react-rating-stars-component";
 import { BsCartPlusFill } from "react-icons/bs";
 import { BsCartCheckFill } from "react-icons/bs";
 import menuImg from "../../images/Menu.png";
-import product_bg from "../../images/product_bg.jpg";
+// import product_bg from "../../images/product_bg.jpg";
 import arcticons_manga from "../../icons/arcticons_manga-plus.svg";
 import { Cartstorage } from "../../context/LocalStorageContext";
 import { Credentiel } from "../../context/CredentielContext";
 import { SERVER_URI } from "../../helpers/UrlProvider";
+import Boisson from "./Boisson";
 
 function MenuBtn({
   price = 2,
@@ -196,9 +197,7 @@ export const CatergoryItem = (props) => {
       transition-all duration-300 
       overflow-hidden 
       md:static 
-      ${
-        etat ? 'bg-[#28231B]' : 'bg-[#1b1812]'
-      } 
+      ${etat ? "bg-[#28231B]" : "bg-[#1b1812]"} 
       text-white 
       md:visible
       flex flex-col md:flex-row justify-between 
@@ -208,11 +207,11 @@ export const CatergoryItem = (props) => {
       `}
       >
         <div
-          style={{
-            backgroundImage: `url(${product_bg})`,
-            backgroundSize: "100% 100%",
-            backgroundRepeat: "no-repeat",
-          }}
+          // style={{
+          //   backgroundImage: `url(${product_bg})`,
+          //   backgroundSize: "100% 100%",
+          //   backgroundRepeat: "no-repeat",
+          // }}
           className="  rounded-t-[2.5rem] relative overflow-hidden bg-[#9E9995] md:rounded-md flex items-center justify-center  "
         >
           <svg
@@ -240,6 +239,7 @@ export const CatergoryItem = (props) => {
             />
           </figure>
         </div>
+        
         <div className=" flex flex-col  items-start justify-between md:w-4/6 gap-4 p-4 md:p-0 md:mx-4">
           <div className="flex justify-between  w-full gap-6">
             <p className="text-xl flex items-center gap-2 ">
@@ -323,16 +323,13 @@ export const CatergoryItem = (props) => {
                 </svg>
               </button>
             )}
-            {
-              !etat && (
-                <p className="text-[#5B6D5B] font-bold text-xl">
-                  Indisponible
-                </p>
-              )
-            }
+            {!etat && (
+              <p className="text-[#5B6D5B] font-bold text-xl">Indisponible</p>
+            )}
           </div>
         </div>
       </div>
+      {MenuPrice ? <Boisson id={id} MenuPrice={MenuPrice} /> : ""}
     </>
   );
 };
