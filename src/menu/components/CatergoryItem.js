@@ -57,7 +57,7 @@ export const CatergoryItem = (props) => {
     handleAddToCart,
     isDeletetedFromTocart,
     hybrid_idFroDeletion,
-    getCartBoudaries,
+    // getCartBoudaries,
     with_menu,
     etat,
   } = props;
@@ -65,6 +65,8 @@ export const CatergoryItem = (props) => {
   const [Price] = React.useState(price);
   //
   const [MenuPrice, setMenuPrice] = React.useState(false);
+  const [SelectedBoisson, setSelectedBoisson] = React.useState(null);
+
   //
   const [mobileToggleView, setMobileToggleView] = React.useState(false);
   //
@@ -87,13 +89,15 @@ export const CatergoryItem = (props) => {
     setMenuPrice(menuPrice);
   }
   //
+  
   const addToCart = () => {
     handleAddToCart({
       id: id,
       isMenu: MenuPrice ? true : false,
+      SelectedBoisson: SelectedBoisson,
     });
     setToggleCart(true);
-    console.log(getCartBoudaries.getBoundingClientRect());
+
   };
 
   //
@@ -329,7 +333,7 @@ export const CatergoryItem = (props) => {
           </div>
         </div>
       </div>
-      {MenuPrice ? <Boisson id={id} MenuPrice={MenuPrice} /> : ""}
+      {MenuPrice ? <Boisson AddSelectedBoisson={setSelectedBoisson}  MenuPrice={MenuPrice} /> : ""}
     </>
   );
 };

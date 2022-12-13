@@ -35,6 +35,7 @@ const retriveCartData = (_storageData, categoriesContext) => {
         _el.list.forEach((__el) => {
           if (el.id === __el.id) {
             Object.assign(__el, { isMenu: el.isMenu });
+            el.isMenu && Object.assign(__el, { SelectedBoisson: el.SelectedBoisson });
             Object.assign(__el, { amount: el.amount });
             Object.assign(__el, { unSelectedRecipes: el.optionData });
             Object.assign(__el, { supplement: el.suppData });

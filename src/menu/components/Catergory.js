@@ -63,6 +63,7 @@ export default function Catergory({
   const [cartData, setCartData] = React.useState([]);
 
   const handleAddToCart = (obj) => {
+    
     let storage = JSON.parse(MyStorage);
     let optionData = OptionChanges.map((el) => {
       let parent = el.split("-")[0].match(/\d+/g).join("");
@@ -74,7 +75,8 @@ export default function Catergory({
     });
     let changes = {
       id: obj.id,
-      isMenu: obj.isMenu,
+      isMenu: SelectedBoisson !== null ? obj.isMenu : false ,
+      SelectedBoisson : obj.SelectedBoisson,
       hybrid_id: `${obj.id}_${categoryId}`,
       category: categoryId,
       amount: 1,

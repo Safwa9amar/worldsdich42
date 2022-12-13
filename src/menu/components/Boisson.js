@@ -1,13 +1,17 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Categories } from "../../context/categorycontext";
 
-export default function Boisson({ id, MenuPrice }) {
-  const Boisson = useContext(Categories)[8];
+export default function Boisson({  MenuPrice,AddSelectedBoisson }) {
+  const BoisoonId = 8;
+  const Boisson = useContext(Categories)[BoisoonId];
   const ref = useRef(null);
+  // state for select item in modal
+
   // state for hide and show modal
   const [SelectionBoisson, setSelectionBoisson] = useState(
     Boisson.list.map((el) => (el = Object.assign(el, { status: false })))
   );
+
   useEffect(() => {
     MenuPrice ? (ref.current.checked = true) : (ref.current.checked = false);
   }, [MenuPrice]);
@@ -15,6 +19,8 @@ export default function Boisson({ id, MenuPrice }) {
   const handleHide = () => {
     ref.current.checked = false;
   };
+  
+
   return (
     <>
       <input ref={ref} type="checkbox" className="modal-toggle" />
@@ -40,6 +46,8 @@ export default function Boisson({ id, MenuPrice }) {
                 available={el.etat}
                 status={el.status}
                 setSelectionBoisson={setSelectionBoisson}
+                AddSelectedBoisson = {AddSelectedBoisson}
+                BoisoonId={BoisoonId}
               />
             ))}
           </div>
@@ -56,8 +64,11 @@ const MenuItem = ({
   id,
   status,
   setSelectionBoisson,
+  AddSelectedBoisson,
+  BoisoonId
 }) => {
   const handleSelect = (e) => {
+    AddSelectedBoisson({ id, name, img_url, BoisoonId });
     setSelectionBoisson((prev) => {
       const newSelection = prev.map((el) => {
         if (el.id === id) {
