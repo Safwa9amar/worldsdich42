@@ -158,7 +158,6 @@ function OrderStatus({ UserData }) {
   };
   useEffect(() => {
     // if (startCheck) {
-      setTimeout(() => {
         
       fetch(`${url}/checkOrderStatus/${UserData.id}`)
         .then((res) => res.json())
@@ -171,12 +170,9 @@ function OrderStatus({ UserData }) {
           setOrderStatus(data.status);
           setstartCheck(false);
           if (damndType.id === 3 && orderStatus === 2) {
-            setTimeout(() => {
               window.location.reload();
-            }, 1000);
           }
         });
-      }, 2000);
 
     // }
   }, [startCheck, url, UserData, orderStatus]);

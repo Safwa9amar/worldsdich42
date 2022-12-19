@@ -75,7 +75,7 @@ export default function Catergory({
     });
     let changes = {
       id: obj.id,
-      isMenu: SelectedBoisson !== null ? obj.isMenu : false ,
+      isMenu: obj.SelectedBoisson !== null ? obj.isMenu : false ,
       SelectedBoisson : obj.SelectedBoisson,
       hybrid_id: `${obj.id}_${categoryId}`,
       category: categoryId,

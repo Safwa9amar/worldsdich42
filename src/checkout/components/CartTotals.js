@@ -20,6 +20,9 @@ import { SERVER_URI } from "../../helpers/UrlProvider";
 
 export function CartTotals({ Mycontext, setcheckBoxState, setStorage }) {
   const CammndUri = `${useContext(SERVER_URI)}/CommandType`;
+  const FraisLivraisonUri = `${useContext(SERVER_URI)}/settings/api/faris`;
+  // fraislivraison state
+  const [FraisLivraison, setFraisLivraison] = useState(0);
   const [isPlace, setPlace] = React.useState(false);
   const [isEmporter, setEmporter] = React.useState(false);
   const [isDelivery, setDelivery] = React.useState(false);
@@ -82,7 +85,17 @@ export function CartTotals({ Mycontext, setcheckBoxState, setStorage }) {
         setCammndType(data);
       })
       .catch((err) => console.log(err));
-  }, []);
+      fetch(FraisLivraisonUri, {
+        method: "GET",
+        cors: "no-cors",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setFraisLivraison(data[0]);
+        })
+        .catch((err) => console.log(err));
+   
+  }, [CammndUri, FraisLivraisonUri]);
 
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
@@ -107,15 +120,28 @@ export function CartTotals({ Mycontext, setcheckBoxState, setStorage }) {
               />
             );
           } else if (el.id === 3 && el.isCheked) {
-            return (
-              <ApplyMethode
-                isActive={isDelivery}
-                SetActive={delivery}
-                type="livraison"
-                text={"En livraison"}
-              />
-            );
+            if (GetTotalPrice < 20)
+              return (
+                <div className="md:flex gap-2 hidden  ">
+                  <p className="text-[#5B6D5B] text-sm lg:text-xl">
+                    <span className="text-red-400 text-sm lg:text-xl">
+                      Note:
+                    </span>
+                    le minimum Prix pour la livraison est a partir de 20 €
+                  </p>
+                </div>
+              );
+            if (GetTotalPrice >= 20)
+              return (
+                <ApplyMethode
+                  isActive={isDelivery}
+                  SetActive={delivery}
+                  type="livraison"
+                  text={"En livraison"}
+                />
+              );
           }
+        return "";
         })}
       </div>
       <div className="flex flex-col gap-4  w-full px-5">
@@ -127,9 +153,17 @@ export function CartTotals({ Mycontext, setcheckBoxState, setStorage }) {
           <p className="text-info">Subtotal</p>
           <p>€{GetTotalPrice}</p>
         </div>
+        {isDelivery && (
+          <>
+            <div className="flex gap-2 justify-between">
+              <p className="text-info">Frais de livraison </p>
+              <p>{parseFloat(FraisLivraison?.price)} €</p>
+            </div>
+          </>
+        )}
         <div className="flex gap-2 justify-between">
           <p className="text-info">Total</p>
-          <p>€{GetTotalPrice}</p>
+          <p>€{GetTotalPrice + FraisLivraison?.price}</p>
         </div>
 
         <br />

@@ -105,13 +105,13 @@ const CarouselItems = ({
 
   return (
     <div className="indicator carousel-item flex flex-col  items-center capitalize">
-      <span
+      {/* <span
         className={`indicator-item badge badge-xs ${
           status ? "badge-primary" : "badge-neutral"
         }`}
       >
         {status ? "disponible" : "indisponible"}
-      </span>
+      </span> */}
       <img
         className={`rounded-box w-[100px] h-[100px] ${
           status ? "" : "brightness-50"
@@ -119,16 +119,30 @@ const CarouselItems = ({
         src={src}
         alt={name}
       />
-      <p>
-        {name}
+      <p className="text-xs"> 
+        {
+          name
+        }
         <sup className="font-bold">( +€{Prix} )</sup>
       </p>
-      <p className={`badge badge-xs ${status ? "badge-primary" : ""} my-2`}>
-        {parent}
+      <p className={`flex flex-col h-fit badge badge-xs ${status ? "badge-primary" : ""} my-2 `}>
+        
+            {
+              // crate two span for each word in the parent name
+              parent.split(" ").map((el, i) => {
+                return (
+                  <span key={i} className="text-xs">
+                    {el}
+                  </span>
+                );
+              }
+              )
+            }
+        
       </p>
       {status && (
-        <div className="flex justify-between gap-4 items-center bg-[#5B6D5B] px-4 rounded-md text-xl">
-          <button onClick={decrement} className="font-bold">
+        <div className="flex justify-between gap-2 items-center px-4 rounded-md text-sm bg-secondary">
+          <button onClick={decrement} className="font-bold ">
             -
           </button>
           <div>{count}</div>

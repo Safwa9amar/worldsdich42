@@ -1,12 +1,12 @@
 import React, { useEffect, useContext, useState } from "react";
-import ReactStars from "react-rating-stars-component";
+// import ReactStars from "react-rating-stars-component";
 import { BsCartPlusFill } from "react-icons/bs";
 import { BsCartCheckFill } from "react-icons/bs";
 import menuImg from "../../images/Menu.png";
 // import product_bg from "../../images/product_bg.jpg";
 import arcticons_manga from "../../icons/arcticons_manga-plus.svg";
 import { Cartstorage } from "../../context/LocalStorageContext";
-import { Credentiel } from "../../context/CredentielContext";
+// import { Credentiel } from "../../context/CredentielContext";
 import { SERVER_URI } from "../../helpers/UrlProvider";
 import Boisson from "./Boisson";
 
@@ -16,7 +16,7 @@ function MenuBtn({
   ToggleCart,
   isStoredInLocalStorage,
 }) {
-  const [active, setactive] = React.useState(false);
+  const [active, setactive] = useState(false);
   const handleClick = () => {
     setactive(!active);
   };
@@ -49,7 +49,7 @@ export const CatergoryItem = (props) => {
     category,
     category_ID,
     description,
-    setcheckBoxState,
+    // setcheckBoxState,
     price,
     toggleModal,
     id,
@@ -73,11 +73,11 @@ export const CatergoryItem = (props) => {
   const [ToggleCart, setToggleCart] = React.useState(false);
 
   //
-  const { UserData } = useContext(Credentiel);
+  // const { UserData } = useContext(Credentiel);
   //
   const RATE_SERVER_URI = useContext(SERVER_URI);
   //
-  const [MaxRating, setMaxRating] = useState(false);
+  // const [MaxRating, setMaxRating] = useState(false);
   //
   const MyCartstorage = React.useContext(Cartstorage);
   useEffect(() => {
@@ -93,7 +93,7 @@ export const CatergoryItem = (props) => {
   const addToCart = () => {
     handleAddToCart({
       id: id,
-      isMenu: MenuPrice ? true : false,
+      isMenu: MenuPrice && SelectedBoisson ? true : false,
       SelectedBoisson: SelectedBoisson,
     });
     setToggleCart(true);
@@ -107,26 +107,26 @@ export const CatergoryItem = (props) => {
   };
 
   //
-  const ratingChanged = (newRating) => {
-    console.log(newRating);
-    fetch(`${RATE_SERVER_URI}/rating`, {
-      mode: "cors", // no-cors, *cors, same-origins
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        user: UserData.id,
-        rating: newRating,
-        food_id: id,
-      }),
-    }).then((res) => {
-      if (res.status === 401) {
-        console.log(res.status);
-        setcheckBoxState(true);
-      }
-    });
-  };
+  // const ratingChanged = (newRating) => {
+  //   console.log(newRating);
+  //   fetch(`${RATE_SERVER_URI}/rating`, {
+  //     mode: "cors", // no-cors, *cors, same-origins
+  //     method: "POST",
+  //     headers: {
+  //       "content-type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       user: UserData.id,
+  //       rating: newRating,
+  //       food_id: id,
+  //     }),
+  //   }).then((res) => {
+  //     if (res.status === 401) {
+  //       console.log(res.status);
+  //       setcheckBoxState(true);
+  //     }
+  //   });
+  // };
   useEffect(() => {
     hybrid_idFroDeletion === `${id}_${category_ID}` && setToggleCart(false);
   }, [
@@ -136,24 +136,24 @@ export const CatergoryItem = (props) => {
     category_ID,
     RATE_SERVER_URI,
   ]);
-  useEffect(() => {
-    fetch(`${RATE_SERVER_URI}/rating?get_rate_data=${id}`, {
-      mode: "cors",
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        let maxRate = data.rating.filter((el) =>
-          Math.max(Object.values(el))
-        )[0];
-        maxRate &&
-          setMaxRating({
-            stars: parseInt(Object.keys(maxRate)[0]),
-            rate: Math.ceil((Object.values(maxRate) / data.tatalRating) * 100),
-            count: Object.values(maxRate),
-          });
-      });
-  }, [RATE_SERVER_URI, id]);
+  // useEffect(() => {
+  //   fetch(`${RATE_SERVER_URI}/rating?get_rate_data=${id}`, {
+  //     mode: "cors",
+  //     method: "GET",
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       let maxRate = data.rating.filter((el) =>
+  //         Math.max(Object.values(el))
+  //       )[0];
+  //       maxRate &&
+  //         setMaxRating({
+  //           stars: parseInt(Object.keys(maxRate)[0]),
+  //           rate: Math.ceil((Object.values(maxRate) / data.tatalRating) * 100),
+  //           count: Object.values(maxRate),
+  //         });
+  //     });
+  // }, [RATE_SERVER_URI, id]);
 
   return (
     <>
@@ -164,7 +164,7 @@ export const CatergoryItem = (props) => {
         className="md:hidden relative bg-[#28231B] w-[170px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg m-6 text-white"
       >
         <img
-          className={`w-[100px] h-[150px] translate-y-15`}
+          className={`w-[100px] h-[150px] translate-y-15 object-cover rounded-lg`}
           src={img}
           alt={img}
         />
@@ -231,13 +231,13 @@ export const CatergoryItem = (props) => {
             />
           </svg>
           <figure>
-            <img className="w-[200px] lg:w-[150px]  " src={img} alt={header} />
+            <img className="md:h-[150px] "  src={img} alt={header} />
           </figure>
           <figure>
             <img
               className={`
             md:w-[85px] absolute transition-all duration-100
-            ${MenuPrice ? "bottom-0" : "-bottom-full"} left-0`}
+            ${MenuPrice && SelectedBoisson ? "bottom-0" : "-bottom-full"} left-0`}
               src={menuImg}
               alt="classic"
             />
@@ -275,16 +275,16 @@ export const CatergoryItem = (props) => {
             )}
           </div>
 
-          {description && (
+          {description.length > 1 && (
             <p className="text-[#888888] text-lg">
               {description
                 .map((el) => el.name + ", ")
                 .toString()
-                .slice(0, 100)}
+                .slice(0, 50)}
               ...
             </p>
           )}
-          <div className="flex text-xl font-bold">
+          {/* <div className="flex text-xl font-bold">
             {
               <ReactStars
                 // edit={isloged}
@@ -296,14 +296,14 @@ export const CatergoryItem = (props) => {
               />
             }
             <sup className="text-[#5B6D5B]">( {MaxRating.rate || 0} %)</sup>
-          </div>
+          </div> */}
           <div className="flex justify-between gap-10 w-full">
             <div className="flex items-center gap-2">
               <p className="text-[#5B6D5B] font-bold text-xl">
-                €{Math.abs(Price) + Math.abs(MenuPrice)}
+                €{Math.abs(Price) + Math.abs(SelectedBoisson ? MenuPrice : 0)}
               </p>
-              {with_menu && etat && (
-                <MenuBtn updatePrice={updatePrice} ToggleCart={ToggleCart} />
+              {with_menu && etat &&  (
+                category_ID !== 10 ? <MenuBtn  updatePrice={updatePrice} ToggleCart={ToggleCart} /> : ''
               )}
             </div>
             {etat && (

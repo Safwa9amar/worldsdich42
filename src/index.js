@@ -13,8 +13,8 @@ const App = lazy(() => import('./App'));
 const SuspenseFallback = () => {
   return (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 " role="status">
-      <span className="text-3xl">Loading...</span>
-    </div>
+    <span className="text-3xl text-white">Loading...</span>
+  </div>
   );
 };
 

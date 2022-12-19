@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Categories } from "../../context/categorycontext";
 
-export default function Boisson({  MenuPrice,AddSelectedBoisson }) {
+export default function Boisson({ MenuPrice, AddSelectedBoisson }) {
   const BoisoonId = 8;
   const Boisson = useContext(Categories)[BoisoonId];
   const ref = useRef(null);
@@ -19,7 +19,6 @@ export default function Boisson({  MenuPrice,AddSelectedBoisson }) {
   const handleHide = () => {
     ref.current.checked = false;
   };
-  
 
   return (
     <>
@@ -37,19 +36,21 @@ export default function Boisson({  MenuPrice,AddSelectedBoisson }) {
           </div>
 
           <div className="py-4 grid grid-cols-2 md:grid-cols-3 ">
-            {SelectionBoisson.map((el) => (
-              <MenuItem
-                key={el.id}
-                id={el.id}
-                img_url={el.img_url}
-                name={el.name}
-                available={el.etat}
-                status={el.status}
-                setSelectionBoisson={setSelectionBoisson}
-                AddSelectedBoisson = {AddSelectedBoisson}
-                BoisoonId={BoisoonId}
-              />
-            ))}
+            {SelectionBoisson.filter((el) => el.with_menu !== false).map(
+              (el) => (
+                <MenuItem
+                  key={el.id}
+                  id={el.id}
+                  img_url={el.img_url}
+                  name={el.name}
+                  available={el.etat}
+                  status={el.status}
+                  setSelectionBoisson={setSelectionBoisson}
+                  AddSelectedBoisson={AddSelectedBoisson}
+                  BoisoonId={BoisoonId}
+                />
+              )
+            )}
           </div>
         </div>
       </div>
@@ -65,7 +66,7 @@ const MenuItem = ({
   status,
   setSelectionBoisson,
   AddSelectedBoisson,
-  BoisoonId
+  BoisoonId,
 }) => {
   const handleSelect = (e) => {
     AddSelectedBoisson({ id, name, img_url, BoisoonId });
