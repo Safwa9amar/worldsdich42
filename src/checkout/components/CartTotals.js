@@ -18,9 +18,16 @@ import { SERVER_URI } from "../../helpers/UrlProvider";
 //   );
 // }
 
-export function CartTotals({ Mycontext, setcheckBoxState, setStorage }) {
+export function CartTotals({
+  Mycontext,
+  setcheckBoxState,
+  setStorage,
+  UserData,
+}) {
   const CammndUri = `${useContext(SERVER_URI)}/CommandType`;
-  const FraisLivraisonUri = `${useContext(SERVER_URI)}/settings/api/faris`;
+  const FraisLivraisonUri = `${useContext(
+    SERVER_URI
+  )}/settings/api/livraison_adresses`;
   // fraislivraison state
   const [FraisLivraison, setFraisLivraison] = useState(0);
   const [isPlace, setPlace] = React.useState(false);
@@ -78,24 +85,26 @@ export function CartTotals({ Mycontext, setcheckBoxState, setStorage }) {
   useEffect(() => {
     fetch(CammndUri, {
       method: "GET",
-      cors: "same-origin",
+      cors: "no-cors",
     })
       .then((res) => res.json())
       .then((data) => {
         setCammndType(data);
       })
       .catch((err) => console.log(err));
-      fetch(FraisLivraisonUri, {
-        method: "GET",
-        cors: "no-cors",
+    fetch(FraisLivraisonUri, {
+      method: "GET",
+      cors: "no-cors",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        let frais_id = UserData.adress.id;
+        let frais = data.filter((el) => el.id === frais_id);
+        setFraisLivraison(frais[0]);
+        console.log(FraisLivraison);
       })
-        .then((res) => res.json())
-        .then((data) => {
-          setFraisLivraison(data[0]);
-        })
-        .catch((err) => console.log(err));
-   
-  }, [CammndUri, FraisLivraisonUri]);
+      .catch((err) => console.log(err));
+  }, [CammndUri, FraisLivraisonUri,FraisLivraison,UserData.adress.id]);
 
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
@@ -122,13 +131,26 @@ export function CartTotals({ Mycontext, setcheckBoxState, setStorage }) {
           } else if (el.id === 3 && el.isCheked) {
             if (GetTotalPrice < 20)
               return (
-                <div className="md:flex gap-2 hidden  ">
-                  <p className="text-[#5B6D5B] text-sm lg:text-xl">
-                    <span className="text-red-400 text-sm lg:text-xl">
-                      Note:
+                <div class="md:flex gap-2 hidden alert alert-warning shadow-lg max-w-[450px]">
+                  <div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="stroke-current flex-shrink-0 h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
+                    </svg>
+                    <span>
+                      Note: Grâce à votre adresse enregistrée, le minimum Prix
+                      pour la livraison est a partir de {FraisLivraison.price} €
                     </span>
-                    le minimum Prix pour la livraison est a partir de 20 €
-                  </p>
+                  </div>
                 </div>
               );
             if (GetTotalPrice >= 20)
@@ -141,7 +163,7 @@ export function CartTotals({ Mycontext, setcheckBoxState, setStorage }) {
                 />
               );
           }
-        return "";
+          return "";
         })}
       </div>
       <div className="flex flex-col gap-4  w-full px-5">
@@ -157,13 +179,13 @@ export function CartTotals({ Mycontext, setcheckBoxState, setStorage }) {
           <>
             <div className="flex gap-2 justify-between">
               <p className="text-info">Frais de livraison </p>
-              <p>{parseFloat(FraisLivraison?.price)} €</p>
+              <p>{parseFloat(FraisLivraison?.frais_price)} €</p>
             </div>
           </>
         )}
         <div className="flex gap-2 justify-between">
           <p className="text-info">Total</p>
-          <p>€{GetTotalPrice + FraisLivraison?.price}</p>
+          <p>€{GetTotalPrice + FraisLivraison?.frais_price}</p>
         </div>
 
         <br />

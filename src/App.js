@@ -17,7 +17,6 @@ import CheckoutDataContextProvider from "./context/checkoutContext";
 import CredentielModel from "./helpers/CredentielModel";
 
 function App({ URI }) {
-  
   const CategoryContext = React.useContext(Categories);
   const [isVisisble, setCartVisisble] = React.useState(false);
   const [isAdedTocart, setIsAdedTocart] = React.useState(false);
@@ -62,7 +61,7 @@ function App({ URI }) {
           CategoryContext={CategoryContext}
         >
           <div
-          data-theme="dracula"
+            data-theme="dracula"
             id="scroller"
             className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
           >

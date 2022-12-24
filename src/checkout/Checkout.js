@@ -12,6 +12,7 @@ import { Checkout as Mycheckout } from "../context/checkoutContext";
 import { Credentiel } from "../context/CredentielContext";
 import { SERVER_URI } from "../helpers/UrlProvider";
 import { motion } from "framer-motion";
+import CredentielClient from "../helpers/Credentiel";
 
 const Checkout = ({ setcheckBoxState, setStorage }) => {
   const Mycontext = useContext(Mycheckout);
@@ -26,87 +27,78 @@ const Checkout = ({ setcheckBoxState, setStorage }) => {
       }}
       className="flex-col md:w-[95vw] md:mx-[2.5vw] bg-[#28231B] lg:p-14"
     >
-      <div className="flex flex-col lg:flex-row gap-4 items-start justify-between w-full my-6">
-        <div className="text-white w-full flex items-center justify-center gap-2 p-4 px-6 lg:m-2 rounded-lg border-t-2 border-t-blue-600 bg-[#252C30] ">
-          <FaRegUser />
-          {isloged && (
-            <>
-              Bienvenue <p>{UserData.username}</p>
-              <button
-                className="text-error cursor-pointer flex items-center"
-                onClick={() => {
-                  localStorage.removeItem("refrech");
-                  localStorage.removeItem("jwt");
-                  setiLoged(false);
-                  setcheckBoxState(false);
-                }}
-              >
-                <BiLogOut className="mx-2" />
-                (déconnexion)
-              </button>
-            </>
-          )}
-          {!isloged && (
-            <>
-              <p>Déjà client? </p>
-              <button
-                onClick={() => {
-                  setcheckBoxState(true);
-                }}
-                className="text-warning"
-              >
-                <label
-                  htmlFor="loginModel"
-                  className="text-warning cursor-pointer"
-                >
-                  Cliquez ici pour identifier
-                </label>
-              </button>
-            </>
-          )}
-        </div>
-        {isloged && <OrderStatus UserData={UserData} />}
-      </div>
+      {isloged && (
+        <>
+          <div className="text-white w-full flex items-center justify-center gap-2 p-4 px-6 lg:m-2 rounded-lg border-t-2 border-t-blue-600 bg-[#252C30] ">
+            <FaRegUser />
+            Bienvenue <p>{UserData.Nom}</p>
+            <button
+              className="text-error cursor-pointer flex items-center"
+              onClick={() => {
+                sessionStorage.removeItem("refrech");
+                localStorage.removeItem("refrech");
+                sessionStorage.removeItem("jwt");
+                localStorage.removeItem("jwt");
+                setiLoged(false);
+                setcheckBoxState(false);
+              }}
+            >
+              <BiLogOut className="mx-2" />
+              (déconnexion)
+            </button>
+          </div>
+          <OrderStatus UserData={UserData} />
+        </>
+      )}
+      {!isloged && <CredentielClient />}
       {Mycontext.length > 0 ? (
         <>
-          <CheckOutTable
-            showTable={showTable}
-            burger={burger}
-            data={Mycontext}
-          />
-          <CartTotals
-            surPlaceIco={surPlaceIco}
-            EmporterFoodIco={EmporterFoodIco}
-            DeliveryIco={DeliveryIco}
-            subTotal="13"
-            total="26"
-            Mycontext={Mycontext}
-            setcheckBoxState={setcheckBoxState}
-            setStorage={setStorage}
-          />
-          <label className="btn btn-circle swap swap-rotate fixed bottom-5 right-10 z-50 md:hidden">
-            <input onChange={() => setshowTable(!showTable)} type="checkbox" />
+          {isloged && (
+            <>
+              <CheckOutTable
+                showTable={showTable}
+                burger={burger}
+                data={Mycontext}
+              />
+              <CartTotals
+                surPlaceIco={surPlaceIco}
+                EmporterFoodIco={EmporterFoodIco}
+                DeliveryIco={DeliveryIco}
+                subTotal="13"
+                total="26"
+                Mycontext={Mycontext}
+                setcheckBoxState={setcheckBoxState}
+                setStorage={setStorage}
+                UserData={UserData}
+              />
+              <label className="btn btn-circle swap swap-rotate fixed bottom-5 right-10 z-50 md:hidden">
+                <input
+                  onChange={() => setshowTable(!showTable)}
+                  type="checkbox"
+                />
 
-            <svg
-              className="swap-off fill-curren"
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              viewBox="0 0 512 512"
-            >
-              <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
-            </svg>
+                <svg
+                  className="swap-off fill-curren"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 512 512"
+                >
+                  <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
+                </svg>
 
-            <svg
-              className="swap-on fill-current"
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              viewBox="0 0 512 512"
-            >
-              <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" />
-            </svg>
-          </label>
+                <svg
+                  className="swap-on fill-current"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 512 512"
+                >
+                  <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" />
+                </svg>
+              </label>
+            </>
+          )}
         </>
       ) : (
         <>
@@ -143,7 +135,7 @@ function OrderStatus({ UserData }) {
   const [DamandeType, setDamandeType] = useState();
 
   const handleDelivredclick = () => {
-    fetch(`${url}confirmer_deliver`, {
+    fetch(`${url}/confirmer_deliver`, {
       mode: "cors",
       method: "POST",
       headers: {
@@ -158,34 +150,31 @@ function OrderStatus({ UserData }) {
   };
   useEffect(() => {
     // if (startCheck) {
-        
-      fetch(`${url}/checkOrderStatus/${UserData.id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          let damndType = JSON.parse(
-            data.DamandeType.replace("True", true).replaceAll(`'`, `"`)
-          );
-          setDamandeType(damndType.id);
-          setOrderStatus(data.status);
-          setstartCheck(false);
-          if (damndType.id === 3 && orderStatus === 2) {
-              window.location.reload();
-          }
-        });
+    if (UserData.id === undefined) window.location.reload();
+    fetch(`${url}/checkOrderStatus/${UserData.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        let damndType = JSON.parse(
+          data.DamandeType.replace("True", true).replaceAll(`'`, `"`)
+        );
+        setDamandeType(damndType.id);
+        setOrderStatus(data.status);
+        setstartCheck(false);
+      });
 
     // }
   }, [startCheck, url, UserData, orderStatus]);
 
   return (
-    <div className="text-white  w-full flex items-center justify-center gap-2 p-4 px-6 m-2 rounded-lg border-t-2 border-t-blue-600 bg-[#252C30] ">
+    <div className="text-white  w-full flex items-center justify-center gap-2 p-4 px-6 m-2 rounded-lg border-b-2 border-b-blue-600 bg-[#252C30] ">
       {orderStatus && (
         <>
           <div className="flex flex-col w-full lg:flex-row">
             <div className="grid flex-grow bg-base-300 rounded-box place-items-center">
               {orderStatus === 1 && (
                 <div className="stat">
-                  <div className="stat-title">Votre dammande est </div>
+                  <div className="stat-title">Votre dernière dammande est </div>
                   <div className="stat-value text-warning">En attendant</div>
                 </div>
               )}
@@ -194,52 +183,40 @@ function OrderStatus({ UserData }) {
                   {DamandeType === 3 && (
                     <div className="stat-figure text-primary">
                       <button
-                        onClick={handleDelivredclick}
+                        onClick={() => {
+                          handleDelivredclick();
+                          setstartCheck(true);
+                        }}
                         className="btn btn-xs btn-outline btn-primary my-2"
                       >
                         confirmer l'arrivée
                       </button>
                     </div>
                   )}
-                  <div className="stat-title">Votre dammande est </div>
+                  <div className="stat-title">Votre dernière dammande est </div>
                   <div className="stat-value text-primary">Approuvé</div>
                   {DamandeType === 3 && (
                     <div className="stat-desc">
-                      Lorsque votre commande arrive veuillez confirmer l'arrivée
+                      Lorsque votre dernière commande arrive veuillez confirmer
+                      l'arrivée
                     </div>
                   )}
                 </div>
-
-                // <div className="flex items-center gap-4 justify-center p-4">
-                //   <div className="badge badge-outline badge-success p-6">
-                //     Approuvé
-                //   </div>
-                //   <p className="">
-                //     Lorsque votre commande arrive
-                //     <br />
-                //     veuillez confirmer l'arrivée
-                //     <br />
-                //     <button className="btn btn-xs btn-outline btn-warning my-2">
-                //       en cliquant ici
-                //     </button>
-                //   </p>
-                // </div>
               )}
               {orderStatus === 3 && (
                 <div className="stat">
-                  <div className="stat-title">Votre dammande est </div>
+                  <div className="stat-title">Votre dernière dammande est </div>
                   <div className="stat-value text-success">Livré</div>
                 </div>
               )}
               {orderStatus === 4 && (
                 <div className="p-4 flex flex-col justify-center ">
-                  <div className="stat-title">Votre dammande est </div>
+                  <div className="stat-title">Votre dernière dammande est </div>
                   <div className="stat-value text-secondary">Annulé</div>
                 </div>
               )}
             </div>
-
-            {(orderStatus !== 3 || orderStatus !== 4) && (
+            {orderStatus !== 3 && orderStatus !== 4 ? (
               <>
                 <div className="divider lg:divider-horizontal">ou</div>
                 <div className="grid flex-grow  card bg-base-300 rounded-box place-items-center">
@@ -256,6 +233,8 @@ function OrderStatus({ UserData }) {
                   </label>
                 </div>
               </>
+            ) : (
+              ""
             )}
           </div>
         </>
@@ -263,7 +242,7 @@ function OrderStatus({ UserData }) {
       {!startCheck && !orderStatus && (
         <>
           <RiCoupon3Line />
-          <p>Voir le statut de votre commande !</p>
+          <p>Voir le statut de votre dernière commande !</p>
           <label
             onClick={() => setstartCheck(true)}
             htmlFor="applycopon"

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Credentiel } from "../context/CredentielContext";
 import { SERVER_URI } from "../helpers/UrlProvider";
 
@@ -63,8 +63,11 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
       if (password === password_confirme) {
         setcheckPassConfirm(true);
         let register_form = new FormData(form);
+        
         let object = {};
         register_form.forEach((value, key) => (object[key] = value));
+        // console.log(object);
+        // return;
         await fetch(url, {
           mode: "cors", // no-cors, *cors, same-origin
           method: "POST",
@@ -74,7 +77,7 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
           body: JSON.stringify(object),
         })
           .then((response) => {
-          console.log(response)
+            console.log(response);
 
             let code = response.status;
             setcodeStatus(code);
@@ -117,6 +120,22 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
       setRegsitre(true);
     }
   };
+  // fetsh `${CREDENTIEL_SERVER_URI}/settings/api/livraison_adresses` when component mount
+  const [livraison_adresses, setlivraison_adresses] = useState([]);
+  useEffect(() => {
+    fetch(`${CREDENTIEL_SERVER_URI}/settings/api/livraison_adresses`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setlivraison_adresses(data);
+        console.log(data);
+      });
+  }, []);
 
   return (
     <>
@@ -249,13 +268,21 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
                     <div className="form-control">
                       <label className="input-group input-group-vertical">
                         <span>adresse</span>
-                        <input
+
+                        <select
                           required
                           name="adress"
                           type="adress"
-                          placeholder="ex : 17, Rue Antoine du Rafour 42100 Sanit-étienne"
                           className="input input-bordered"
-                        />
+                          
+                        >
+                          <option />
+                          {livraison_adresses.map((livraison_adresse) => (
+                            <option value={livraison_adresse.id}>
+                              {livraison_adresse.name}
+                            </option>
+                          ))}
+                        </select>
                       </label>
                     </div>
                     <div className="form-control">
