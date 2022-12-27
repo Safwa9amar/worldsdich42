@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { calculeCoupon } from "../../helpers/CalculeCoupon";
+import { formatEUR } from "../../helpers/currencyFormatter";
 
-function TableRow({ avatar, header, category, price, amount, isMenu, supp }) {
+function TableRow({
+  avatar,
+  header,
+  category,
+  price,
+  amount,
+  isMenu,
+  supp,
+  cutting_off_status,
+  cutting_off,
+}) {
   const [Supp, setSupp] = useState(0);
 
   useEffect(() => {
@@ -32,16 +44,33 @@ function TableRow({ avatar, header, category, price, amount, isMenu, supp }) {
           </div>
         </div>
       </td>
-      <td>€ {price}</td>
+      <td>{formatEUR(price)}</td>
       <td>{amount || 1}</td>
       <th className="hidden md:flex flex-col h-[100px]">
         <span>
-          ({price}€ x {amount}) article
+          ({formatEUR(price)} x {amount}) article
         </span>
         <span>{isMenu ? `+ ( 2€ x ${amount} ) Menu  ` : ""} </span>
         <span>{Supp ? `+ ( ${Supp}€ x ${amount} ) Supplément ` : ""}</span>
       </th>
-      <th>{price * amount + (isMenu ? 2 * amount : 0) + Supp * amount} €</th>
+      <th>
+        {formatEUR(price * amount + (isMenu ? 2 * amount : 0) + Supp * amount)}
+      </th>
+      <th>
+        {cutting_off_status ? (
+          <div className=" ">
+            {formatEUR(
+              calculeCoupon(
+                price * amount + (isMenu ? 2 * amount : 0) + Supp * amount,
+                cutting_off
+              )
+            )}
+            <div className="badge badge-accent ">-{cutting_off}%</div>
+          </div>
+        ) : (
+          formatEUR(price * amount + (isMenu ? 2 * amount : 0) + Supp * amount)
+        )}
+      </th>
     </tr>
   );
 }
@@ -73,11 +102,12 @@ export function CheckOutTable({ showTable, data }) {
             <th>Quantité</th>
             <th className="hidden md:block h-full">L'article</th>
             <th>Total</th>
+            <th>Remise</th>
           </tr>
         </thead>
         <tbody>
           {data.map((el) => {
-            console.log(el);
+            // console.log(el);
             return (
               <TableRow
                 key={`${el.id}_${el.category}`}
@@ -89,6 +119,8 @@ export function CheckOutTable({ showTable, data }) {
                 totalPrice={13}
                 amount={el.amount}
                 supp={el.supplement}
+                cutting_off={el.cutting_off}
+                cutting_off_status={el.cutting_off_status}
               />
             );
           })}

@@ -29,7 +29,7 @@ export default function Footer() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setWorkHours(data);
       });
 
@@ -42,7 +42,7 @@ export default function Footer() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setContact(data[0]);
       });
   }, [WorkHours, Contact]);

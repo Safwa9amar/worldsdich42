@@ -9,6 +9,7 @@ import { Cartstorage } from "../../context/LocalStorageContext";
 // import { Credentiel } from "../../context/CredentielContext";
 import { SERVER_URI } from "../../helpers/UrlProvider";
 import Boisson from "./Boisson";
+import { formatEUR } from "../../helpers/currencyFormatter";
 
 function MenuBtn({
   price = 2,
@@ -300,7 +301,7 @@ export const CatergoryItem = (props) => {
           <div className="flex justify-between gap-10 w-full">
             <div className="flex items-center gap-2">
               <p className="text-[#5B6D5B] font-bold text-xl">
-                €{Math.abs(Price) + Math.abs(SelectedBoisson ? MenuPrice : 0)}
+                {formatEUR(Math.abs(Price) + Math.abs(SelectedBoisson ? MenuPrice : 0))}
               </p>
               {with_menu && etat &&  (
                 category_ID !== 10 ? <MenuBtn  updatePrice={updatePrice} ToggleCart={ToggleCart} /> : ''

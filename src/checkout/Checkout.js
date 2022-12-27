@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { FaRegUser } from "react-icons/fa";
-import { RiCoupon3Line } from "react-icons/ri";
+// import { RiCoupon3Line } from "react-icons/ri";
 import { BiLogOut } from "react-icons/bi";
 import burger from "../menu/images/burger.png";
 import surPlaceIco from "../icons/table_food.svg";
@@ -10,7 +10,7 @@ import { CheckOutTable } from "./components/CheckOutTable";
 import { CartTotals } from "./components/CartTotals";
 import { Checkout as Mycheckout } from "../context/checkoutContext";
 import { Credentiel } from "../context/CredentielContext";
-import { SERVER_URI } from "../helpers/UrlProvider";
+// import { SERVER_URI } from "../helpers/UrlProvider";
 import { motion } from "framer-motion";
 import CredentielClient from "../helpers/Credentiel";
 
@@ -47,7 +47,7 @@ const Checkout = ({ setcheckBoxState, setStorage }) => {
               (déconnexion)
             </button>
           </div>
-          <OrderStatus UserData={UserData} />
+          {/* <OrderStatus UserData={UserData} /> */}
         </>
       )}
       {!isloged && <CredentielClient />}
@@ -128,135 +128,135 @@ const Checkout = ({ setcheckBoxState, setStorage }) => {
 
 export default Checkout;
 
-function OrderStatus({ UserData }) {
-  let url = useContext(SERVER_URI);
-  const [startCheck, setstartCheck] = useState(false);
-  const [orderStatus, setOrderStatus] = useState(false);
-  const [DamandeType, setDamandeType] = useState();
+// function OrderStatus({ UserData }) {
+//   let url = useContext(SERVER_URI);
+//   const [startCheck, setstartCheck] = useState(false);
+//   const [orderStatus, setOrderStatus] = useState(false);
+//   const [DamandeType, setDamandeType] = useState();
 
-  const handleDelivredclick = () => {
-    fetch(`${url}/confirmer_deliver`, {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: UserData.last_order.id,
-        refrech:
-          localStorage.getItem("refrech") || sessionStorage.getItem("refrech"),
-      }),
-    }).then((res) => console.log(res));
-  };
-  useEffect(() => {
-    // if (startCheck) {
-    if (UserData.id === undefined) window.location.reload();
-    fetch(`${url}/checkOrderStatus/${UserData.id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        let damndType = JSON.parse(
-          data.DamandeType.replace("True", true).replaceAll(`'`, `"`)
-        );
-        setDamandeType(damndType.id);
-        setOrderStatus(data.status);
-        setstartCheck(false);
-      });
+//   const handleDelivredclick = () => {
+//     fetch(`${url}/confirmer_deliver`, {
+//       mode: "cors",
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         id: UserData.last_order.id,
+//         refrech:
+//           localStorage.getItem("refrech") || sessionStorage.getItem("refrech"),
+//       }),
+//     }).then((res) => console.log(res));
+//   };
+//   useEffect(() => {
+//     // if (startCheck) {
+//     if (UserData.id === undefined) window.location.reload();
+//     fetch(`${url}/checkOrderStatus/${UserData.id}`)
+//       .then((res) => res.json())
+//       .then((data) => {
+//         console.log(data);
+//         let damndType = JSON.parse(
+//           data.DamandeType.replace("True", true).replaceAll(`'`, `"`)
+//         );
+//         setDamandeType(damndType.id);
+//         setOrderStatus(data.status);
+//         setstartCheck(false);
+//       });
 
-    // }
-  }, [startCheck, url, UserData, orderStatus]);
+//     // }
+//   }, [startCheck, url, UserData, orderStatus]);
 
-  return (
-    <div className="text-white  w-full flex items-center justify-center gap-2 p-4 px-6 m-2 rounded-lg border-b-2 border-b-blue-600 bg-[#252C30] ">
-      {orderStatus && (
-        <>
-          <div className="flex flex-col w-full lg:flex-row">
-            <div className="grid flex-grow bg-base-300 rounded-box place-items-center">
-              {orderStatus === 1 && (
-                <div className="stat">
-                  <div className="stat-title">Votre dernière dammande est </div>
-                  <div className="stat-value text-warning">En attendant</div>
-                </div>
-              )}
-              {orderStatus === 2 && (
-                <div className="stat">
-                  {DamandeType === 3 && (
-                    <div className="stat-figure text-primary">
-                      <button
-                        onClick={() => {
-                          handleDelivredclick();
-                          setstartCheck(true);
-                        }}
-                        className="btn btn-xs btn-outline btn-primary my-2"
-                      >
-                        confirmer l'arrivée
-                      </button>
-                    </div>
-                  )}
-                  <div className="stat-title">Votre dernière dammande est </div>
-                  <div className="stat-value text-primary">Approuvé</div>
-                  {DamandeType === 3 && (
-                    <div className="stat-desc">
-                      Lorsque votre dernière commande arrive veuillez confirmer
-                      l'arrivée
-                    </div>
-                  )}
-                </div>
-              )}
-              {orderStatus === 3 && (
-                <div className="stat">
-                  <div className="stat-title">Votre dernière dammande est </div>
-                  <div className="stat-value text-success">Livré</div>
-                </div>
-              )}
-              {orderStatus === 4 && (
-                <div className="p-4 flex flex-col justify-center ">
-                  <div className="stat-title">Votre dernière dammande est </div>
-                  <div className="stat-value text-secondary">Annulé</div>
-                </div>
-              )}
-            </div>
-            {orderStatus !== 3 && orderStatus !== 4 ? (
-              <>
-                <div className="divider lg:divider-horizontal">ou</div>
-                <div className="grid flex-grow  card bg-base-300 rounded-box place-items-center">
-                  <label
-                    onClick={() => setstartCheck(true)}
-                    className="text-warning cursor-pointer"
-                  >
-                    {startCheck && (
-                      <div className="btn cursor-wait btn-sm loading w-full px-2 capitalize">
-                        En cours...
-                      </div>
-                    )}
-                    {!startCheck && "Réessayer !"}
-                  </label>
-                </div>
-              </>
-            ) : (
-              ""
-            )}
-          </div>
-        </>
-      )}
-      {!startCheck && !orderStatus && (
-        <>
-          <RiCoupon3Line />
-          <p>Voir le statut de votre dernière commande !</p>
-          <label
-            onClick={() => setstartCheck(true)}
-            htmlFor="applycopon"
-            className="text-warning cursor-pointer"
-          >
-            Cliquez ici
-          </label>
-        </>
-      )}
-      {startCheck && !orderStatus && (
-        <div className="btn cursor-wait btn-xs loading w-fit px-2 capitalize">
-          Chargement en cours...
-        </div>
-      )}
-    </div>
-  );
-}
+//   return (
+//     <div className="text-white  w-full flex items-center justify-center gap-2 p-4 px-6 m-2 rounded-lg border-b-2 border-b-blue-600 bg-[#252C30] ">
+//       {orderStatus && (
+//         <>
+//           <div className="flex flex-col w-full lg:flex-row">
+//             <div className="grid flex-grow bg-base-300 rounded-box place-items-center">
+//               {orderStatus === 1 && (
+//                 <div className="stat">
+//                   <div className="stat-title">Votre dernière dammande est </div>
+//                   <div className="stat-value text-warning">En attendant</div>
+//                 </div>
+//               )}
+//               {orderStatus === 2 && (
+//                 <div className="stat">
+//                   {DamandeType === 3 && (
+//                     <div className="stat-figure text-primary">
+//                       <button
+//                         onClick={() => {
+//                           handleDelivredclick();
+//                           setstartCheck(true);
+//                         }}
+//                         className="btn btn-xs btn-outline btn-primary my-2"
+//                       >
+//                         confirmer l'arrivée
+//                       </button>
+//                     </div>
+//                   )}
+//                   <div className="stat-title">Votre dernière dammande est </div>
+//                   <div className="stat-value text-primary">Approuvé</div>
+//                   {DamandeType === 3 && (
+//                     <div className="stat-desc">
+//                       Lorsque votre dernière commande arrive veuillez confirmer
+//                       l'arrivée
+//                     </div>
+//                   )}
+//                 </div>
+//               )}
+//               {orderStatus === 3 && (
+//                 <div className="stat">
+//                   <div className="stat-title">Votre dernière dammande est </div>
+//                   <div className="stat-value text-success">Livré</div>
+//                 </div>
+//               )}
+//               {orderStatus === 4 && (
+//                 <div className="p-4 flex flex-col justify-center ">
+//                   <div className="stat-title">Votre dernière dammande est </div>
+//                   <div className="stat-value text-secondary">Annulé</div>
+//                 </div>
+//               )}
+//             </div>
+//             {orderStatus !== 3 && orderStatus !== 4 ? (
+//               <>
+//                 <div className="divider lg:divider-horizontal">ou</div>
+//                 <div className="grid flex-grow  card bg-base-300 rounded-box place-items-center">
+//                   <label
+//                     onClick={() => setstartCheck(true)}
+//                     className="text-warning cursor-pointer"
+//                   >
+//                     {startCheck && (
+//                       <div className="btn cursor-wait btn-sm loading w-full px-2 capitalize">
+//                         En cours...
+//                       </div>
+//                     )}
+//                     {!startCheck && "Réessayer !"}
+//                   </label>
+//                 </div>
+//               </>
+//             ) : (
+//               ""
+//             )}
+//           </div>
+//         </>
+//       )}
+//       {!startCheck && !orderStatus && (
+//         <>
+//           <RiCoupon3Line />
+//           <p>Voir le statut de votre dernière commande !</p>
+//           <label
+//             onClick={() => setstartCheck(true)}
+//             htmlFor="applycopon"
+//             className="text-warning cursor-pointer"
+//           >
+//             Cliquez ici
+//           </label>
+//         </>
+//       )}
+//       {startCheck && !orderStatus && (
+//         <div className="btn cursor-wait btn-xs loading w-fit px-2 capitalize">
+//           Chargement en cours...
+//         </div>
+//       )}
+//     </div>
+//   );
+// }

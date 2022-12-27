@@ -1,6 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import BuySuccess from "./BuySuccess";
 import { SERVER_URI } from "../../helpers/UrlProvider";
+// import formatEUR from helpers
+import { formatEUR } from "../../helpers/currencyFormatter";
+import { calculeCoupon } from "../../helpers/CalculeCoupon";
+
 // function ApplyCoupon() {
 //   return (
 //     <div className="form-control ">
@@ -35,6 +39,7 @@ export function CartTotals({
   const [isDelivery, setDelivery] = React.useState(false);
   const [GetTotalPrice, setGetTotalPrice] = React.useState(0);
   const [CammndType, setCammndType] = useState([]);
+  const [Note, setNote] = useState("");
   let DamandeType = [
     { id: 1, type: "sur place", bol: isPlace },
     { id: 2, type: "à Emporter", bol: isEmporter },
@@ -58,7 +63,8 @@ export function CartTotals({
   const getTotalPrice = (data) => {
     let arrTotal = [0];
     data.map((el) => {
-      let [price, amount, isMenu, supp] = [
+      console.log(el);
+      let [price, amount, isMenu, supp, cutting_off, cutting_off_status] = [
         Math.abs(el.prix),
         el.amount,
         el.isMenu,
@@ -67,9 +73,13 @@ export function CartTotals({
               .map((el) => el.price)
               .reduce((curr, next) => curr + next)
           : [],
+        el.cutting_off,
+        el.cutting_off_status,
       ];
-      console.log(supp);
+      // console.log(supp);
       let sum = isMenu ? (price + 2 + supp) * amount : (price + supp) * amount;
+      console.log(cutting_off_status, cutting_off, sum);
+      sum = cutting_off_status ? calculeCoupon(sum, cutting_off) : sum;
       arrTotal.push(sum);
       return el;
     });
@@ -78,7 +88,7 @@ export function CartTotals({
     if (arrTotal.length > 0)
       return arrTotal.reduce((curr, next) => curr + next);
   };
-  React.useEffect(() => {
+  useEffect(() => {
     setGetTotalPrice(getTotalPrice(Mycontext));
   }, [isPlace, isEmporter, isDelivery, Mycontext, GetTotalPrice]);
 
@@ -92,6 +102,8 @@ export function CartTotals({
         setCammndType(data);
       })
       .catch((err) => console.log(err));
+  }, [CammndUri]);
+  useEffect(() => {
     fetch(FraisLivraisonUri, {
       method: "GET",
       cors: "no-cors",
@@ -101,10 +113,10 @@ export function CartTotals({
         let frais_id = UserData.adress.id;
         let frais = data.filter((el) => el.id === frais_id);
         setFraisLivraison(frais[0]);
-        console.log(FraisLivraison);
+        console.log(frais);
       })
       .catch((err) => console.log(err));
-  }, [CammndUri, FraisLivraisonUri,FraisLivraison,UserData.adress.id]);
+  }, []);
 
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
@@ -113,6 +125,7 @@ export function CartTotals({
           if (el.id === 1 && el.isCheked) {
             return (
               <ApplyMethode
+                key={el.id}
                 isActive={isPlace}
                 SetActive={SurPlace}
                 type="place"
@@ -122,6 +135,7 @@ export function CartTotals({
           } else if (el.id === 2 && el.isCheked) {
             return (
               <ApplyMethode
+                key={el.id}
                 isActive={isEmporter}
                 SetActive={emporter}
                 type="emporter"
@@ -129,33 +143,49 @@ export function CartTotals({
               />
             );
           } else if (el.id === 3 && el.isCheked) {
-            if (GetTotalPrice < 20)
+            if (!FraisLivraison.isActived) {
               return (
-                <div class="md:flex gap-2 hidden alert alert-warning shadow-lg max-w-[450px]">
+                <div
+                  key={el.id}
+                  className="md:flex gap-2 hidden alert alert-info shadow-lg max-w-[450px]"
+                >
+                  La livraison à votre adresse : {FraisLivraison.name} n'est pas
+                  disponible actuellement
+                </div>
+              );
+            }
+            if (FraisLivraison.isActived && GetTotalPrice < 20)
+              return (
+                <div
+                  key={el.id}
+                  className="md:flex gap-2 hidden alert alert-warning shadow-lg max-w-[450px]"
+                >
                   <div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="stroke-current flex-shrink-0 h-6 w-6"
+                      className="stroke-current flex-shrink-0 h-6 w-6"
                       fill="none"
                       viewBox="0 0 24 24"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
                       />
                     </svg>
                     <span>
-                      Note: Grâce à votre adresse enregistrée, le minimum Prix
-                      pour la livraison est a partir de {FraisLivraison.price} €
+                      Note: Grâce à votre adresse {FraisLivraison.name}, le
+                      minimum Prix pour la livraison est a partir de{" "}
+                      {formatEUR(FraisLivraison.price)}
                     </span>
                   </div>
                 </div>
               );
-            if (GetTotalPrice >= 20)
+            if (FraisLivraison.isActived && GetTotalPrice >= 20)
               return (
                 <ApplyMethode
+                  key={el.id}
                   isActive={isDelivery}
                   SetActive={delivery}
                   type="livraison"
@@ -166,10 +196,11 @@ export function CartTotals({
           return "";
         })}
       </div>
+
       <div className="flex flex-col gap-4  w-full px-5">
         <div className="flex gap-2 justify-between">
           <p className="text-info">CART TOTALS</p>
-          <p>€{GetTotalPrice}</p>
+          <p>{formatEUR(GetTotalPrice)}</p>
         </div>
         <div className="flex gap-2 justify-between">
           <p className="text-info">Subtotal</p>
@@ -179,20 +210,34 @@ export function CartTotals({
           <>
             <div className="flex gap-2 justify-between">
               <p className="text-info">Frais de livraison </p>
-              <p>{parseFloat(FraisLivraison?.frais_price)} €</p>
+              <p>{formatEUR(parseFloat(FraisLivraison?.frais_price))}</p>
             </div>
           </>
         )}
         <div className="flex gap-2 justify-between">
           <p className="text-info">Total</p>
-          <p>€{GetTotalPrice + FraisLivraison?.frais_price}</p>
+          <p>
+            {isDelivery
+              ? formatEUR(GetTotalPrice + FraisLivraison?.frais_price)
+              : formatEUR(GetTotalPrice)}
+          </p>
         </div>
-
+        <div className="flex flex-col gap-2 justify-between">
+          <p>Laissez-nous une note (optionnel)</p>
+          <textarea
+            onChange={(e) => {
+              setNote(e.target.value);
+            }}
+            className="textarea textarea-bordered"
+            placeholder="Bio"
+          ></textarea>
+        </div>
         <br />
         <BuySuccess
           setStorage={setStorage}
           setcheckBoxState={setcheckBoxState}
           DamandeType={DamandeType}
+          Note={Note}
         />
       </div>
     </div>

@@ -133,7 +133,7 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
       .then((response) => response.json())
       .then((data) => {
         setlivraison_adresses(data);
-        console.log(data);
+        // console.log(data);
       });
   }, []);
 

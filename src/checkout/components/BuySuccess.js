@@ -10,6 +10,7 @@ export default function BuySuccess({
   setcheckBoxState,
   DamandeType,
   setStorage,
+  Note
 }) {
   const BUY_SERVER_URI = useContext(SERVER_URI);
   // const socket = io(`${BUY_SERVER_URI}/test`);
@@ -53,6 +54,7 @@ export default function BuySuccess({
           localStorage.getItem("refrech") || sessionStorage.getItem("refrech"),
         order: CheckoutData,
         DamandeType: command_type,
+        Note : Note
       }),
     })
       .then(setstartReq(true))

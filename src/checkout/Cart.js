@@ -14,6 +14,7 @@ import {
 import "react-swipeable-list/dist/styles.css";
 import { Cartstorage } from "../context/LocalStorageContext";
 import { Checkout } from "../context/checkoutContext";
+import { formatEUR } from "../helpers/currencyFormatter";
 
 const leadingActions = () => (
   <LeadingActions>
@@ -112,7 +113,7 @@ const CartItem = (props) => {
       <p>{header}</p>
       <p className="flex flex-col">
         <span>
-          ({price}€ x {count}) article
+          ({formatEUR(price)} x {count}) article
         </span>
         <span>{isMenu ? `+ ( 2€ x ${count} ) Menu  ` : ""} </span>
         <span>{supp ? `+ ( ${supp}€ x ${count} ) Supplément ` : ""}</span>

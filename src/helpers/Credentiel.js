@@ -133,7 +133,7 @@ export default function CredentielClient({ setcheckBoxState, checkBoxState }) {
       .then((response) => response.json())
       .then((data) => {
         setlivraison_adresses(data);
-        console.log(data);
+        // console.log(data);
       });
   }, [CREDENTIEL_SERVER_URI]);
 

@@ -17,6 +17,8 @@ export function GridSreenMenu({ handleHide }) {
             itemImg={img}
             itemId={id}
             handleHide={handleHide}
+            cutting_off={el.cutting_off}
+            cutting_off_status={el.cutting_off_status}
           />
         );
       })}

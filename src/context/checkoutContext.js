@@ -32,6 +32,7 @@ const retriveCartData = (_storageData, categoriesContext) => {
   _storageData?.map((el) => {
     categoriesContext.map((_el) => {
       if (_el.id === el.category) {
+        console.log(_el.cutting_off)
         _el.list.forEach((__el) => {
           if (el.id === __el.id) {
             Object.assign(__el, { isMenu: el.isMenu });
@@ -39,6 +40,8 @@ const retriveCartData = (_storageData, categoriesContext) => {
             Object.assign(__el, { amount: el.amount });
             Object.assign(__el, { unSelectedRecipes: el.optionData });
             Object.assign(__el, { supplement: el.suppData });
+            Object.assign(__el, { cutting_off: _el.cutting_off });
+            Object.assign(__el, { cutting_off_status: _el.cutting_off_status });
             arr.push(__el);
           }
         });

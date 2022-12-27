@@ -31,6 +31,7 @@ const CategoryContextProvider = ({ children }) => {
   document.addEventListener("DOMContentLoaded", () => {
     getCaegories();
   });
+  
 
   
   return (

@@ -3,6 +3,7 @@ import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Supplement } from "../../context/suplementContext";
+import { formatEUR } from "../../helpers/currencyFormatter";
 
 const responsive = {
   superLargeDesktop: {
@@ -123,7 +124,7 @@ const CarouselItems = ({
         {
           name
         }
-        <sup className="font-bold">( +€{Prix} )</sup>
+        <sup className="font-bold">( +{formatEUR(Prix)} )</sup>
       </p>
       <p className={`flex flex-col h-fit badge badge-xs ${status ? "badge-primary" : ""} my-2 `}>
         
