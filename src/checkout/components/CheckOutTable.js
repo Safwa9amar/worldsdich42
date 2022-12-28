@@ -10,11 +10,11 @@ function TableRow({
   amount,
   isMenu,
   supp,
-  cutting_off_status,
-  cutting_off,
+  Supp,
+  setSupp,
+  // cutting_off_status,
+  // cutting_off,
 }) {
-  const [Supp, setSupp] = useState(0);
-
   useEffect(() => {
     try {
       if (supp !== null && supp.length > 0) {
@@ -56,7 +56,7 @@ function TableRow({
       <th>
         {formatEUR(price * amount + (isMenu ? 2 * amount : 0) + Supp * amount)}
       </th>
-      <th>
+      {/* <th>
         {cutting_off_status ? (
           <div className=" ">
             {formatEUR(
@@ -70,11 +70,13 @@ function TableRow({
         ) : (
           formatEUR(price * amount + (isMenu ? 2 * amount : 0) + Supp * amount)
         )}
-      </th>
+      </th> */}
     </tr>
   );
 }
 export function CheckOutTable({ showTable, data }) {
+  const [Supp, setSupp] = useState(0);
+
   return (
     <div
       className={`
@@ -102,28 +104,85 @@ export function CheckOutTable({ showTable, data }) {
             <th>Quantité</th>
             <th className="hidden md:block h-full">L'article</th>
             <th>Total</th>
-            <th>Remise</th>
+            {/* <th>Remise</th> */}
           </tr>
         </thead>
         <tbody>
-          {data.map((el) => {
-            // console.log(el);
-            return (
-              <TableRow
-                key={`${el.id}_${el.category}`}
-                avatar={el.img_url}
-                header={el.name}
-                category={el.Categorie}
-                price={el.prix}
-                isMenu={el.isMenu}
-                totalPrice={13}
-                amount={el.amount}
-                supp={el.supplement}
-                cutting_off={el.cutting_off}
-                cutting_off_status={el.cutting_off_status}
-              />
-            );
-          })}
+          {data
+            .map((el) => el.Categorie)
+            .filter((el, i, arr) => arr.indexOf(el) === i)
+            .map((category) => (
+              <>
+                {/* <tr className="badge badge-secondary" key={category} > */}
+                <td
+                  className="bg-neutral text-gray-200 font-bold"
+                  // className="badge m-2"
+                  colSpan="3"
+                  key={category}
+                >
+                  {category}
+
+                  {data.filter((el) => el.Categorie === category)[0]
+                    .cutting_off_status && (
+                    <div 
+                    className="badge badge-accent mx-2">
+                      -
+                      {
+                        data.filter((el) => el.Categorie === category)[0]
+                          .cutting_off
+                      }
+                      %
+                    </div>
+                  )}
+                </td>
+                <td
+                  key={Math.random()}
+
+                  colSpan="2"
+                  className="bg-neutral text-gray-100 text-center font-bold"
+                >
+                  {formatEUR(
+                    calculeCoupon(
+                      data
+                        .filter((el) => el.Categorie === category)
+                        .map(
+                          (el) =>
+                            el.prix * el.amount +
+                            (el.isMenu  ? 2 * el.amount : 0) +
+                            Supp * el.amount
+                        )
+                        .reduce((curr, next) => curr + next),
+                      data.filter((el) => el.Categorie === category)[0]
+                        .cutting_off_status
+                        ? data.filter((el) => el.Categorie === category)[0]
+                            .cutting_off
+                        : 0
+                    )
+                  )}
+                </td>
+                {/* </tr> */} 
+                {data
+                  .filter((el) => el.Categorie === category)
+                  .map((el) => {
+                    return (
+                      <TableRow
+                        key={`${el.id}_${el.category}`}
+                        avatar={el.img_url}
+                        header={el.name}
+                        category={el.Categorie}
+                        price={el.prix}
+                        isMenu={el.isMenu}
+                        amount={el.amount}
+                        supp={el.supplement}
+                        Supp={Supp}
+                        setSupp={setSupp}
+                        // cutting_off={el.cutting_off}
+                        // cutting_off_status={el.cutting_off_status}
+                      />
+                    );
+                  })}
+              </>
+            ))}
         </tbody>
       </table>
     </div>

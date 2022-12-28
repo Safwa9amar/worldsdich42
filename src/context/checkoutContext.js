@@ -32,7 +32,7 @@ const retriveCartData = (_storageData, categoriesContext) => {
   _storageData?.map((el) => {
     categoriesContext.map((_el) => {
       if (_el.id === el.category) {
-        console.log(_el.cutting_off)
+        // console.log(_el.cutting_off)
         _el.list.forEach((__el) => {
           if (el.id === __el.id) {
             Object.assign(__el, { isMenu: el.isMenu });

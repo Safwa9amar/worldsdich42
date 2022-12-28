@@ -37,12 +37,12 @@ export default function BuySuccess({
   };
 
   const sendBuyData = useCallback(async () => {
-    console.log(JSON.stringify({
-      user:
-        localStorage.getItem("refrech") || sessionStorage.getItem("refrech"),
-      order: CheckoutData,
-      DamandeType: command_type,
-    }))
+    // console.log(JSON.stringify({
+    //   user:
+    //     localStorage.getItem("refrech") || sessionStorage.getItem("refrech"),
+    //   order: CheckoutData,
+    //   DamandeType: command_type,
+    // }))
     let data = await fetch(BUY_SERVER_URI + "/get_client_order", {
       mode: "cors",
       method: "POST",
@@ -71,7 +71,7 @@ export default function BuySuccess({
       setorderNum(data.OrderNum);
       // setfinalResResult(false);
     }
-    console.table(data);
+    // console.table(data);
   }, [CheckoutData, command_type, BUY_SERVER_URI]);
 
   useEffect(() => {

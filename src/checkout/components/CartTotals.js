@@ -61,32 +61,45 @@ export function CartTotals({
     setDelivery(true);
   };
   const getTotalPrice = (data) => {
-    let arrTotal = [0];
-    data.map((el) => {
-      console.log(el);
-      let [price, amount, isMenu, supp, cutting_off, cutting_off_status] = [
-        Math.abs(el.prix),
-        el.amount,
-        el.isMenu,
-        el.supplement !== null && el.supplement.length > 0
-          ? el.supplement
-              .map((el) => el.price)
-              .reduce((curr, next) => curr + next)
-          : [],
-        el.cutting_off,
-        el.cutting_off_status,
-      ];
-      // console.log(supp);
-      let sum = isMenu ? (price + 2 + supp) * amount : (price + supp) * amount;
-      console.log(cutting_off_status, cutting_off, sum);
-      sum = cutting_off_status ? calculeCoupon(sum, cutting_off) : sum;
-      arrTotal.push(sum);
+    let spliceToCategories = data
+      .map((el) => el.category)
+      .filter((el, i, arr) => arr.indexOf(el) === i);
+    let FinalData = spliceToCategories.map((el) => {
+      let obj = {
+        category: el,
+        listItems: data.map((_el) => {
+          if (_el.category === el) return _el;
+        }).filter((el) => el !== undefined),
+      };
+
+      el = obj;
       return el;
     });
-    // console.log(arrTotal);
-    // console.log(arrTotal.reduce((curr, next) => curr + next));
-    if (arrTotal.length > 0)
-      return arrTotal.reduce((curr, next) => curr + next);
+    FinalData.map((el) => {
+      let FinalTotal = [0];
+      let categorySum = el.listItems.map((el) => {
+        let [price, amount, isMenu, supp, ] = [
+          Math.abs(el.prix),
+          el.amount,
+          el.isMenu,
+          el.supplement !== null && el.supplement.length > 0
+
+            ? el.supplement
+                .map((el) => el.price)
+                .reduce((curr, next) => curr + next)  
+            : [],
+     
+        ];
+        // console.log(supp);
+        let sum = isMenu ? (price + 2 + supp) * amount : (price + supp) * amount;
+        // sum = cutting_off_status ? calculeCoupon(sum, cutting_off) : sum;
+        return sum;
+      });
+      console.log(categorySum);
+      if (FinalTotal.length > 0)
+        return FinalTotal.reduce((curr, next) => curr + next);
+    });
+    
   };
   useEffect(() => {
     setGetTotalPrice(getTotalPrice(Mycontext));
@@ -113,7 +126,7 @@ export function CartTotals({
         let frais_id = UserData.adress.id;
         let frais = data.filter((el) => el.id === frais_id);
         setFraisLivraison(frais[0]);
-        console.log(frais);
+        // console.log(frais);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -154,7 +167,10 @@ export function CartTotals({
                 </div>
               );
             }
-            if (FraisLivraison.isActived && GetTotalPrice < 20)
+            if (
+              FraisLivraison.isActived &&
+              GetTotalPrice < FraisLivraison.price
+            )
               return (
                 <div
                   key={el.id}
@@ -176,13 +192,16 @@ export function CartTotals({
                     </svg>
                     <span>
                       Note: Grâce à votre adresse {FraisLivraison.name}, le
-                      minimum Prix pour la livraison est a partir de{" "}
+                      minimum Prix pour la livraison est a partir de
                       {formatEUR(FraisLivraison.price)}
                     </span>
                   </div>
                 </div>
               );
-            if (FraisLivraison.isActived && GetTotalPrice >= 20)
+            if (
+              FraisLivraison.isActived &&
+              GetTotalPrice >= FraisLivraison.price
+            )
               return (
                 <ApplyMethode
                   key={el.id}
