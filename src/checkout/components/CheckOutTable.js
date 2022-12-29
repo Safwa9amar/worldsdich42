@@ -10,11 +10,12 @@ function TableRow({
   amount,
   isMenu,
   supp,
-  Supp,
-  setSupp,
+  // Supp,
+  // setSupp,
   // cutting_off_status,
   // cutting_off,
 }) {
+  const [Supp, setSupp] = useState()
   useEffect(() => {
     try {
       if (supp !== null && supp.length > 0) {
@@ -146,10 +147,17 @@ export function CheckOutTable({ showTable, data }) {
                       data
                         .filter((el) => el.Categorie === category)
                         .map(
-                          (el) =>
-                            el.prix * el.amount +
-                            (el.isMenu  ? 2 * el.amount : 0) +
-                            Supp * el.amount
+                          (el) =>{
+                            if (el.supplement !== null && el.supplement.length > 0) {
+                              let totalSupp = el.supplement
+                                .map((el) => el.price)
+                                .reduce((curr, next) => curr + next);
+                              return el.prix * el.amount + (el.isMenu  ? 2 * el.amount : 0)  + totalSupp * el.amount
+                            } else {
+
+                              return el.prix * el.amount + (el.isMenu  ? 2 * el.amount : 0) 
+                            }
+                          }
                         )
                         .reduce((curr, next) => curr + next),
                       data.filter((el) => el.Categorie === category)[0]

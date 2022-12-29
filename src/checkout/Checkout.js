@@ -71,7 +71,7 @@ const Checkout = ({ setcheckBoxState, setStorage }) => {
                 setStorage={setStorage}
                 UserData={UserData}
               />
-              <label className="btn btn-circle swap swap-rotate fixed bottom-5 right-10 z-50 md:hidden">
+              <label className="btn btn-circle swap swap-rotate fixed bottom-0 right-10 z-50 md:hidden">
                 <input
                   onChange={() => setshowTable(!showTable)}
                   type="checkbox"
