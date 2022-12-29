@@ -19,7 +19,7 @@ import { formatEUR } from "../helpers/currencyFormatter";
 const leadingActions = () => (
   <LeadingActions>
     <SwipeAction onClick={() => console.info("swipe action triggered")}>
-      Voire votre Commande
+      ...
     </SwipeAction>
   </LeadingActions>
 );
@@ -106,9 +106,9 @@ const CartItem = (props) => {
     // console.log(count);
   }, [count, _price]);
   return (
-    <div className=" w-full h-fit flex items-center justify-between bg-neutral rounded-xl px-2 select-none	cursor-grab ">
+    <div className=" w-full h-fit flex items-center justify-between bg-neutral hover:bg-neutral-focus rounded-xl px-2 select-none	cursor-grab ">
       <figure>
-        <img className="h-[100px] w-[100px]" src={img} alt={header} />
+        <img className="h-[50px] w-[50px] p-2 rounded-md" src={img} alt={header} />
       </figure>
       <p>{header}</p>
       <p className="flex flex-col">
@@ -157,11 +157,11 @@ function Cart({
       </button>
       <div className="px-2 my-10 w-full h-full text-white   gap-10 flex flex-col items-center  text-center">
         <h1 className="text-2xl text-white font-bold">Cart</h1>
-        <p className="flex items-center gap-2">
+        <p className="flex items-center gap-2 alter alert-info ">
           <MdOutlineSwipe />
           glisser à gauche pour supprimer l'élément
-          <br />
-          glisser à droit pour voire votre cammande
+          {/* <br /> */}
+          {/* glisser à droit pour voire votre cammande */}
         </p>
         <SwipeableList className="overflow-hidden  w-full overflow-y-scroll">
           {MyCheckout?.map((el) => {
