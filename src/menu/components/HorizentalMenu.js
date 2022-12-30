@@ -32,7 +32,7 @@ const MenuItem = ({ icon, text, isActive, id }) => {
     <Link
       href="/store/menu"
       to={`/store/menu/category?id=${id}`}
-      className={` flex items-center  flex-1 gap-2 mx-6 w-full text-${color} ${
+      className={` flex items-center  flex-1 gap-2 w-full text-${color} ${
         isActive ? "font-bold shadow-md shadow-[#5B6D5B] " : ""
       }`}
     >
@@ -50,12 +50,12 @@ const HorizentalMenu = () => {
   const categories = React.useContext(Categories);
 
   return (
-    <div className="sticky top-0 z-50 bg-[#1E1E1E]">
+    <div className="sticky top-0  z-50">
       <Carousel
         keyBoardControl={true}
-        containerClass="w-full md:bg-[#1E1E1E] py-4 md:p-6 md:my-6 border-b-2 border-b-[#5B6D5B]"
+        containerClass="w-full  py-4 md:p-6 md:my-6 bg-[#272935] shadow-lg shadow-gray-800"
         responsive={responsive}
-        itemClass="!w-max"
+        itemClass="!w-max badge !p-4 !mx-2 !hover:shadow-xl bg-[#28231B]"
       >
         {categories.map((el) => (
           <MenuItem  key={el.id} id={el.id} icon={el.icon} text={el.name} />

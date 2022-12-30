@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 // import App from "./App";
 import "./index.css";
 import "./loader.css";
+import Loader from "./asstes/loader.gif";
 import CategoryContextProvider from "./context/categorycontext";
 import CredentielContextProvider from "./context/CredentielContext";
 import URLContextProvider from "./helpers/UrlProvider";
@@ -13,10 +14,9 @@ const App = lazy(() => import("./App"));
 // generate sipper for suspense fallback
 const SuspenseFallback = () => {
   return (
-    <div
-      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[25px] h-[25px] loader ease-linear rounded-full border-8 border-t-8 border-gray-200 "
-      role="status"
-    ></div>
+    <div className="w-screen h-screen flex justify-center items-center bg-[#1b1d21]">
+      <img className="w-[600px] h-[500px]" src={Loader} alt="loading...." />
+    </div>
   );
 };
 

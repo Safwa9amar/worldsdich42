@@ -7,7 +7,7 @@ export function GridSreenMenu({ handleHide }) {
   // const [ContextData] = useState(categories);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-10 place-items-center md:m-20  ">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-24 place-items-center md:m-20  ">
       {categories.map((el) => {
         const { id, name, img } = el;
         return (

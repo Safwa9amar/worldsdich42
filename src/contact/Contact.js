@@ -47,11 +47,11 @@ const Contact = () => {
         opacity: [0.5, 0.7, 0.9, 1],
         translateY: ["120px", "0px"],
       }}
-      style={{
-        backgroundImage: `url(${botiqueFronImg})`,
-        backgroundAttachment: "fixed",
-        backgroundSize: "100% 100%",
-      }}
+      // style={{
+      //   backgroundImage: `url(${botiqueFronImg})`,
+      //   backgroundAttachment: "fixed",
+      //   backgroundSize: "100% 100%",
+      // }}
       className="md:mx-[2.5vw] md:w-[95vw] pb-20 flex flex-col items-center "
     >
       <div className="w-[95%] text-black bg-white md:w-1/2 m-4 p-4 rounded-lg">

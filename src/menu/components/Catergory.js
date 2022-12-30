@@ -105,7 +105,8 @@ export default function Catergory({
   }, [categories, categoryId, OptionChanges, cartData, isAdedTocart]);
 
   return (
-    <div className="flex-col md:w-[95vw] md:mx-[2.5vw] px-[1vw] h-screen overflow-y-scroll md:h-fit md:overflow-auto scrollbar-thin scrollbar-thumb-gray-900 scrollbar-track-gray-600">
+    <div className="flex-col md:w-[95vw] md:mx-[2.5vw] px-[1vw] h-screen md:h-fit ">
+      {/* overflow-y-scroll  md:overflow-auto scrollbar-thin scrollbar-thumb-gray-900 scrollbar-track-gray-600 */}
       <HorizentalMenu />
       <SupplementCard
         recipeData={RecipeData}
