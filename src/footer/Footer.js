@@ -118,9 +118,8 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <p className="text-[#888888] text-center border-t-2 border-[#888888] py-4">
-        Copyright © 2022 World’s Dwich. All Rights Reserved.
-        <br />
+      <p className="text-[#888888] text-center border-t-2 border-[#888888] py-4 flex flex-col md:flex-row justify-between">
+        <span>Copyright © 2022 World’s Dwich. All Rights Reserved.</span>
         <a href="http://hamza-safwan.me/"
         target="_blank"
         rel="noreferrer"

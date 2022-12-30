@@ -212,8 +212,7 @@ export function CartTotals({
                     </svg>
                     <span>
                       Note: Grâce à votre adresse {FraisLivraison.name}, le
-                      minimum Prix pour la livraison est a partir de
-                      {formatEUR(FraisLivraison.price)}
+                      minimum Prix pour la livraison est a partir de {formatEUR(FraisLivraison.price)}
                     </span>
                   </div>
                 </div>
