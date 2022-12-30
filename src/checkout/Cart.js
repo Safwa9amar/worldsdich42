@@ -143,7 +143,7 @@ function Cart({
       className={`
         ${isVisisble ? "" : "opacity-0 pointer-events-none"}
         transition-opaciy
-        duration-500
+        duration-300
         absolute top-0 right-0 z-[9999] w-full h-screen bg-[#121618fb]
         lg:w-1/3
         overflow-hidden

@@ -307,7 +307,7 @@ export const CatergoryItem = (props) => {
                 category_ID !== 10 ? <MenuBtn  updatePrice={updatePrice} ToggleCart={ToggleCart} /> : ''
               )}
             </div>
-            {etat && (
+            {etat && description.length > 1 && (
               <button
                 onClick={handleOptionclick}
                 className={`${
