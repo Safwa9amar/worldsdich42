@@ -63,7 +63,7 @@ return (
     }}
     className={`w-full md:w-[95vw] md:mx-[2.5vw]
                md:mt-5 rounded-xl 
-               ${Location.pathname.startsWith("/store/menu") ? "" : "h-1/2"}`}
+               ${Location.pathname.startsWith("/store/menu") ? "" : "md:h-1/2"}`}
   >
     <div className="h-full w-full p-4  text-white ">
       <div className="flex justify-between items-center w-full relative">
