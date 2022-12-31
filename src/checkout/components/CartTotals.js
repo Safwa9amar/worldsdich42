@@ -27,12 +27,10 @@ export function CartTotals({
   setcheckBoxState,
   setStorage,
   UserData,
-  isloged
+  isloged,
 }) {
-  const CammndUri = `${useContext(SERVER_URI)}/CommandType`;
-  const FraisLivraisonUri = `${useContext(
-    SERVER_URI
-  )}/settings/api/livraison_adresses`;
+  const URI = useContext(SERVER_URI);
+
   // fraislivraison state
   const [FraisLivraison, setFraisLivraison] = useState(0);
   const [isPlace, setPlace] = React.useState(false);
@@ -40,6 +38,8 @@ export function CartTotals({
   const [isDelivery, setDelivery] = React.useState(false);
   const [GetTotalPrice, setGetTotalPrice] = React.useState(0);
   const [CammndType, setCammndType] = useState([]);
+  const [promotionTotal, setPromotionTotal] = useState(0);
+
   const [Note, setNote] = useState("");
   let DamandeType = [
     { id: 1, type: "sur place", bol: isPlace },
@@ -69,7 +69,9 @@ export function CartTotals({
       let obj = {
         category: el,
         listItems: data
-          .map((_el) => { if (_el.category === el) return _el})
+          .map((_el) => {
+            if (_el.category === el) return _el;
+          })
           .filter((el) => el !== undefined),
       };
 
@@ -78,7 +80,7 @@ export function CartTotals({
     });
 
     let FinalTotal = [0];
-     FinalData.map((el) => {
+    FinalData.map((el) => {
       let categorySum = el.listItems.map((el) => {
         let [price, amount, isMenu, supp, cutting_off, cutting_off_status] = [
           Math.abs(el.prix),
@@ -125,7 +127,7 @@ export function CartTotals({
   }, [isPlace, isEmporter, isDelivery, Mycontext, GetTotalPrice]);
 
   useEffect(() => {
-    fetch(CammndUri, {
+    fetch(`${URI}/CommandType`, {
       method: "GET",
       cors: "no-cors",
     })
@@ -134,9 +136,9 @@ export function CartTotals({
         setCammndType(data);
       })
       .catch((err) => console.log(err));
-  }, [CammndUri]);
+  }, [URI]);
   useEffect(() => {
-    fetch(FraisLivraisonUri, {
+    fetch(`${URI}/settings/api/livraison_adresses`, {
       method: "GET",
       cors: "no-cors",
     })
@@ -148,7 +150,18 @@ export function CartTotals({
         // console.log(frais);
       })
       .catch((err) => console.log(err));
-  }, [isloged]);
+
+    // fetch /settings/api/globalPromotion
+    fetch(`${URI}/settings/api/globalPromotion`, {
+      method: "GET",
+      cors: "no-cors",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setPromotionTotal(data);
+      })
+      .catch((err) => console.log(err));
+  }, [isloged,Mycontext]);
 
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
@@ -211,7 +224,8 @@ export function CartTotals({
                     </svg>
                     <span>
                       Note: Grâce à votre adresse {FraisLivraison.name}, le
-                      minimum Prix pour la livraison est a partir de {formatEUR(FraisLivraison.price)}
+                      minimum Prix pour la livraison est a partir de{" "}
+                      {formatEUR(FraisLivraison.price)}
                     </span>
                   </div>
                 </div>
@@ -240,8 +254,19 @@ export function CartTotals({
           <p>{formatEUR(GetTotalPrice)}</p>
         </div>
         <div className="flex gap-2 justify-between">
-          <p className="text-info">Subtotal</p>
-          <p>€{GetTotalPrice}</p>
+          <p className="text-info">
+            Subtotal
+            {promotionTotal.value > 0 && (
+              <span className="ml-2 badge badge-success">
+                -{promotionTotal.value}%
+              </span>
+            )}
+          </p>
+          <p>
+            {promotionTotal.value > 0
+              ? formatEUR(calculeCoupon(GetTotalPrice, promotionTotal.value))
+              : formatEUR(GetTotalPrice)}
+          </p>
         </div>
         {isDelivery && (
           <>
@@ -254,9 +279,18 @@ export function CartTotals({
         <div className="flex gap-2 justify-between">
           <p className="text-info">Total</p>
           <p>
-            {isDelivery
-              ? formatEUR(GetTotalPrice + FraisLivraison?.frais_price)
-              : formatEUR(GetTotalPrice)}
+            {
+              isDelivery
+                ? promotionTotal.value > 0
+                  ? formatEUR(
+                      calculeCoupon(GetTotalPrice, promotionTotal.value) +
+                      FraisLivraison?.frais_price
+                    )
+                  : formatEUR(GetTotalPrice + FraisLivraison?.frais_price) //formatEUR(GetTotalPrice + FraisLivraison?.frais_price)
+                : promotionTotal.value > 0
+                ? formatEUR(calculeCoupon(GetTotalPrice, promotionTotal.value))
+                : formatEUR(GetTotalPrice) //formatEUR(GetTotalPrice)
+            }
           </p>
         </div>
         <div className="flex flex-col gap-2 justify-between">

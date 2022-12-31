@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 // import bg_title from "../asstes/bg_title.jpg";
-import botiqueFronImg from "../asstes/botiqueFronImg.jpg";
+// import botiqueFronImg from "../asstes/botiqueFronImg.jpg";
 import { FiPhoneCall } from "react-icons/fi";
 // import { BiTime } from "react-icons/bi";
 import { motion } from "framer-motion";

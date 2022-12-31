@@ -14,18 +14,16 @@ import { Categories } from "./context/categorycontext";
 import SupplementContextProvider from "./context/suplementContext";
 import CartDataContextProvider from "./context/LocalStorageContext";
 import CheckoutDataContextProvider from "./context/checkoutContext";
-import CredentielModel from "./helpers/CredentielModel";
+// import CredentielModel from "./helpers/CredentielModel";
 import { ClientStatus } from "./context/CientStatus";
 import ErrorPage from "./404/404";
-
-
 
 function App({ URI }) {
   const CategoryContext = React.useContext(Categories);
   const [isVisisble, setCartVisisble] = React.useState(false);
   const [isAdedTocart, setIsAdedTocart] = React.useState(false);
   const [checkBoxState, setcheckBoxState] = React.useState(false);
-  const isClientActive = React.useContext(ClientStatus)
+  const isClientActive = React.useContext(ClientStatus);
   const [Storage, setStorage] = React.useState(
     localStorage.getItem("cartData") !== null
       ? localStorage.getItem("cartData")
@@ -56,83 +54,87 @@ function App({ URI }) {
   // }, [getCartBoudaries]);
   return (
     <>
-      {
-        isClientActive.isActivated ?
-         <SupplementContextProvider>
-      <CartDataContextProvider data={Storage}>
-        <CheckoutDataContextProvider
-          isAdedTocart={isAdedTocart}
-          isVisisble={isVisisble}
-          isDeletetedFromTocart={isDeletetedFromTocart}
-          Storage={Storage}
-          CategoryContext={CategoryContext}
-        >
-          <div
-            data-theme="dracula"
-            id="scroller"
-            className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
-          >
-            <BrowserRouter>
-              <CredentielModel
+      {isClientActive.isActivated ? (
+        <SupplementContextProvider>
+          <CartDataContextProvider data={Storage}>
+            <CheckoutDataContextProvider
+              isAdedTocart={isAdedTocart}
+              isVisisble={isVisisble}
+              isDeletetedFromTocart={isDeletetedFromTocart}
+              Storage={Storage}
+              CategoryContext={CategoryContext}
+            >
+              <div
+                data-theme="dracula"
+                id="scroller"
+                className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
+              >
+                <BrowserRouter>
+                  {/* <CredentielModel
                 setcheckBoxState={setcheckBoxState}
                 checkBoxState={checkBoxState}
-              />
-              <ScrollToTop>
-                <Header
-                  setCartVisisble={setCartVisisble}
-                  isAdedTocart={isAdedTocart}
-                  isDeletetedFromTocart={isDeletetedFromTocart}
-                  handleCartBoudries={handleCartBoudries}
-                />
-                <Cart
-                  isVisisble={isVisisble}
-                  setCartVisisble={setCartVisisble}
-                  isAdedTocart={isAdedTocart}
-                  handleDeletetedFromTocart={handleDeletetedFromTocart}
-                  handleStorageEdit={handleStorageEdit}
-                />
-                <Routes>
-                  <Route exact path="/store/*" element={<Home />} />
-                  <Route exact path="/store/" element={<Home />} />
-                  <Route
-                    exact
-                    path="/store/menu/category"
-                    element={
-                      <Catergory
-                        handleStorageEdit={handleStorageEdit}
-                        handleAdedTocart={handleAdedTocart}
-                        isDeletetedFromTocart={isDeletetedFromTocart}
-                        hybrid_idFroDeletion={hybrid_idFroDeletion}
-                        getCartBoudaries={getCartBoudaries}
-                        setcheckBoxState={setcheckBoxState}
+              /> */}
+                  <ScrollToTop>
+                    <Header
+                      setCartVisisble={setCartVisisble}
+                      isAdedTocart={isAdedTocart}
+                      isDeletetedFromTocart={isDeletetedFromTocart}
+                      handleCartBoudries={handleCartBoudries}
+                    />
+                    <Cart
+                      isVisisble={isVisisble}
+                      setCartVisisble={setCartVisisble}
+                      isAdedTocart={isAdedTocart}
+                      handleDeletetedFromTocart={handleDeletetedFromTocart}
+                      handleStorageEdit={handleStorageEdit}
+                    />
+                    <Routes>
+                      <Route exact path="/store/*" element={<Home />} />
+                      <Route exact path="/store/" element={<Home />} />
+                      <Route
+                        exact
+                        path="/store/menu/category"
+                        element={
+                          <Catergory
+                            handleStorageEdit={handleStorageEdit}
+                            handleAdedTocart={handleAdedTocart}
+                            isDeletetedFromTocart={isDeletetedFromTocart}
+                            hybrid_idFroDeletion={hybrid_idFroDeletion}
+                            getCartBoudaries={getCartBoudaries}
+                            setcheckBoxState={setcheckBoxState}
+                          />
+                        }
                       />
-                    }
-                  />
-                  <Route
-                    exact
-                    path="/store/checkout"
-                    element={
-                      <Checkout
-                        setcheckBoxState={setcheckBoxState}
-                        checkBoxState={checkBoxState}
-                        setStorage={setStorage}
+                      <Route
+                        exact
+                        path="/store/checkout"
+                        element={
+                          <Checkout
+                            setcheckBoxState={setcheckBoxState}
+                            checkBoxState={checkBoxState}
+                            setStorage={setStorage}
+                          />
+                        }
                       />
-                    }
-                  />
-                  <Route exact path="/store/menu" element={<Menu />} />
-                  <Route exact path="/store/contact" element={<Contact />} />
-                </Routes>
-              </ScrollToTop>
-              <Footer />
-            </BrowserRouter>
-          </div>
-        </CheckoutDataContextProvider>
-      </CartDataContextProvider>
-    </SupplementContextProvider>
- : <ErrorPage/>}
-</>
-
-)
+                      <Route exact path="/store/menu" element={<Menu />} />
+                      <Route
+                        exact
+                        path="/store/contact"
+                        element={<Contact />}
+                      />
+                    </Routes>
+                  </ScrollToTop>
+                  <Footer />
+                </BrowserRouter>
+              </div>
+            </CheckoutDataContextProvider>
+          </CartDataContextProvider>
+        </SupplementContextProvider>
+      ) : (
+        <ErrorPage />
+      )}
+    </>
+  );
 }
 
 export default App;
