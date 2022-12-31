@@ -4,7 +4,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link, useLocation } from "react-router-dom";
 import { Categories } from "../../context/categorycontext";
-
+import ALl from "../icons/all.svg";
 const responsive = {
   superLargeDesktop: {
     breakpoint: { max: 4000, min: 3000 },
@@ -23,7 +23,7 @@ const responsive = {
     items: 2,
   },
 };
-const MenuItem = ({ icon, text, isActive, id }) => {
+const MenuItem = ({ icon, text, isActive, id ,Length}) => {
   let { search } = useLocation();
   let categoryId = Math.abs(search.replace(/^\D+/g, ""));
   const color = categoryId === id ? "[#5B6D5B]" : "white";
@@ -41,7 +41,7 @@ const MenuItem = ({ icon, text, isActive, id }) => {
         src={icon}
         alt={text}
       />
-      <p className="text-md md:text-lg capitalize w-full">{text}</p>
+      <p className="text-md md:text-lg capitalize w-full">{text} {Length ? `(${Length})` : ""}</p>
     </Link>
   );
 };
@@ -49,6 +49,7 @@ const MenuItem = ({ icon, text, isActive, id }) => {
 const HorizentalMenu = () => {
   const categories = React.useContext(Categories);
 
+  // const dataLength = categories.map((el) => el.list.length).reduce((a, b) => a + b, 0);
   return (
     <div className="sticky top-0  z-50">
       <Carousel
@@ -57,8 +58,10 @@ const HorizentalMenu = () => {
         responsive={responsive}
         itemClass="!w-max badge !p-4 !mx-2 !hover:shadow-xl bg-[#28231B]"
       >
+          {/* <MenuItem  key={300} id={"All"} text={`Tout (${dataLength})`} icon={ALl} /> */}
+
         {categories.map((el) => (
-          <MenuItem  key={el.id} id={el.id} icon={el.icon} text={el.name} />
+          <MenuItem  key={el.id} id={el.id} icon={el.icon} text={el.name} Length={el.list.length} />
         ))}
       </Carousel>
     </div>

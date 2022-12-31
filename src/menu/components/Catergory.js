@@ -63,7 +63,6 @@ export default function Catergory({
   const [cartData, setCartData] = React.useState([]);
 
   const handleAddToCart = (obj) => {
-    
     let storage = JSON.parse(MyStorage);
     let optionData = OptionChanges.map((el) => {
       let parent = el.split("-")[0].match(/\d+/g).join("");
@@ -75,8 +74,8 @@ export default function Catergory({
     });
     let changes = {
       id: obj.id,
-      isMenu: obj.SelectedBoisson !== null ? obj.isMenu : false ,
-      SelectedBoisson : obj.SelectedBoisson,
+      isMenu: obj.SelectedBoisson !== null ? obj.isMenu : false,
+      SelectedBoisson: obj.SelectedBoisson,
       hybrid_id: `${obj.id}_${categoryId}`,
       category: categoryId,
       amount: 1,
@@ -97,6 +96,14 @@ export default function Catergory({
   };
 
   React.useEffect(() => {
+    // if (categoryId === 0) {
+    //   let arr = [];
+    //   categories.map((el) => {
+    //     return arr.push(...el.list);
+    //   });
+    //   setcategoryItems(arr);
+    // } else {
+    // }
     let newData = filterCategoryItems(categories, categoryId);
     setcategoryItems(newData);
     // localStorage.getItem("suppData") || localStorage.setItem("suppData", "[]");
@@ -129,7 +136,7 @@ export default function Catergory({
             recipes,
             img_url,
             with_menu,
-            etat
+            etat,
           } = el;
           return (
             <CatergoryItem
