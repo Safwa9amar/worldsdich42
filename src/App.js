@@ -15,13 +15,17 @@ import SupplementContextProvider from "./context/suplementContext";
 import CartDataContextProvider from "./context/LocalStorageContext";
 import CheckoutDataContextProvider from "./context/checkoutContext";
 import CredentielModel from "./helpers/CredentielModel";
+import { ClientStatus } from "./context/CientStatus";
+import ErrorPage from "./404/404";
+
+
 
 function App({ URI }) {
   const CategoryContext = React.useContext(Categories);
   const [isVisisble, setCartVisisble] = React.useState(false);
   const [isAdedTocart, setIsAdedTocart] = React.useState(false);
   const [checkBoxState, setcheckBoxState] = React.useState(false);
-
+  const isClientActive = React.useContext(ClientStatus)
   const [Storage, setStorage] = React.useState(
     localStorage.getItem("cartData") !== null
       ? localStorage.getItem("cartData")
@@ -51,7 +55,10 @@ function App({ URI }) {
   //   getCartBoudaries!== undefined && console.log(getCartBoudaries.getBoundingClientRect());
   // }, [getCartBoudaries]);
   return (
-    <SupplementContextProvider>
+    <>
+      {
+        isClientActive.isActivated ?
+         <SupplementContextProvider>
       <CartDataContextProvider data={Storage}>
         <CheckoutDataContextProvider
           isAdedTocart={isAdedTocart}
@@ -122,7 +129,10 @@ function App({ URI }) {
         </CheckoutDataContextProvider>
       </CartDataContextProvider>
     </SupplementContextProvider>
-  );
+ : <ErrorPage/>}
+</>
+
+)
 }
 
 export default App;

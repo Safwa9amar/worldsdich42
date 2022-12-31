@@ -7,6 +7,8 @@ import Loader from "./asstes/loader.gif";
 import CategoryContextProvider from "./context/categorycontext";
 import CredentielContextProvider from "./context/CredentielContext";
 import URLContextProvider from "./helpers/UrlProvider";
+import ClientStatusContextProvider from "./context/CientStatus";
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const App = lazy(() => import("./App"));
@@ -23,6 +25,7 @@ const SuspenseFallback = () => {
 root.render(
   <React.StrictMode>
     <URLContextProvider>
+      <ClientStatusContextProvider>
       <CredentielContextProvider>
         <CategoryContextProvider>
           <Suspense fallback={<SuspenseFallback />}>
@@ -30,6 +33,7 @@ root.render(
           </Suspense>
         </CategoryContextProvider>
       </CredentielContextProvider>
+      </ClientStatusContextProvider>
     </URLContextProvider>
   </React.StrictMode>
 );

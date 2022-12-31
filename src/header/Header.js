@@ -1,12 +1,12 @@
 import React from "react";
-import nav_bg from "../asstes/bg/product.jpg";
+// import nav_bg from "../asstes/bg/product.jpg";
 import Logo from "../asstes/logo.png";
 import burger from "../images/buger.png";
 import { MdTopHeader, SmTopHeader } from "./TopHeader";
 import { useLocation } from "react-router-dom";
 import food_dilevery from "../images/food_dilevery.png";
 import food_dilevery2 from "../images/food_dilevery2.png";
-import botiqueFronImg from "../asstes/botiqueFronImg.jpg";
+// import botiqueFronImg from "../asstes/botiqueFronImg.jpg";
 
 export default function Header({
   setCartVisisble,
@@ -58,10 +58,13 @@ export default function Header({
 return (
   <div
     style={{
-      backgroundImage: `url(${nav_bg})`,
+      // backgroundImage: `url(${nav_bg})`,
+      backgroundImage: `url(${"https://images.pexels.com/photos/54455/cook-food-kitchen-eat-54455.jpeg?cs=srgb&dl=pexels-pixabay-54455.jpg&fm=jpg"})`,
       backgroundSize: "cover",
     }}
-    className={`w-full md:w-[95vw] md:mx-[2.5vw]
+    className={`
+               transition-all 
+               w-full md:w-[95vw] md:mx-[2.5vw]
                md:mt-5 rounded-xl 
                ${Location.pathname.startsWith("/store/menu") ? "" : "md:h-1/2"}`}
   >

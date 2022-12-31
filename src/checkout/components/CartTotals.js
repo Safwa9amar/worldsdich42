@@ -27,6 +27,7 @@ export function CartTotals({
   setcheckBoxState,
   setStorage,
   UserData,
+  isloged
 }) {
   const CammndUri = `${useContext(SERVER_URI)}/CommandType`;
   const FraisLivraisonUri = `${useContext(
@@ -68,9 +69,7 @@ export function CartTotals({
       let obj = {
         category: el,
         listItems: data
-          .map((_el) => {
-            if (_el.category === el) return _el;
-          })
+          .map((_el) => { if (_el.category === el) return _el})
           .filter((el) => el !== undefined),
       };
 
@@ -79,7 +78,7 @@ export function CartTotals({
     });
 
     let FinalTotal = [0];
-    FinalData = FinalData.map((el) => {
+     FinalData.map((el) => {
       let categorySum = el.listItems.map((el) => {
         let [price, amount, isMenu, supp, cutting_off, cutting_off_status] = [
           Math.abs(el.prix),
@@ -149,7 +148,7 @@ export function CartTotals({
         // console.log(frais);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [isloged]);
 
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
