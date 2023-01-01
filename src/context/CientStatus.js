@@ -19,7 +19,7 @@ import React, {
     );
   
     let getClientStatus = useCallback(async () => {
-      const data = await fetch(`${ClientStatus_SERVER_URI}/client_status`).then((res) =>
+      const data = await fetch(`${ClientStatus_SERVER_URI}/settings/api/client_status`).then((res) =>
         res.json()
       );
       setStatus(data);
