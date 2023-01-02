@@ -1,11 +1,13 @@
 import React from "react";
-// import nav_bg from "../asstes/bg/product.jpg";
+// import nav_bg from "../asstes/bg/header.png";
 import Logo from "../asstes/logo.png";
-import burger from "../images/buger.png";
-import { MdTopHeader, SmTopHeader } from "./TopHeader";
-import { useLocation } from "react-router-dom";
-import food_dilevery from "../images/food_dilevery.png";
+// import burger from "../images/buger.png";
+import { CartIndicator, MdTopHeader, SmTopHeader } from "./TopHeader";
+import { Link, useLocation } from "react-router-dom";
+// import food_dilevery from "../images/food_dilevery.png";
 import food_dilevery2 from "../images/food_dilevery2.png";
+import { motion } from "framer-motion";
+
 // import botiqueFronImg from "../asstes/botiqueFronImg.jpg";
 
 export default function Header({
@@ -53,126 +55,225 @@ export default function Header({
   // </div>
   // );
 
-  
-
-return (
-  <div
-    style={{
-      // backgroundImage: `url(${nav_bg})`,
-      backgroundImage: `url(${"https://images.pexels.com/photos/54455/cook-food-kitchen-eat-54455.jpeg?cs=srgb&dl=pexels-pixabay-54455.jpg&fm=jpg"})`,
-      backgroundSize: "cover",
-    }}
-    className={`
+  return (
+    <div
+      style={{
+        // backgroundImage: `url(${nav_bg})`,
+        // backgroundImage: `url(${"https://images.pexels.com/photos/54455/cook-food-kitchen-eat-54455.jpeg?cs=srgb&dl=pexels-pixabay-54455.jpg&fm=jpg"})`,
+        backgroundSize: "100% 100%",
+      }}
+      className={`
                transition-all 
-               w-full md:w-[95vw] md:mx-[2.5vw]
-               md:mt-5 rounded-xl 
-               ${Location.pathname.startsWith("/store/menu") ? "" : "md:h-1/2"}`}
-  >
-    <div className="h-full w-full p-4  text-white ">
-      <div className="flex justify-between items-center w-full relative">
-        <div className="lg:flex items-center hidden">
-          <img className="w-[50px] h-[50px] " src={Logo} alt="logo" />
-          <h4 className="text-[#5B6D5B] font-bold m-0">World's Dwich 42</h4>
+               bg-bg-header
+               md:bg-bg-md-header
+               bg-fixed
+               
+               bg-[100% 100%]
+               w-full
+               rounded-xl 
+               ${
+                 Location.pathname.startsWith("/store/menu") ||
+                 Location.pathname.startsWith("/store/checkout") ||
+                 Location.pathname.startsWith("/store/contact")
+                   ? ""
+                   : "h-screen "
+               }`}
+      //  md:w-[95vw] md:mx-[2.5vw] md:mt-5
+    >
+      <div className="h-full w-full p-4 text-white flex flex-col gap-4 items-center ">
+        <div className="flex justify-between items-center w-full md:w-5/6 relative md:p-6 ">
+          <Link to={"/store"} className="lg:flex items-center hidden">
+            <img className="w-[50px] h-[50px] " src={Logo} alt="logo" />
+            <h4 className="text-white m-0 text-xl font-DancingScript font-bold">
+              World's Dwich 42
+            </h4>
+          </Link>
+
+          <MdTopHeader
+            cartElementCount={5}
+            closeCart={closeCart}
+            openCart={openCart}
+            isAdedTocart={isAdedTocart}
+            isDeletetedFromTocart={isDeletetedFromTocart}
+            handleCartBoudries={handleCartBoudries}
+          />
+          <SmTopHeader
+            closeCart={closeCart}
+            openCart={openCart}
+            isAdedTocart={isAdedTocart}
+            isDeletetedFromTocart={isDeletetedFromTocart}
+            handleCartBoudries={handleCartBoudries}
+          />
+          <div className="hidden md:flex items-center gap-2">
+           <CartIndicator
+              openCart={openCart}
+              isAdedTocart={isAdedTocart}
+              isDeletetedFromTocart={isDeletetedFromTocart}
+              handleCartBoudries={handleCartBoudries}
+              className={"lg:relative hidden lg:block"}
+            />
+
+            <Link
+              className="text-white btn  btn-sm btn-accent capitalize rounded-3xl "
+              to="/store/menu"
+            >
+              Commandez
+            </Link>
+          </div>
         </div>
-        <MdTopHeader
-          cartElementCount={5}
-          closeCart={closeCart}
-          openCart={openCart}
-          isAdedTocart={isAdedTocart}
-          isDeletetedFromTocart={isDeletetedFromTocart}
-          handleCartBoudries={handleCartBoudries}
-        />
-        <SmTopHeader
-          closeCart={closeCart}
-          openCart={openCart}
-          isAdedTocart={isAdedTocart}
-          isDeletetedFromTocart={isDeletetedFromTocart}
-          handleCartBoudries={handleCartBoudries}
-        />
-      </div>
-      
-      
-      {!Location.pathname.startsWith("/store/menu") && (
-        <div className="flex justify-between lg:mx-6 w-full lg:mt-4 ">
-          {Location.pathname.startsWith("/store/checkout") && (
-            <div className="relative flex items-center justify-center w-full">
-              <img
-                className="md:w-[180px] md:h-[80px] h-[50px]  absolute -top-8 right-14 lg:-top-12 lg:right-1/3"
-                src={food_dilevery}
-                alt="food_dilevery"
-              />
-              <img
-                className="lg:w-[300px] lg:h-[200px] w-[120px] h-[100px] absolute  -bottom-6 -left-4   lg:left-1/4 lg:-bottom-14"
-                src={food_dilevery2}
-                alt="food_dilevery2"
-              />
-              <div className="hero">
-                <div className="hero-content text-center">
-                  <div className="max-w-md">
-                    <h1
-                      style={{
-                        fontFamily: "Rubik Wet Paint, cursive",
-                      }}
-                      className="text-5xl md:text-8xl font-bold"
-                    >
-                      checkout
-                    </h1>
-                    <p className="py-6 ">
-                      Sur place , à emporter et en livraison
-                    </p>
-                  </div>
+        {!Location.pathname.startsWith("/store/menu") &&
+          !Location.pathname.startsWith("/store/contact") &&
+          !Location.pathname.startsWith("/store/checkout") && (
+            <div className="md:p-4 mt-10 md:mt-20 w-full md:w-5/6 flex flex-col gap-4">
+              <motion.h1
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: 1,
+                  transition: { delay: 0.5 },
+                }}
+                className="text-5xl md:text-[4rem] font-DancingScript "
+              >
+                Restaurant rapide halal
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: 1,
+                  transition: { delay: 1 },
+                }}
+                className="text-lg md:text-xl font-light max-w-[700px]  "
+              >
+                Vous propose sandwichs tacos au four burgers fait maison pizza
+                sur place ou à emporter et en livraison, avec des produits
+                frais. (Escalope, kefta maison...), Une salle climatisée.
+                <br />
+                On dispose de 24 places assises. On dispose également de deux
+                chaises hautes pour bébé. <br />
+                Une Télé est à votre disposition en attendant votre commande.
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: 1,
+                  transition: { delay: 1.2 },
+                }}
+                className="text-white btn btn-sm md:btn-md btn-accent capitalize w-fit  rounded-3xl "
+              >
+                <Link to="/store/menu">Commandez</Link>
+              </motion.p>
+            </div>
+          )}
+        {Location.pathname.startsWith("/store/checkout") && (
+          <div className="relative flex items-center justify-center w-full">
+            {/* <img
+          className="md:w-[180px] md:h-[80px] h-[50px]  absolute -top-8 right-14 lg:-top-12 lg:right-1/4"
+          src={food_dilevery}
+          alt="food_dilevery"
+        /> */}
+            <img
+              className="lg:w-[300px] lg:h-[200px] w-[120px] h-[100px] absolute  -bottom-6 -left-4   lg:left-1/4 lg:-bottom-14"
+              src={food_dilevery2}
+              alt="food_dilevery2"
+            />
+            <div className="hero">
+              <div className="hero-content text-center">
+                <div className="max-w-md">
+                  <h1
+                    style={{
+                      fontFamily: "Rubik Wet Paint, cursive",
+                    }}
+                    className="text-5xl md:text-6xl font-bold"
+                  >
+                    checkout
+                  </h1>
+                  <p className="py-6 ">
+                    Sur place , à emporter et en livraison
+                  </p>
                 </div>
               </div>
             </div>
-          )}
-          {!Location.pathname.startsWith("/store/checkout") && (
-            <div className="relative">
-              <div className="flex items-center lg:hidden">
-                <img className="w-[40px] h-[40px] " src={Logo} alt="logo" />
-                <h4 className="font-medium m-0">World's Dwich 42</h4>
-              </div>
-              <p
-                className="ml-5 text-2xl md:text-4xl lg:text-6xl"
-                style={{
-                  fontFamily: "Qwigley, cursive",
-                }}
-              >
-                Spécaile
-              </p>
-              <p
-                className="ml-[15vw] text-xl md:text-2xl lg:text-4xl font-bold"
-                style={{
-                  fontFamily: "Readex Pro, sans-serif",
-                  color: "#5B6D5B",
-                }}
-              >
-                Délicieux
-              </p>
-              <p
-                className="text-3xl md:text-4xl lg:text-6xl ml-10  text-shadow-lg text-shadow-white "
-                style={{
-                  fontFamily: "Rubik Wet Paint, cursive",
-                  textShadow: "40px 30px 30px #FFFFFF45",
-                }}
-              >
-                Burger
-              </p>
-              <p className="text-xs lg:text-lg hidden lg:block ml-20 mt-5">
-                Sur place , à emporter et en livraison
-              </p>
-            </div>
-          )}
-          {!Location.pathname.startsWith("/store/checkout") && (
-            <div className="w-1/2 lg:w-1/4">
-              <img className="w-full h-full" src={burger} alt="burger" />
-            </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
-
-
+// {!Location.pathname.startsWith("/store/menu") && (
+//   <div className="flex justify-between lg:mx-6 w-full lg:mt-4 ">
+//     {Location.pathname.startsWith("/store/checkout") && (
+//       <div className="relative flex items-center justify-center w-full">
+//         <img
+//           className="md:w-[180px] md:h-[80px] h-[50px]  absolute -top-8 right-14 lg:-top-12 lg:right-1/3"
+//           src={food_dilevery}
+//           alt="food_dilevery"
+//         />
+//         <img
+//           className="lg:w-[300px] lg:h-[200px] w-[120px] h-[100px] absolute  -bottom-6 -left-4   lg:left-1/4 lg:-bottom-14"
+//           src={food_dilevery2}
+//           alt="food_dilevery2"
+//         />
+//         <div className="hero">
+//           <div className="hero-content text-center">
+//             <div className="max-w-md">
+//               <h1
+//                 style={{
+//                   fontFamily: "Rubik Wet Paint, cursive",
+//                 }}
+//                 className="text-5xl md:text-8xl font-bold"
+//               >
+//                 checkout
+//               </h1>
+//               <p className="py-6 ">
+//                 Sur place , à emporter et en livraison
+//               </p>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     )}
+//     {!Location.pathname.startsWith("/store/checkout") && (
+//       <div className="relative">
+//         <div className="flex items-center lg:hidden">
+//           <img className="w-[40px] h-[40px] " src={Logo} alt="logo" />
+//           <h4 className="font-medium m-0">World's Dwich 42</h4>
+//         </div>
+//         <p
+//           className="ml-5 text-2xl md:text-4xl lg:text-6xl"
+//           style={{
+//             fontFamily: "Qwigley, cursive",
+//           }}
+//         >
+//           Spécaile
+//         </p>
+//         <p
+//           className="ml-[15vw] text-xl md:text-2xl lg:text-4xl font-bold"
+//           style={{
+//             fontFamily: "Readex Pro, sans-serif",
+//             color: "#5B6D5B",
+//           }}
+//         >
+//           Délicieux
+//         </p>
+//         <p
+//           className="text-3xl md:text-4xl lg:text-6xl ml-10  text-shadow-lg text-shadow-white "
+//           style={{
+//             fontFamily: "Rubik Wet Paint, cursive",
+//             textShadow: "40px 30px 30px #FFFFFF45",
+//           }}
+//         >
+//           Burger
+//         </p>
+//         <p className="text-xs lg:text-lg hidden lg:block ml-20 mt-5">
+//           Sur place , à emporter et en livraison
+//         </p>
+//       </div>
+//     )}
+//     {!Location.pathname.startsWith("/store/checkout") && (
+//       <div className="w-1/2 lg:w-1/4">
+//         <img className="w-full h-full" src={burger} alt="burger" />
+//       </div>
+//     )}
+//   </div>
+// )}

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HorizentalMenuData } from "../icons/data";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link, useLocation } from "react-router-dom";
 import { Categories } from "../../context/categorycontext";
-import ALl from "../icons/all.svg";
+// import ALl from "../icons/all.svg";
 const responsive = {
   superLargeDesktop: {
     breakpoint: { max: 4000, min: 3000 },
@@ -23,32 +23,27 @@ const responsive = {
     items: 2,
   },
 };
-const MenuItem = ({ icon, text, isActive, id ,Length}) => {
+const MenuItem = ({ icon, text, id, Length, setActiveItem }) => {
   let { search } = useLocation();
   let categoryId = Math.abs(search.replace(/^\D+/g, ""));
-  const color = categoryId === id ? "[#5B6D5B]" : "white";
 
+ 
   return (
     <Link
       href="/store/menu"
       to={`/store/menu/category?id=${id}`}
-      className={` flex items-center  flex-1 gap-2 w-full text-${color} ${
-        isActive ? "font-bold shadow-md shadow-[#5B6D5B] " : ""
-      }`}
+      className={` flex items-center  flex-1 gap-2 w-full badge !p-4 !hover:shadow-xl hover:bg-accent-focus hover:text-white  ${categoryId === id ? "badge-accent text-white" : ""} `}
     >
-      <img
-        className={`w-[25px] h-[35px] fill-${color} `}
-        src={icon}
-        alt={text}
-      />
-      <p className="text-md md:text-lg capitalize w-full">{text} {Length ? `(${Length})` : ""}</p>
+      <img className={`w-[25px] h-[35px]   `} src={icon} alt={text} />
+      <p className="text-md md:text-lg capitalize w-full">
+        {text} {Length ? `(${Length})` : ""}
+      </p>
     </Link>
   );
 };
 
 const HorizentalMenu = () => {
   const categories = React.useContext(Categories);
-
   // const dataLength = categories.map((el) => el.list.length).reduce((a, b) => a + b, 0);
   return (
     <div className="sticky top-0  z-50">
@@ -56,12 +51,18 @@ const HorizentalMenu = () => {
         keyBoardControl={true}
         containerClass="w-full  py-4 md:p-6 md:my-6 bg-[#272935] shadow-lg shadow-gray-800"
         responsive={responsive}
-        itemClass="!w-max badge !p-4 !mx-2 !hover:shadow-xl bg-[#28231B]"
+        itemClass={`!w-max mx-2 `}
       >
-          {/* <MenuItem  key={300} id={"All"} text={`Tout (${dataLength})`} icon={ALl} /> */}
+        {/* <MenuItem  key={300} id={"All"} text={`Tout (${dataLength})`} icon={ALl} /> */}
 
         {categories.map((el) => (
-          <MenuItem  key={el.id} id={el.id} icon={el.icon} text={el.name} Length={el.list.length} />
+          <MenuItem
+            key={el.id}
+            id={el.id}
+            icon={el.icon}
+            text={el.name}
+            Length={el.list.length}
+          />
         ))}
       </Carousel>
     </div>

@@ -65,7 +65,7 @@ export const NavigationsLinks = ({ setisVisible }) => {
   );
 };
 
-const CartIndicator = ({ openCart, handleCartBoudries }) => {
+export const CartIndicator = ({ openCart, handleCartBoudries ,className}) => {
   const CartStorage = JSON.parse(useContext(Cartstorage));
 
   const handleLoad = (e) => {
@@ -73,7 +73,7 @@ const CartIndicator = ({ openCart, handleCartBoudries }) => {
     // console.log(e.target.getBoundingClientRect());
   };
   return (
-    <button onClick={openCart} className="lg:relative" onLoad={handleLoad}>
+    <button onClick={openCart} className={className} onLoad={handleLoad}>
       <p className="absolute bottom-10 right-0 bg-[#5B6D5B] w-5 h-5 rounded-full text-sm ">
         {CartStorage?.length || 0}
       </p>
@@ -90,16 +90,16 @@ export const MdTopHeader = ({
 }) => {
   return (
     <div className="hidden lg:block lg:mx-4">
-      <ul className="flex items-center gap-3 list-none text-xl">
+      <ul className="flex items-center gap-10 list-none text-2xl">
         <NavigationsLinks />
-        <li>
+        {/* <li>
           <CartIndicator
             openCart={openCart}
             isAdedTocart={isAdedTocart}
             isDeletetedFromTocart={isDeletetedFromTocart}
             handleCartBoudries={handleCartBoudries}
           />
-        </li>
+        </li> */}
       </ul>
     </div>
   );
@@ -149,16 +149,19 @@ export const SmTopHeader = ({
             </ul>
           </div>
         </div>
-        <div>
+        <div className="relative">
           <li>
             <CartIndicator
               openCart={openCart}
               isAdedTocart={isAdedTocart}
               isDeletetedFromTocart={isDeletetedFromTocart}
               handleCartBoudries={handleCartBoudries}
+              className={"lg:relative "}
             />
           </li>
         </div>
+       
+        
       </div>
     </div>
   );

@@ -108,7 +108,7 @@ const CartItem = (props) => {
   return (
     <div className=" w-full h-fit flex items-center justify-between bg-neutral hover:bg-neutral-focus rounded-xl px-2 select-none	cursor-grab ">
       <figure>
-        <img className="h-[50px] w-[50px] p-2 rounded-md" src={img} alt={header} />
+        <img className="h-[70px] w-[70px] p-2 rounded-3xl" src={img} alt={header} />
       </figure>
       <p>{header}</p>
       <p className="flex flex-col">

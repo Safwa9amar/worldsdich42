@@ -25,7 +25,7 @@ const Checkout = ({ setcheckBoxState, setStorage }) => {
         opacity: [0, 0.7, 0.9, 1],
         translateY: ["50px", "0px"],
       }}
-      className="flex-col md:w-[95vw] md:mx-[2.5vw] bg-[#28231B] lg:p-14"
+      className="flex-col md:w-[95vw] md:mx-[2.5vw] lg:p-14"
     >
       {isloged && (
         <>
