@@ -1,17 +1,24 @@
-import React, { useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 // import bg_title from "../asstes/bg_title.jpg";
 // import botiqueFronImg from "../asstes/botiqueFronImg.jpg";
 import { FiPhoneCall } from "react-icons/fi";
-// import { BiTime } from "react-icons/bi";
+import { MdPlace } from "react-icons/md";
 import { motion } from "framer-motion";
 
 import emailjs from "@emailjs/browser";
 import { useState } from "react";
+import Map from "../helpers/Map";
+import { SERVER_URI } from "./../helpers/UrlProvider";
+import { FiMail } from "react-icons/fi";
 
 const Contact = () => {
+  const Contact = `${useContext(SERVER_URI)}/settings/api/contact_info`;
+  const [contact, setContact] = React.useState([]);
+
   const form = useRef();
   const [isEmailSent, setisEmailSent] = useState(false);
   const [isLoading, setLoading] = useState(false);
+
   const sendEmail = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -38,6 +45,20 @@ const Contact = () => {
       );
   };
 
+  useEffect(() => {
+    fetch(Contact, {
+      method: "GET",
+      cors: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setContact(data[0]);
+      });
+  }, [Contact]);
   return (
     <motion.div
       initial={{
@@ -47,78 +68,53 @@ const Contact = () => {
         opacity: [0.5, 0.7, 0.9, 1],
         translateY: ["120px", "0px"],
       }}
-      // style={{
-      //   backgroundImage: `url(${botiqueFronImg})`,
-      //   backgroundAttachment: "fixed",
-      //   backgroundSize: "100% 100%",
-      // }}
-      className="md:mx-[2.5vw] md:w-[95vw] pb-20 flex flex-col items-center "
+      className="w-full flex flex-col gap-10 items-center pb-24"
     >
-      <div className="w-[95%] text-black bg-white md:w-1/2 m-4 p-4 rounded-lg">
-        <div className="flex flex-col md:flex-row justify-between md:items-baseline ">
-          <h3 className="text-3xl md:w-fit text-center  mt-10 ">
-            Contactez-nous
-          </h3>
-          <div className="text-white w-full  flex-1 flex flex-col items-center md:items-end  rounded-md font-medium text-xl text-center py-2">
-            <div className="flex flex-col md:flex-row justify-center gap-1 mt-2">
-              <a
-                className="flex items-center gap-1 bg-[#3C6903aa] p-2 w-fit rounded-lg m-1"
-                href="tel:+07 54 15 85 35"
-              >
-                <FiPhoneCall />
-                <p>+07 54 15 85 35</p>
-              </a>
-              <a
-                className="flex items-center gap-1 bg-[#3C6903aa] p-2 w-fit rounded-lg m-1"
-                href="tel:+07 54 15 85 35"
-              >
-                <FiPhoneCall />
-                <p>+04 87 66 92 67</p>
-              </a>
-            </div>
-          </div>
-        </div>
+      <div className="flex items-center justify-center relative z-[1] bg-store-img bg-cover bg-no-repeat h-[35vh] w-full after:absolute after:w-full after:-z-[1] after:h-full after:bg-black after:opacity-80">
+        <div className="text-6xl font-DancingScript">Contactez Nous</div>
+      </div>
 
-        <hr />
-        <br />
-        <h3>Trouvez-nous sur</h3>
-        <br />
-        <iframe
-          title="google map"
-          className="w-full h-[35vh] rounded-xl"
-          src="https://maps.google.com/maps?q=17,%20Rue%20Antoine%20du%20Rafour%2042100%20Sanit-%C3%A9tienne&t=&z=15&ie=UTF8&iwloc=&output=embed"
-        ></iframe>
-        <br />
-        <br />
-        <form ref={form} onSubmit={sendEmail} className="flex flex-col gap-4 ">
-          <div className="md:flex justify-between  gap-2 ">
-            <div className="flex flex-1 flex-col gap-1">
-              <label>Nom</label>
-              <input
-                name="sender_name"
-                className="rounded-md bg-[#cacaca]  transition-all duration-75 outline-none p-2 "
-                type="text"
-                required
-              />
-            </div>
-            <div className="flex flex-1 flex-col gap-1">
-              <label>Email</label>
-              <input
-                className="rounded-md bg-[#cacaca]  transition-all duration-75 outline-none p-2 "
-                type="text"
-                name="email"
-                required
-              />
-            </div>
-          </div>
-          <div className=" flex flex-col gap-1">
-            <label>Message</label>
-            <textarea
+      <Map tailcss="h-[50vh] w-[95vw] md:w-3/4" />
+      <div className="w-11/12 md:w-3/4 text-3xl">Entrer en contact</div>
+      {/* <div className="flex flex-col md:flex-row items-start gap-4  w-11/12 md:w-3/4"> */}
+      <div className="grid grid-cols-1 md:grid-cols-contact-form grid-rows-2 gap-8  w-11/12 md:w-3/4">
+        <form
+          ref={form}
+          onSubmit={sendEmail}
+          className="flex flex-col justify-between gap-4 row-span-2 "
+        >
+          <textarea
+            required
+            name="message"
+            placeholder="Message"
+            className="textarea textarea-bordered"
+            minLength="10"
+          ></textarea>
+
+          <div className="flex flex-col md:flex-row justify-between gap-4 ">
+            <input
+              name="sender_name"
+              className="input input-bordered w-full "
+              placeholder="Nom"
+              type="text"
               required
-              name="message"
-              className=" rounded-md min-h-[150px] bg-[#cacaca] transition-all duration-75 outline-none p-2 "
-              minLength="10"
-            ></textarea>
+            />
+            <input
+              className="input input-bordered w-full "
+              type="text"
+              name="email"
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <input
+              className="input input-bordered w-full max-w-full "
+              type="text"
+              name="email"
+              placeholder="subject"
+              required
+            />
           </div>
           {isEmailSent && (
             <div className="text-success">
@@ -128,7 +124,7 @@ const Contact = () => {
           )}
           <button
             type="submit"
-            className=" self-end flex gap-1 text-white bg-[#1D2326] p-3 rounded-md cursor-pointer"
+            className="self-start flex gap-1 text-white bg-accent rounded-3xl hover:bg-accent-focus p-3  cursor-pointer"
           >
             {isLoading ? (
               <>
@@ -142,17 +138,26 @@ const Contact = () => {
 
           {/* <input className=" self-end text-white bg-[#1D2326] p-3 rounded-md cursor-pointer" type="submit" value="Envoyer" /> */}
         </form>
+        <div className="flex flex-col gap-6 w-full">
+          <div className="flex gap-4">
+            <MdPlace className="text-3xl" />
+              <p className="w-52">{contact.address}</p>
+          </div>
+          <div className="flex gap-4">
+            <FiMail className="text-3xl" />
+              <p >{contact.mail}</p>
+          </div>
+          <div className="flex gap-4">
+            <FiPhoneCall className="text-3xl" />
+              <div className="flex flex-col gap-2">
+              <p className="w-52">{contact.tel1}</p>
+              <p className="w-52">{contact.tel2}</p>
+              </div>
+          </div>
+        </div>
       </div>
     </motion.div>
   );
 };
 
 export default Contact;
-
-// <div className="flex gap-2 text-sm md:text-lg m-2">
-//   <BiTime className="w-[50px] h-[50px]" />
-//   <div className="flex flex-col items-start">
-//     <p>Nous ouvrons</p>
-//     <p>11 am - 14 am | 18 pm - 2 am</p>
-//   </div>
-// </div>;

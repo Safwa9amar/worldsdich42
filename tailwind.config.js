@@ -11,7 +11,7 @@ module.exports = {
       backgroundImage: {
         "bg-md-header": "url('/src/asstes/bg/header.png')",
         "bg-header": "url('/src/asstes/bg/header-sm.png')",
-        "home-serve": "url('/src/asstes/botiqueFronImg.png')",
+        "store-img": "url('/src/asstes/botiqueFronImg.png')",
       },
       keyframes: {
         fadeIn: {
@@ -22,6 +22,11 @@ module.exports = {
       animation: {
         'fade-in': 'fadeIn 1s forwards',
       },
+      gridTemplateColumns: {
+        // Simple 16 column grid
+        // Complex site-specific column configuration
+        'contact-form': '2fr 1fr',
+      }
     
     },
   },

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { HorizentalMenuData } from "../icons/data";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";

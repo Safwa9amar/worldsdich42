@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useContext } from "react";
 
 // import line from "../icons/Line.svg";
 // import foodqualityIco from "../icons/foodquality.svg";
@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import OfferCard from "./Offer";
 import { Categories } from "../context/categorycontext";
 import Menus from "./Menus";
+import BookTable from "./BookTable";
 const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
@@ -131,6 +132,7 @@ const Home = () => {
           })}
         </div>
       </div>
+      <BookTable/>
 
       <div className=" mt-10 mx-10 flex flex-col items-center sm:prose-sm md:prose-md  text-center text-white">
         <h1 className="font-DancingScript font-bold text-3xl md:text-6xl capitalize">
@@ -143,14 +145,15 @@ const Home = () => {
         infinite={true}
         autoPlay={true}
         className="w-full"
-        itemClass="max-h-[350px] object-contain	mx-4"
-        responsive={responsive}
+        itemClass="!h-[250px] !max-w-[350px] 	mx-4"
+        responsive={responsive}  showDots={true}
+        dotListClass="custom-dot-list-style"
+
       >
         {Ldata.map((el) => (
           <img key={el.id} src={el.img} alt={el.id} className="rounded-lg" />
         ))}
       </Carousel>
-
       <Link
         className="bg-[#5B6D5B] w-fit py-4 px-8 my-4 text-white rounded-md"
         to="/store/menu"

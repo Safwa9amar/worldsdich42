@@ -1,5 +1,5 @@
 import { motion, useAnimation } from "framer-motion";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
 export default function Menus({ id, img, name, idx }) {

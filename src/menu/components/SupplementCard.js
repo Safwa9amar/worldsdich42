@@ -105,7 +105,7 @@ const CarouselItems = ({
   }, [count, obj, parent_id]);
 
   return (
-    <div className="indicator carousel-item flex flex-col  items-center capitalize">
+    <div className=" flex flex-col  items-center capitalize">
       {/* <span
         className={`indicator-item badge badge-xs ${
           status ? "badge-primary" : "badge-neutral"
@@ -114,7 +114,7 @@ const CarouselItems = ({
         {status ? "disponible" : "indisponible"}
       </span> */}
       <img
-        className={`rounded-box w-[100px] h-[100px] ${
+        className={`rounded-box w-[100px] h-[100px] md:w-[150px] md:h-[150px] ${
           status ? "" : "brightness-50"
         }`}
         src={src}
@@ -247,7 +247,7 @@ export function SupplementCard(props) {
         className="modal-toggle"
       />
       <div className="modal">
-        <div className="modal-box relative ">
+        <div className="modal-box w-11/12 max-w-5xl  relative ">
           <div className="flex gap-2 absolute right-4 top-2 ">
             <AiOutlineCheckCircle
               onClick={handleclick}
