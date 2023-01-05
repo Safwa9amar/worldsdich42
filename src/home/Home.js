@@ -1,9 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 // import line from "../icons/Line.svg";
 // import foodqualityIco from "../icons/foodquality.svg";
 // import meathalalIco from "../icons/meathalal.svg";
 // import breadIco from "../icons/bread.svg";
+import Logo from "../images/_logo.png";
+import { SERVER_URI } from "../helpers/UrlProvider";
 
 import { Link } from "react-router-dom";
 import Carousel from "react-multi-carousel";
@@ -36,6 +38,20 @@ const responsive = {
 
 const Home = () => {
   const data = useContext(Categories);
+  const URI = useContext(SERVER_URI);
+  const [promotionTotal, setPromotionTotal] = useState(0);
+
+  useEffect(() => {
+    fetch(`${URI}/settings/api/globalPromotion`, {
+      method: "GET",
+      cors: "no-cors",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setPromotionTotal(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <motion.div
@@ -104,19 +120,40 @@ const Home = () => {
         </h1>
         <br />
         <div className="flex justify-center md:justify-evenly gap-4  flex-wrap">
-          {data
-            .filter((el) => el.cutting_off_status)
-            .map((el) => {
-              return (
-                <OfferCard
-                  key={el.id}
-                  id={el.id}
-                  name={el.name}
-                  img={el.img}
-                  cutting_off={el.cutting_off}
-                />
-              );
-            })}
+          {promotionTotal.value > 0 && (
+            <OfferCard
+              key={22}
+              id={2}
+              name={"Prix total demandé"}
+              img={Logo}
+              cutting_off={promotionTotal.value}
+              isPromotionTotal={promotionTotal.value > 0 ? true : false}
+            />
+          )}
+          {data.filter((el) => el.cutting_off_status).length === 0 &&
+          promotionTotal.value === 0 ? (
+            <OfferCard
+              key={11}
+              id={1}
+              name={"Aucune offre maintenant"}
+              img={Logo}
+              cutting_off={0}
+            />
+          ) : (
+            data
+              .filter((el) => el.cutting_off_status)
+              .map((el) => {
+                return (
+                  <OfferCard
+                    key={el.id}
+                    id={el.id}
+                    name={el.name}
+                    img={el.img}
+                    cutting_off={el.cutting_off}
+                  />
+                );
+              })
+          )}
         </div>
       </div>
 
@@ -126,13 +163,11 @@ const Home = () => {
         </h1>
         <div className="flex flex-wrap justify-center  gap-2 w-4/5">
           {data.map((el, idx) => {
-            return (
-              <Menus idx={idx} name={el.name} id={el.id} img={el.img}/>
-            );
+            return <Menus idx={idx} name={el.name} id={el.id} img={el.img} />;
           })}
         </div>
       </div>
-      <BookTable/>
+      <BookTable />
 
       <div className=" mt-10 mx-10 flex flex-col items-center sm:prose-sm md:prose-md  text-center text-white">
         <h1 className="font-DancingScript font-bold text-3xl md:text-6xl capitalize">
@@ -146,9 +181,9 @@ const Home = () => {
         autoPlay={true}
         className="w-full"
         itemClass="!h-[250px] !max-w-[350px] 	mx-4"
-        responsive={responsive}  showDots={true}
+        responsive={responsive}
+        showDots={true}
         dotListClass="custom-dot-list-style"
-
       >
         {Ldata.map((el) => (
           <img key={el.id} src={el.img} alt={el.id} className="rounded-lg" />

@@ -13,6 +13,7 @@ import { Credentiel } from "../context/CredentielContext";
 // import { SERVER_URI } from "../helpers/UrlProvider";
 import { motion } from "framer-motion";
 import CredentielClient from "../helpers/Credentiel";
+import { Link } from "react-router-dom";
 
 const Checkout = ({ setcheckBoxState, setStorage }) => {
   const Mycontext = useContext(Mycheckout);
@@ -50,7 +51,19 @@ const Checkout = ({ setcheckBoxState, setStorage }) => {
           {/* <OrderStatus UserData={UserData} /> */}
         </>
       )}
-      {!isloged && <CredentielClient />}
+      {!isloged && (
+        <div>
+          <div className="alert alert-warning capitalize ">
+            veuillez vous connecter à votre compte ou vous inscrire pour voir
+            les détails de votre commande
+          </div>
+          <br />
+
+          <Link  to="/store/profile" className="link text-error text-lg ">
+            Cliquez ici pour vous identifier
+          </Link>
+        </div>
+      )}
       {Mycontext.length > 0 ? (
         <>
           {isloged && (

@@ -108,7 +108,11 @@ const CartItem = (props) => {
   return (
     <div className=" w-full h-fit flex items-center justify-between bg-neutral hover:bg-neutral-focus rounded-xl px-2 select-none	cursor-grab ">
       <figure>
-        <img className="h-[70px] w-[70px] p-2 rounded-3xl" src={img} alt={header} />
+        <img
+          className="h-[70px] w-[70px] p-2 rounded-3xl"
+          src={img}
+          alt={header}
+        />
       </figure>
       <p>{header}</p>
       <p className="flex flex-col">
@@ -157,12 +161,14 @@ function Cart({
       </button>
       <div className="px-2 my-10 w-full h-full text-white   gap-10 flex flex-col items-center  text-center">
         <h1 className="text-2xl text-white font-bold">Cart</h1>
-        <p className="flex items-center gap-2 alter alert-info ">
-          <MdOutlineSwipe />
-          glisser à gauche pour supprimer l'élément
-          {/* <br /> */}
-          {/* glisser à droit pour voire votre cammande */}
-        </p>
+        <div className="alert alert-info shadow-lg justify-center ">
+          <div>
+            <MdOutlineSwipe />
+            <span>glisser à gauche pour supprimer l'élément</span>
+            {/* <br /> */}
+            {/* glisser à droit pour voire votre cammande */}
+          </div>
+        </div>
         <SwipeableList className="overflow-hidden  w-full overflow-y-scroll">
           {MyCheckout?.map((el) => {
             return (

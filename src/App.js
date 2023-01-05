@@ -16,7 +16,9 @@ import CartDataContextProvider from "./context/LocalStorageContext";
 import CheckoutDataContextProvider from "./context/checkoutContext";
 // import CredentielModel from "./helpers/CredentielModel";
 import { ClientStatus } from "./context/CientStatus";
-import ErrorPage from "./404/404";
+import ErrorPage from "./404/OutOfServices";
+import Profile from "./profile/Profile";
+import Error404 from "./404/404";
 
 function App({ URI }) {
   const CategoryContext = React.useContext(Categories);
@@ -49,9 +51,20 @@ function App({ URI }) {
   const handleStorageEdit = (data) => {
     setStorage(JSON.stringify(data));
   };
-  // React.useEffect(() => {
-  //   getCartBoudaries!== undefined && console.log(getCartBoudaries.getBoundingClientRect());
-  // }, [getCartBoudaries]);
+
+  const [ErorPage, setErorPage] = React.useState(false);
+  React.useEffect(() => {
+    let locations = [
+      "/store/",
+      "/store/menu",
+      "/store/contact",
+      "/store/profile",
+      "/store/checkout",
+      "/store/menu/category",
+    ];
+    // Error404
+    !locations.includes(location.pathname) ? setErorPage(true) : "";
+  }, [ErorPage]);
   return (
     <>
       {isClientActive.isActivated ? (
@@ -75,54 +88,67 @@ function App({ URI }) {
                 checkBoxState={checkBoxState}
               /> */}
                   <ScrollToTop>
-                    <Header
-                      setCartVisisble={setCartVisisble}
-                      isAdedTocart={isAdedTocart}
-                      isDeletetedFromTocart={isDeletetedFromTocart}
-                      handleCartBoudries={handleCartBoudries}
-                    />
-                    <Cart
-                      isVisisble={isVisisble}
-                      setCartVisisble={setCartVisisble}
-                      isAdedTocart={isAdedTocart}
-                      handleDeletetedFromTocart={handleDeletetedFromTocart}
-                      handleStorageEdit={handleStorageEdit}
-                    />
-                    <Routes>
-                      <Route exact path="/store/*" element={<Home />} />
-                      <Route exact path="/store/" element={<Home />} />
-                      <Route
-                        exact
-                        path="/store/menu/category"
-                        element={
-                          <Catergory
-                            handleStorageEdit={handleStorageEdit}
-                            handleAdedTocart={handleAdedTocart}
-                            isDeletetedFromTocart={isDeletetedFromTocart}
-                            hybrid_idFroDeletion={hybrid_idFroDeletion}
-                            getCartBoudaries={getCartBoudaries}
-                            setcheckBoxState={setcheckBoxState}
+                    {ErorPage ? (
+                      <Error404 setErorPage={setErorPage} />
+                    ) : (
+                      <>
+                        <Header
+                          setCartVisisble={setCartVisisble}
+                          isAdedTocart={isAdedTocart}
+                          isDeletetedFromTocart={isDeletetedFromTocart}
+                          handleCartBoudries={handleCartBoudries}
+                        />
+                        <Cart
+                          isVisisble={isVisisble}
+                          setCartVisisble={setCartVisisble}
+                          isAdedTocart={isAdedTocart}
+                          handleDeletetedFromTocart={handleDeletetedFromTocart}
+                          handleStorageEdit={handleStorageEdit}
+                        />
+
+                        <Routes>
+                          <Route exact path="/store/*" element={<Home />} />
+                          <Route exact path="/store/" element={<Home />} />
+                          <Route
+                            exact
+                            path="/store/menu/category"
+                            element={
+                              <Catergory
+                                handleStorageEdit={handleStorageEdit}
+                                handleAdedTocart={handleAdedTocart}
+                                isDeletetedFromTocart={isDeletetedFromTocart}
+                                hybrid_idFroDeletion={hybrid_idFroDeletion}
+                                getCartBoudaries={getCartBoudaries}
+                                setcheckBoxState={setcheckBoxState}
+                                setErorPage={setErorPage}
+                              />
+                            }
                           />
-                        }
-                      />
-                      <Route
-                        exact
-                        path="/store/checkout"
-                        element={
-                          <Checkout
-                            setcheckBoxState={setcheckBoxState}
-                            checkBoxState={checkBoxState}
-                            setStorage={setStorage}
+                          <Route
+                            exact
+                            path="/store/checkout"
+                            element={
+                              <Checkout
+                                setcheckBoxState={setcheckBoxState}
+                                checkBoxState={checkBoxState}
+                                setStorage={setStorage}
+                              />
+                            }
                           />
-                        }
-                      />
-                      <Route exact path="/store/menu" element={<Menu />} />
-                      <Route
-                        exact
-                        path="/store/contact"
-                        element={<Contact />}
-                      />
-                    </Routes>
+                          <Route exact path="/store/menu" element={<Menu />} />
+                          <Route
+                            exact
+                            path="/store/contact"
+                            element={<Contact />}
+                          />
+                          <Route
+                            exact
+                            path="/store/profile"
+                            element={<Profile />}
+                          />
+                        </Routes>
+                      </>
+                    )}
                   </ScrollToTop>
                   <Footer />
                 </BrowserRouter>

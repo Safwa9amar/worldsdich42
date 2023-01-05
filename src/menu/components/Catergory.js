@@ -18,6 +18,7 @@ export default function Catergory({
   hybrid_idFroDeletion,
   getCartBoudaries,
   setcheckBoxState,
+  setErorPage,
 }) {
   const [ShowModel, setShowModel] = React.useState(false);
 
@@ -104,8 +105,12 @@ export default function Catergory({
     //   setcategoryItems(arr);
     // } else {
     // }
-    let newData = filterCategoryItems(categories, categoryId);
-    setcategoryItems(newData);
+    try {
+      let newData = filterCategoryItems(categories, categoryId);
+      setcategoryItems(newData);
+    } catch (error) {
+      setErorPage(true);
+    }
     // localStorage.getItem("suppData") || localStorage.setItem("suppData", "[]");
 
     // console.log(cartData);

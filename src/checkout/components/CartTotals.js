@@ -161,11 +161,11 @@ export function CartTotals({
         setPromotionTotal(data);
       })
       .catch((err) => console.log(err));
-  }, [isloged,Mycontext]);
+  }, [isloged, Mycontext,UserData]);
 
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
-      <div className="w-full text-white  text-sm  lg:text-xl flex md:flex-col items-center lg:items-start justify-between  p-4 md:gap-6">
+      <div className="w-full text-white  text-sm  lg:text-xl flex md:flex-col items-center lg:items-start justify-around  p-4 md:gap-6">
         {CammndType.map((el) => {
           if (el.id === 1 && el.isCheked) {
             return (
@@ -188,48 +188,6 @@ export function CartTotals({
               />
             );
           } else if (el.id === 3 && el.isCheked) {
-            if (!FraisLivraison.isActived) {
-              return (
-                <div
-                  key={el.id}
-                  className="md:flex gap-2 hidden alert alert-info shadow-lg max-w-[450px]"
-                >
-                  La livraison à votre adresse : {FraisLivraison.name} n'est pas
-                  disponible actuellement
-                </div>
-              );
-            }
-            if (
-              FraisLivraison.isActived &&
-              GetTotalPrice < FraisLivraison.price
-            )
-              return (
-                <div
-                  key={el.id}
-                  className="md:flex gap-2 hidden alert alert-warning shadow-lg max-w-[450px]"
-                >
-                  <div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="stroke-current flex-shrink-0 h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                      />
-                    </svg>
-                    <span>
-                      Note: Grâce à votre adresse {FraisLivraison.name}, le
-                      minimum Prix pour la livraison est a partir de{" "}
-                      {formatEUR(FraisLivraison.price)}
-                    </span>
-                  </div>
-                </div>
-              );
             if (
               FraisLivraison.isActived &&
               GetTotalPrice >= FraisLivraison.price
@@ -249,6 +207,41 @@ export function CartTotals({
       </div>
 
       <div className="flex flex-col gap-4  w-full px-5">
+        {!FraisLivraison.isActived ? (
+          <div
+            className="alert alert-info shadow-lg w-full"
+          >
+            La livraison à votre adresse : {FraisLivraison.name} n'est pas
+            disponible actuellement
+          </div>
+        ) : FraisLivraison.isActived && GetTotalPrice < FraisLivraison.price ? (
+          <div
+            className="flex gap-2  alert alert-warning shadow-lg w-full"
+          >
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current flex-shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <span>
+                Note: Grâce à votre adresse {FraisLivraison.name}, le minimum
+                Prix pour la livraison est a partir de{" "}
+                {formatEUR(FraisLivraison.price)}
+              </span>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
         <div className="flex gap-2 justify-between">
           <p className="text-info">CART TOTALS</p>
           <p>{formatEUR(GetTotalPrice)}</p>
@@ -284,7 +277,7 @@ export function CartTotals({
                 ? promotionTotal.value > 0
                   ? formatEUR(
                       calculeCoupon(GetTotalPrice, promotionTotal.value) +
-                      FraisLivraison?.frais_price
+                        FraisLivraison?.frais_price
                     )
                   : formatEUR(GetTotalPrice + FraisLivraison?.frais_price) //formatEUR(GetTotalPrice + FraisLivraison?.frais_price)
                 : promotionTotal.value > 0
@@ -329,7 +322,7 @@ function ApplyMethode({ text, type, isActive, SetActive }) {
   );
   let EmporterFoodIco = (
     <svg
-      className={`w-[35px] h-[35px] ${
+      className={`w-[35px] h-[35px]  ${
         isActive ? "fill-warning" : "fill-white"
       }`}
       viewBox="0 0 26 27"
@@ -368,10 +361,16 @@ function ApplyMethode({ text, type, isActive, SetActive }) {
                 ? "border-warning text-warning fill-warning"
                 : "border-[#969696]"
             }
+            btn
+            btn-sm
+            btn-outline btn-warning
+            md:btn-md
+            lg:btn-lg
+            h-fit
+            w-fit
             transition-all duration-300
             flex items-center justify-center  gap-2 border-2  rounded-md 
             p-1 cursor-pointer
-            lg:w-1/2
           `}
       >
         {icon}
