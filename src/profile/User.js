@@ -7,7 +7,7 @@ export default function User() {
   const { isloged, setiLoged, UserData } = useContext(Credentiel);
 
   return (
-    <div className="w-full md:w-11/12 my-10 ">
+    <div className="w-11/12 my-10 ">
       {isloged && (
         <>
           <div className="text-white w-full flex items-center justify-between gap-2 py-4 px-8  rounded-lg border-t-2 border-t-blue-600 bg-[#252C30] ">

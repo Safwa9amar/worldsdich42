@@ -166,7 +166,6 @@ export const CatergoryItem = (props) => {
       >
         <LazyLoadImage
           className={`w-[100px] h-[150px] translate-y-15 object-cover rounded-lg`}
-          effect="blur"
           src={img}
           alt={img}
         />
@@ -183,9 +182,11 @@ export const CatergoryItem = (props) => {
           {header.toLowerCase()}
         </h3>
         <p className="text-[#5B6D5B] font-bold text-xl">
-          €{Math.abs(Price) + Math.abs(MenuPrice)}
+          {
+            formatEUR(Math.abs(Price) + Math.abs(MenuPrice))
+          }
         </p>
-        <img
+        <LazyLoadImage
           className="absolute bottom-4 right-4"
           src={arcticons_manga}
           alt="plus"
@@ -218,7 +219,7 @@ export const CatergoryItem = (props) => {
           //   backgroundSize: "100% 100%",
           //   backgroundRepeat: "no-repeat",
           // }}
-          className="  rounded-t-[2.5rem] relative overflow-hidden bg-[#9E9995] md:rounded-md flex items-center justify-center  "
+          className="  rounded-t-[2.5rem] relative overflow-hidden bg-white md:rounded-md flex items-center justify-center  "
         >
           <svg
             onClick={() => setMobileToggleView(!mobileToggleView)}
@@ -250,7 +251,7 @@ export const CatergoryItem = (props) => {
 
         <div className=" flex flex-col  items-start justify-between md:w-4/6 gap-4 p-4 md:p-0 md:mx-4">
           <div className="flex justify-between  w-full gap-6">
-            <p className="text-xl flex items-center gap-2 ">
+            <p className="text-lg flex items-center gap-2 ">
               {header}
               <sup className="text-[#5B6D5B]">({category})</sup>
             </p>

@@ -110,7 +110,7 @@ export default function Header({
             isDeletetedFromTocart={isDeletetedFromTocart}
             handleCartBoudries={handleCartBoudries}
           />
-          <div className="hidden md:flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Link
               to="/store/profile"
               className="btn btn-ghost btn-circle avatar "

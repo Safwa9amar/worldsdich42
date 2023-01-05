@@ -84,7 +84,11 @@ export const CartIndicator = ({ openCart, handleCartBoudries, className }) => {
         viewBox="0 0 42 36"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className={Location.pathname.startsWith("/store/checkout") ? `stroke-accent fill-accent ` : `stroke-current`}
+        className={
+          Location.pathname.startsWith("/store/checkout")
+            ? `stroke-accent fill-accent `
+            : `stroke-current`
+        }
       >
         <path
           d="M34.0131 9.07407H5.78598C5.21403 9.07409 4.64843 9.18253 4.12564 9.39241C3.60285 9.60229 3.13447 9.90894 2.7507 10.2926C2.36692 10.6763 2.07626 11.1284 1.89747 11.6199C1.71867 12.1115 1.65569 12.6314 1.7126 13.1463L2.94076 24.2574C3.04177 25.1713 3.51452 26.0186 4.26723 26.635C5.01995 27.2513 5.99893 27.5925 7.01413 27.5926H26.5623C27.509 27.5929 28.4266 27.2964 29.1589 26.7534C29.8911 26.2105 30.3928 25.4547 30.5783 24.6148L34.0131 9.07407Z"
@@ -100,7 +104,6 @@ export const CartIndicator = ({ openCart, handleCartBoudries, className }) => {
           strokeLinejoin="round"
         />
       </svg>
-
     </button>
   );
 };
@@ -155,17 +158,13 @@ export const SmTopHeader = ({
           <img className="w-full h-full" src={menuHumberger} alt="menu" />
         </button>
         <div
-          // style={{
-          //   backgroundImage: `url(${nav_bg})`,
-          //   backgroundSize: "100% 100%",
-          // }}
-          className={`bg-red-400 fixed z-[9999999] ${
+          className={`bg-[#121618fb] fixed z-[9999999] ${
             isVisible ? "" : "opacity-0 pointer-events-none"
-          } transition-opacity duration-300 h-screen w-screen z-50 top-0 left-0
+          } transition-opacity duration-150 h-screen w-screen z-50 top-0 left-0
           text-4xl text-center overflow-hidden
         `}
         >
-          <div className="w-full h-full bg-[#603601] opacity-70 absolute z-10"></div>
+          <div className="w-full h-full  opacity-70 absolute z-10"></div>
           <div className="absolute w-full h-full z-20 flex justify-center items-center">
             <ul className="grid grid-rows-4 gap-8">
               <NavigationsLinks setisVisible={setisVisible} />

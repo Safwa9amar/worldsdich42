@@ -129,7 +129,7 @@ export default function Catergory({
         categoryId={categoryId}
       />
 
-      <div className="grid grid-cols-2 xl:grid-cols-3 gap-2 md:gap-4 mt-20  my-14 place-items-center ">
+      <div className="grid grid-cols-2 xl:grid-cols-3 gap-14 md:gap-4 mt-20  my-14 place-items-center ">
         {categoryItems.map((el) => {
           const {
             id,

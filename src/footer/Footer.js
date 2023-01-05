@@ -46,7 +46,7 @@ export default function Footer() {
       });
   }, [WorkHours, Contact]);
   return (
-    <footer className="bg-[#222831]  w-full  rounded-xl grid grid-cols-1 gap-10 lg:grid-cols-3 p-10">
+    <footer className="bg-[#222831]  w-full  rounded-xl grid grid-cols-1 gap-10 lg:grid-cols-3 p-6">
       <div className="flex flex-col items-center gap-4">
         <h1 className="font-DancingScript !text-white text-4xl">
           Contatez Nous
@@ -91,11 +91,11 @@ export default function Footer() {
             <AiOutlineInstagram className="w-[30px] h-[30px]" />
           </a>
         </div>
-        <p>
+        <p className="text-center">
           © {new Date().getFullYear()} All Rights Reserved By world's dwich 42
         </p>
         <a
-          className="underline"
+          className="underline link-primary"
           href="http://hamza-safwan.me/"
           target="_blank"
           rel="noreferrer"
@@ -114,7 +114,7 @@ export default function Footer() {
           produits frais.
         </p>
 
-        <img className="w-[250px] h-[250px]" src={Logo} alt="logo" />
+        <img className="lg:w-[250px] lg:h-[250px] w-[150px] h-[150px]" src={Logo} alt="logo" />
       </div>
 
       <div className="flex flex-col items-center gap-4">
