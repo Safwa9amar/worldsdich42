@@ -15,6 +15,7 @@ export default function Header({
   isAdedTocart,
   isDeletetedFromTocart,
   handleCartBoudries,
+  locations
 }) {
   const Location = useLocation();
   const openCart = () => {
@@ -73,9 +74,13 @@ export default function Header({
                rounded-xl 
                ${
                  Location.pathname.startsWith("/store/menu") ||
+                 Location.pathname.startsWith("/store/menu/") ||
+                 Location.pathname === "/store/checkout/" ||
                  Location.pathname === "/store/checkout" ||
                  Location.pathname === "/store/profile" ||
-                 Location.pathname === "/store/contact"
+                 Location.pathname === "/store/profile/" ||
+                 Location.pathname === "/store/contact" ||
+                 Location.pathname === "/store/contact/"
                    ? ""
                    : "h-screen "
                }`}
@@ -135,7 +140,7 @@ export default function Header({
             />
           </div>
         </div>
-        {Location.pathname === "/store/" &&
+        {(Location.pathname === "/store/" || Location.pathname === "/store") &&
           !Location.pathname.startsWith("/store/menu") && (
             <div className="md:p-4 mt-10 md:mt-20 w-full md:w-5/6 flex flex-col gap-4">
               <motion.h1

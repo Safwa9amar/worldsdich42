@@ -12,7 +12,7 @@ import { Checkout as Mycheckout } from "../context/checkoutContext";
 import { Credentiel } from "../context/CredentielContext";
 // import { SERVER_URI } from "../helpers/UrlProvider";
 import { motion } from "framer-motion";
-import CredentielClient from "../helpers/Credentiel";
+// import CredentielClient from "../helpers/Credentiel";
 import { Link } from "react-router-dom";
 
 const Checkout = ({ setcheckBoxState, setStorage }) => {
@@ -28,31 +28,9 @@ const Checkout = ({ setcheckBoxState, setStorage }) => {
       }}
       className="flex-col md:w-[95vw] md:mx-[2.5vw] lg:p-14"
     >
-      {isloged && (
-        <>
-          <div className="text-white w-full flex items-center justify-center gap-2 p-4 px-6 lg:m-2 rounded-lg border-t-2 border-t-blue-600 bg-[#252C30] ">
-            <FaRegUser />
-            Bienvenue <p>{UserData.Nom}</p>
-            <button
-              className="text-error cursor-pointer flex items-center"
-              onClick={() => {
-                sessionStorage.removeItem("refrech");
-                localStorage.removeItem("refrech");
-                sessionStorage.removeItem("jwt");
-                localStorage.removeItem("jwt");
-                setiLoged(false);
-                setcheckBoxState(false);
-              }}
-            >
-              <BiLogOut className="mx-2" />
-              (déconnexion)
-            </button>
-          </div>
-          {/* <OrderStatus UserData={UserData} /> */}
-        </>
-      )}
+    
       {!isloged && (
-        <div>
+        <div className="w-fit">
           <div className="alert alert-warning capitalize ">
             veuillez vous connecter à votre compte ou vous inscrire pour voir
             les détails de votre commande

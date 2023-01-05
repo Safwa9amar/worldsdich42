@@ -10,6 +10,7 @@ import { Cartstorage } from "../../context/LocalStorageContext";
 import { SERVER_URI } from "../../helpers/UrlProvider";
 import Boisson from "./Boisson";
 import { formatEUR } from "../../helpers/currencyFormatter";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function MenuBtn({
   price = 2,
@@ -90,7 +91,7 @@ export const CatergoryItem = (props) => {
     setMenuPrice(menuPrice);
   }
   //
-  
+
   const addToCart = () => {
     handleAddToCart({
       id: id,
@@ -98,7 +99,6 @@ export const CatergoryItem = (props) => {
       SelectedBoisson: SelectedBoisson,
     });
     setToggleCart(true);
-
   };
 
   //
@@ -164,8 +164,9 @@ export const CatergoryItem = (props) => {
         }}
         className="md:hidden relative bg-[#28231B] w-[170px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg m-6 text-white"
       >
-        <img
+        <LazyLoadImage
           className={`w-[100px] h-[150px] translate-y-15 object-cover rounded-lg`}
+          effect="blur"
           src={img}
           alt={img}
         />
@@ -232,19 +233,21 @@ export const CatergoryItem = (props) => {
             />
           </svg>
           <figure>
-            <img className="md:h-[150px] "  src={img} alt={header} />
+            <LazyLoadImage className="md:h-[150px] " src={img} alt={header} />
           </figure>
           <figure>
             <img
               className={`
             md:w-[85px] absolute transition-all duration-100
-            ${MenuPrice && SelectedBoisson ? "bottom-0" : "-bottom-full"} left-0`}
+            ${
+              MenuPrice && SelectedBoisson ? "bottom-0" : "-bottom-full"
+            } left-0`}
               src={menuImg}
               alt="classic"
             />
           </figure>
         </div>
-        
+
         <div className=" flex flex-col  items-start justify-between md:w-4/6 gap-4 p-4 md:p-0 md:mx-4">
           <div className="flex justify-between  w-full gap-6">
             <p className="text-xl flex items-center gap-2 ">
@@ -301,11 +304,17 @@ export const CatergoryItem = (props) => {
           <div className="flex justify-between gap-10 w-full">
             <div className="flex items-center gap-2">
               <p className="text-[#5B6D5B] font-bold text-xl">
-                {formatEUR(Math.abs(Price) + Math.abs(SelectedBoisson ? MenuPrice : 0))}
+                {formatEUR(
+                  Math.abs(Price) + Math.abs(SelectedBoisson ? MenuPrice : 0)
+                )}
               </p>
-              {with_menu && etat &&  (
-                category_ID !== 10 ? <MenuBtn  updatePrice={updatePrice} ToggleCart={ToggleCart} /> : ''
-              )}
+              {with_menu &&
+                etat &&
+                (category_ID !== 10 ? (
+                  <MenuBtn updatePrice={updatePrice} ToggleCart={ToggleCart} />
+                ) : (
+                  ""
+                ))}
             </div>
             {etat && description.length > 1 && (
               <button
@@ -334,7 +343,14 @@ export const CatergoryItem = (props) => {
           </div>
         </div>
       </div>
-      {MenuPrice ? <Boisson AddSelectedBoisson={setSelectedBoisson}  MenuPrice={MenuPrice} /> : ""}
+      {MenuPrice ? (
+        <Boisson
+          AddSelectedBoisson={setSelectedBoisson}
+          MenuPrice={MenuPrice}
+        />
+      ) : (
+        ""
+      )}
     </>
   );
 };

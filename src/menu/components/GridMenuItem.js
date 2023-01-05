@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function MenuItem({
   itemName,
@@ -32,7 +33,7 @@ export default function MenuItem({
         relative text-center bg-[#28231B] w-[150px] lg:w-[250px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg text-white
         `}
       >
-        <img
+        <LazyLoadImage
           className={`w-[100px] h-[80px] lg:w-[200px] lg:h-[150px] translate-y-0 lg:translate-y-8 scale-75 ${
             isHover ? "!-translate-y-1 !scale-90" : ""
           } transition-transform duration-200`}

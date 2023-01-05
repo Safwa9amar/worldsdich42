@@ -51,19 +51,29 @@ function App({ URI }) {
   const handleStorageEdit = (data) => {
     setStorage(JSON.stringify(data));
   };
-
+  let locations = [
+    "/store/",
+    "/store",
+    "/store/menu",
+    "/store/menu/",
+    "/store/contact",
+    "/store/contact/",
+    "/store/profile",
+    "/store/profile/",
+    "/store/checkout",
+    "/store/checkout/",
+    "/store/menu/category",
+  ];
   const [ErorPage, setErorPage] = React.useState(false);
   React.useEffect(() => {
-    let locations = [
-      "/store/",
-      "/store/menu",
-      "/store/contact",
-      "/store/profile",
-      "/store/checkout",
-      "/store/menu/category",
-    ];
+    
     // Error404
-    !locations.includes(location.pathname) ? setErorPage(true) : "";
+    let currentLocation = window.location.pathname;
+    let isLocation = locations.includes(currentLocation);
+    if (!isLocation) {
+      setErorPage(true);
+    }
+
   }, [ErorPage]);
   return (
     <>
@@ -97,6 +107,7 @@ function App({ URI }) {
                           isAdedTocart={isAdedTocart}
                           isDeletetedFromTocart={isDeletetedFromTocart}
                           handleCartBoudries={handleCartBoudries}
+                          locations = {locations}
                         />
                         <Cart
                           isVisisble={isVisisble}
