@@ -311,8 +311,8 @@ export function CartTotals({
 function ApplyMethode({ text, type, isActive, SetActive }) {
   let SurPlaceIco = (
     <svg
-      className={`w-[35px] h-[35px] ${
-        isActive ? "fill-warning" : "fill-white"
+      className={`w-[20px] h-[20px] ${
+        isActive ? "fill-warning " : "fill-white"
       }`}
       viewBox="0 0 31 31"
       xmlns="http://www.w3.org/2000/svg"
@@ -322,8 +322,8 @@ function ApplyMethode({ text, type, isActive, SetActive }) {
   );
   let EmporterFoodIco = (
     <svg
-      className={`w-[35px] h-[35px]  ${
-        isActive ? "fill-warning" : "fill-white"
+      className={`w-[20px] h-[20px]  ${
+        isActive ? "fill-warning " : "fill-white"
       }`}
       viewBox="0 0 26 27"
       xmlns="http://www.w3.org/2000/svg"
@@ -333,8 +333,8 @@ function ApplyMethode({ text, type, isActive, SetActive }) {
   );
   let DeliveryIco = (
     <svg
-      className={`w-[35px] h-[35px] ${
-        isActive ? "fill-warning" : "fill-white"
+      className={`w-[20px] h-[20px] ${
+        isActive ? "fill-warning " : "fill-white"
       }`}
       viewBox="0 0 30 31"
       xmlns="http://www.w3.org/2000/svg"
@@ -359,13 +359,14 @@ function ApplyMethode({ text, type, isActive, SetActive }) {
             ${
               isActive
                 ? "border-warning text-warning fill-warning"
-                : "border-[#969696]"
+                : "border-[#969696] fill-white"
             }
-            btn
-            btn-sm
-            btn-outline btn-warning
+            btn 
+            btn-xs
+            btn-outline 
             md:btn-md
             lg:btn-lg
+            capitalize
             h-fit
             w-fit
             transition-all duration-300

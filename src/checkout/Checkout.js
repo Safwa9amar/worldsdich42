@@ -30,7 +30,7 @@ const Checkout = ({ setcheckBoxState, setStorage }) => {
     >
     
       {!isloged && (
-        <div className="w-fit">
+        <div className="w-fit py-10 px-4">
           <div className="alert alert-warning capitalize ">
             veuillez vous connecter à votre compte ou vous inscrire pour voir
             les détails de votre commande

@@ -55,7 +55,7 @@ const CredentielContextProvider = ({ URI, children }) => {
         });
     } catch (error) {}
     // getRating();
-  }, [url]);
+  }, [url,iLoged]);
 
   return (
     <Credentiel.Provider

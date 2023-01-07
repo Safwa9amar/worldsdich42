@@ -37,16 +37,16 @@ export default function User() {
         Personnel
       </h1>
       <div className="divider"></div>
-      <div className="grid grid-cols-2">
-        <div>
-          <div className="font-bold">Nom d'utilisateur :</div>
-          <div className="font-bold">Prénom :</div>
-          <div className="font-bold">Nom :</div>
+      <div className="">
+        <div className="font-bold">
+          Nom d'utilisateur :
+          <span className="text-slate-300 font-medium ">{UserData.username} </span>
         </div>
-        <div>
-          <div className="text-slate-300">{UserData.username}</div>
-          <div className="text-slate-300">{UserData.Prenom}</div>
-          <div className="text-slate-300">{UserData.Nom} </div>
+        <div className="font-bold">
+          Prénom : <span className="text-slate-300 font-medium">{UserData.Prenom} </span>
+        </div>
+        <div className="font-bold">
+          Nom : <span className="text-slate-300 font-medium">{UserData.Nom} </span>
         </div>
       </div>
       <br />
@@ -55,16 +55,15 @@ export default function User() {
         Contact
       </h1>
       <div className="divider"></div>
-      <div className="grid grid-cols-2">
-        <div>
-          <div className="font-bold">Email :</div>
-          <div className="font-bold">Numéro :</div>
-          <div className="font-bold">L'adresse :</div>
+      <div className="">
+        <div className="font-bold">
+          Email : <span className="text-slate-300 font-medium">{UserData.email} </span>
         </div>
-        <div>
-          <div className="text-slate-300">{UserData.email}</div>
-          <div className="text-slate-300">{UserData.Tel}</div>
-          <div className="text-slate-300">{UserData.adress.name} </div>
+        <div className="font-bold">
+          Numéro : <span className="text-slate-300 font-medium">{UserData.Tel} </span>
+        </div>
+        <div className="font-bold">
+          L'adresse : <span className="text-slate-300 font-medium">{UserData.adress?.name} </span>{" "}
         </div>
       </div>
     </div>

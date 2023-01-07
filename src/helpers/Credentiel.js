@@ -2,12 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Credentiel } from "../context/CredentielContext";
 import { SERVER_URI } from "../helpers/UrlProvider";
 
-export default function CredentielClient({
-  setcheckBoxState,
-  checkBoxState,
-  setHeaderText,
-  HeaderText,
-}) {
+export default function CredentielClient({ setHeaderText }) {
   const CREDENTIEL_SERVER_URI = useContext(SERVER_URI);
   const { isloged, setiLoged, setUserData } = useContext(Credentiel);
   const [login, setlogin] = useState(true);
@@ -20,10 +15,12 @@ export default function CredentielClient({
   const [codeStatus, setcodeStatus] = useState();
 
   const [Displaylogger, setDisplaylogger] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [RememberMe, setRememberMe] = useState(false);
   const url = CREDENTIEL_SERVER_URI + "/registre";
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     let form = e.target;
     if (login) {
@@ -32,7 +29,6 @@ export default function CredentielClient({
       login_form.forEach((value, key) => (object[key] = value));
       await fetch(url, {
         mode: "cors", // no-cors, *cors, same-origin
-
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,15 +40,15 @@ export default function CredentielClient({
           setcodeStatus(code);
           setDisplaylogger(true);
           if (code === 200) {
-            setTimeout(() => {
-              setiLoged(true);
-              setDisplaylogger(false);
-              window.location.reload();
-            }, 2000);
+            setiLoged(true);
+            setDisplaylogger(false);
+            // window.location.reload();
           }
           return response.json();
         })
         .then((data) => {
+          setLoading(false);
+
           if (isloged) setUserData(data.userData);
           if (RememberMe) {
             localStorage.setItem("jwt", data.access_token);
@@ -91,6 +87,7 @@ export default function CredentielClient({
             setDisplaylogger(true);
             if (code === 200) {
               setTimeout(() => {
+                setLoading(false);
                 setiLoged(true);
                 setDisplaylogger(false);
                 window.location.reload();
@@ -99,6 +96,8 @@ export default function CredentielClient({
             return response.json();
           })
           .then((data) => {
+          setLoading(false);
+
             isloged && setUserData(data.userData);
             if (RememberMe) {
               localStorage.setItem("jwt", data.access_token);
@@ -129,7 +128,6 @@ export default function CredentielClient({
       setHeaderText("Créer un nouveau compte");
     }
   };
-  // fetsh `${CREDENTIEL_SERVER_URI}/settings/api/livraison_adresses` when component mount
   const [livraison_adresses, setlivraison_adresses] = useState([]);
   useEffect(() => {
     fetch(`${CREDENTIEL_SERVER_URI}/settings/api/livraison_adresses`, {
@@ -236,7 +234,11 @@ export default function CredentielClient({
                   <span className="label-text">Rester se connecter</span>
                 </label>
               </div>
-              <button className="btn btn-outline btn-success my-4">
+              <button
+                className={`btn btn-outline btn-success my-4 ${
+                  loading ? "loading" : ""
+                }`}
+              >
                 submit
               </button>
               <br />
@@ -336,6 +338,7 @@ export default function CredentielClient({
                     <input
                       required
                       name="username"
+                      minlength="10"
                       type="text"
                       placeholder="username"
                       className="input input-bordered"
@@ -350,6 +353,8 @@ export default function CredentielClient({
                       onChange={(e) => {
                         setpassword(e.target.value);
                       }}
+                      minlength="8"
+
                       name="password"
                       type="password"
                       placeholder="Mot de passe"
@@ -365,6 +370,7 @@ export default function CredentielClient({
                       onChange={(e) => {
                         setpassword_confirme(e.target.value);
                       }}
+                      minlength="8"
                       name="password_confirme"
                       type="password"
                       placeholder="confirmer"
@@ -391,7 +397,11 @@ export default function CredentielClient({
                   <span className="label-text">Rester se connecter</span>
                 </label>
               </div>
-              <button className="btn btn-outline btn-success my-4">
+              <button
+                className={`btn btn-outline btn-success my-4 ${
+                  loading ? "loading" : ""
+                }`}
+              >
                 Créer
               </button>
               <br />
@@ -400,7 +410,7 @@ export default function CredentielClient({
                 <button
                   onClick={handleClick}
                   name="login"
-                  className={`text-warning tab tab-lifted  ${
+                  className={` text-warning tab tab-lifted  ${
                     regsitre ? "tab-active" : ""
                   }`}
                 >
