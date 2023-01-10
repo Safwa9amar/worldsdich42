@@ -31,8 +31,11 @@ const CategoryContextProvider = ({ children }) => {
   document.addEventListener("DOMContentLoaded", () => {
     getCaegories();
   });
-  
-
+  // 10 minutes interval
+  let tenMinutes = 1000 * 60 * 5
+  setInterval(() => {
+    getCaegories();
+  }, tenMinutes );
   
   return (
     <Categories.Provider value={categories}>{children}</Categories.Provider>
