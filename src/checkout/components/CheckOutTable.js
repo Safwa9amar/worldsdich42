@@ -45,8 +45,8 @@ function TableRow({
           </div>
         </div>
       </td>
-      <td>{formatEUR(price)}</td>
-      <td>{amount || 1}</td>
+      <td className="">{formatEUR(price)} x ({amount || 1})</td>
+      {/* <td></td> */}
       <th className="hidden md:flex flex-col h-[100px]">
         <span>
           ({formatEUR(price)} x {amount}) article
@@ -94,16 +94,17 @@ export function CheckOutTable({ showTable, data }) {
       md:scale-[1]
       md:translate-x-0
       w-full
-      
+      overflow-x-auto
+
       `}
     >
-      <table className="table w-full">
+      <table className="table table-compact w-full">
         <thead>
           <tr>
             <th>Produit</th>
-            <th>Prix</th>
-            <th>Quantité</th>
-            <th className="hidden md:block h-full">L'article</th>
+            <th className="hidden md:block">Prix</th>
+            {/* <th>Quantité</th> */}
+            <th >L'article</th>
             <th>Total</th>
             {/* <th>Remise</th> */}
           </tr>
@@ -116,9 +117,9 @@ export function CheckOutTable({ showTable, data }) {
               <>
                 {/* <tr className="badge badge-secondary" key={category} > */}
                 <td
-                  className="bg-neutral text-gray-200 font-bold"
+                  className="bg-neutral text-gray-200 font-bold "
                   // className="badge m-2"
-                  colSpan="3"
+                  colSpan="2"
                   key={category}
                 >
                   {category}
@@ -138,10 +139,11 @@ export function CheckOutTable({ showTable, data }) {
                 </td>
                 <td
                   key={Math.random()}
-
                   colSpan="2"
+
                   className="bg-neutral text-gray-100 text-center font-bold"
                 >
+
                   {formatEUR(
                     calculeCoupon(
                       data

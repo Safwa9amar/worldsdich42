@@ -103,8 +103,7 @@ export default function BookTable() {
             </div>
           )}
         </form>
-
-        <Map />
+        <Map tailcss={"hidden sm:block"}/>
       </div>
     </section>
   );

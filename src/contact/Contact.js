@@ -25,10 +25,10 @@ const Contact = () => {
 
     emailjs
       .sendForm(
-        "service_rxn0bar",
+        "service_6c1h7t1",
         "template_0usr1zj",
         form.current,
-        "fAA9vgLJK9IaNRTSG"
+        "yoRNM7Z0XcyVtc4Sh"
       )
       .then(
         (result) => {
@@ -102,7 +102,7 @@ const Contact = () => {
             <input
               className="input input-bordered w-full "
               type="text"
-              name="email"
+              name="client_email"
               placeholder="Email"
               required
             />
