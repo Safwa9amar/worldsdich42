@@ -19,9 +19,9 @@ import { ClientStatus } from "../context/CientStatus";
 
 const Checkout = ({ setcheckBoxState, setStorage }) => {
   const Mycontext = useContext(Mycheckout);
+  const clientStatus = useContext(ClientStatus);
   const { isloged, UserData } = useContext(Credentiel);
   const [showTable, setshowTable] = React.useState(false);
-
   return (
     <motion.div
       animate={{
@@ -30,7 +30,7 @@ const Checkout = ({ setcheckBoxState, setStorage }) => {
       }}
       className="flex-col md:w-[95vw] md:mx-[2.5vw] lg:p-14"
     >
-      {ClientStatus.isActivated ? (
+      {clientStatus.isActivated ? (
         <>
           {!isloged && (
             <div className="w-fit py-10 px-4">

@@ -32,7 +32,7 @@ const CategoryContextProvider = ({ children }) => {
     getCaegories();
   });
   // 10 minutes interval
-  let tenMinutes = 1000 * 60 * 5
+  let tenMinutes = 1000 * 60 * 10
   setInterval(() => {
     getCaegories();
   }, tenMinutes );
