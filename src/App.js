@@ -77,7 +77,7 @@ function App({ URI }) {
   }, [ErorPage]);
   return (
     <>
-      {isClientActive.isActivated ? (
+      {!isClientActive.isActivated ? (
         <SupplementContextProvider>
           <CartDataContextProvider data={Storage}>
             <CheckoutDataContextProvider

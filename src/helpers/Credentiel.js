@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Credentiel } from "../context/CredentielContext";
 import { SERVER_URI } from "../helpers/UrlProvider";
-
+import { motion } from "framer-motion";
 export default function CredentielClient({
   setcheckBoxState,
   checkBoxState,
@@ -21,6 +21,8 @@ export default function CredentielClient({
 
   const [Displaylogger, setDisplaylogger] = useState(true);
   const [RememberMe, setRememberMe] = useState(false);
+  const [isAdressSelected, setisAdressSelected] = useState(false);
+
   const url = CREDENTIEL_SERVER_URI + "/registre";
 
   const handleSubmit = async (e) => {
@@ -301,9 +303,12 @@ export default function CredentielClient({
                 </div>
                 <div className="form-control">
                   <label className="input-group input-group-vertical">
-                    <span>adresse</span>
+                    <span>CP , Ville , Quartier</span>
 
                     <select
+                      onChange={(e) => {
+                        setisAdressSelected(true);
+                      }}
                       required
                       name="adress"
                       type="adress"
@@ -318,6 +323,70 @@ export default function CredentielClient({
                     </select>
                   </label>
                 </div>
+                {isAdressSelected && (
+                  <motion.div
+                    initial={{
+                      opacity: 0,
+                    }}
+                    animate={{
+                      opacity: [0.5, 0.7, 0.9, 1],
+                      translateY: ["10px", "0px"],
+                    }}
+                    className="flex flex-col gap-4 "
+                  >
+                    <div className="form-control">
+                      <label className="input-group input-group-vertical">
+                        <span>Adresse exact </span>
+                        <input
+                          required
+                          name="adresse_exct"
+                          type="text"
+                          placeholder="Eg : 17, Rue Antoine du Rafour 42100 Saint-étienne"
+                          className="input input-bordered"
+                        />
+                      </label>
+                    </div>
+
+                    <div className="grid md:grid-cols-2  grid-flow-dense items-center gap-4">
+                      <label className="input-group ">
+                        <span className="capitalize">Bâtiment</span>
+                        <input
+                          required
+                          name="batiment"
+                          type="text"
+                          className="input input-bordered"
+                        />
+                      </label>
+                      <label className="input-group">
+                        <span className="capitalize">étage</span>
+                        <input
+                          required
+                          name="etage"
+                          type="text"
+                          className="input input-bordered"
+                        />
+                      </label>
+                      <label className="input-group ">
+                        <span className="capitalize">Sonnette</span>
+                        <select name="sonnette" className="select select-bordered " required>
+                          <option disabled selected></option>
+                          <option value="oui">Oui</option>
+                          <option value="non">Non</option>
+                        </select>
+                      </label>
+                      <label className="input-group">
+                        <span className="capitalize">code</span>
+                        <input
+                          required
+                          name="code"
+                          type="text"
+                          className="input input-bordered"
+                        />
+                      </label>
+                    </div>
+                  </motion.div>
+                )}
+
                 <div className="form-control">
                   <label className="input-group input-group-vertical">
                     <span>Email</span>
@@ -330,6 +399,7 @@ export default function CredentielClient({
                     />
                   </label>
                 </div>
+
                 <div className="form-control">
                   <label className="input-group input-group-vertical">
                     <span>Nom d'utilisateur</span>

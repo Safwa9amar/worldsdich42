@@ -67,6 +67,30 @@ export default function User() {
           <div className="text-slate-300">{UserData.adress.name} </div>
         </div>
       </div>
+      <br />
+
+      <h1 className="text-lg md:text-2xl font-extrabold lg:text-3xl">
+      Informations de livraison
+      </h1>
+      <div className="divider"></div>
+      <div className="grid grid-cols-2">
+        <div>
+          <div className="font-bold">Quartier  :</div>
+          <div className="font-bold">Adresse :</div>
+          <div className="font-bold">Bâtiment :</div>
+          <div className="font-bold">Étage  :</div>
+          <div className="font-bold">Sonnerie   :</div>
+          <div className="font-bold">Code  :</div>
+        </div>
+        <div>
+          <div className="text-slate-300">{UserData.adress.name} </div>
+          <div className="text-slate-300">{UserData.adress_exct}</div>
+          <div className="text-slate-300">{UserData.batiment}</div>
+          <div className="text-slate-300">{UserData.etage}</div>
+          <div className="text-slate-300">{UserData.sonnerie ? <span className="badge badge-success">Oui</span> : <span className="badge badge-success">Non</span>  }</div>
+          <div className="text-slate-300">{UserData.code}</div>
+        </div>
+      </div>
     </div>
   );
 }
