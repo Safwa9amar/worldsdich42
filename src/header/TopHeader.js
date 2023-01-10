@@ -7,6 +7,7 @@ import CloseIco from "../icons/close.svg";
 import { useLocation } from "react-router-dom";
 import React from "react";
 import { Cartstorage } from "../context/LocalStorageContext";
+import { ClientStatus } from "../context/CientStatus";
 
 // import { BiQrScan } from "react-icons/bi";
 export const NavigationsLinks = ({ setisVisible }) => {
@@ -66,6 +67,8 @@ export const NavigationsLinks = ({ setisVisible }) => {
 };
 
 export const CartIndicator = ({ openCart, handleCartBoudries, className }) => {
+  const isClientActive = useContext(ClientStatus);
+
   const CartStorage = JSON.parse(useContext(Cartstorage));
   const Location = useLocation();
   const handleLoad = (e) => {
@@ -73,7 +76,7 @@ export const CartIndicator = ({ openCart, handleCartBoudries, className }) => {
     // console.log(e.target.getBoundingClientRect());
   };
   return (
-    <button onClick={openCart} className={className} onLoad={handleLoad}>
+    <button onClick={openCart && isClientActive} className={`${className}`} onLoad={handleLoad}>
       <p className="absolute bottom-10 right-0 bg-[#5B6D5B] w-5 h-5 rounded-full text-sm ">
         {CartStorage?.length || 0}
       </p>

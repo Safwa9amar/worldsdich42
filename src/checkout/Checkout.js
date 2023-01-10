@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { FaRegUser } from "react-icons/fa";
+// import { FaRegUser } from "react-icons/fa";
 // import { RiCoupon3Line } from "react-icons/ri";
-import { BiLogOut } from "react-icons/bi";
+// import { BiLogOut } from "react-icons/bi";
 import burger from "../menu/images/burger.png";
 import surPlaceIco from "../icons/table_food.svg";
 import EmporterFoodIco from "../icons/emporter_food.svg";
@@ -14,10 +14,12 @@ import { Credentiel } from "../context/CredentielContext";
 import { motion } from "framer-motion";
 // import CredentielClient from "../helpers/Credentiel";
 import { Link } from "react-router-dom";
+import ErrorPage from "../404/OutOfServices";
+import { ClientStatus } from "../context/CientStatus";
 
 const Checkout = ({ setcheckBoxState, setStorage }) => {
   const Mycontext = useContext(Mycheckout);
-  const { isloged, setiLoged, UserData } = useContext(Credentiel);
+  const { isloged, UserData } = useContext(Credentiel);
   const [showTable, setshowTable] = React.useState(false);
 
   return (
@@ -28,91 +30,96 @@ const Checkout = ({ setcheckBoxState, setStorage }) => {
       }}
       className="flex-col md:w-[95vw] md:mx-[2.5vw] lg:p-14"
     >
-    
-      {!isloged && (
-        <div className="w-fit py-10 px-4">
-          <div className="alert alert-warning capitalize ">
-            veuillez vous connecter à votre compte ou vous inscrire pour voir
-            les détails de votre commande
-          </div>
-          <br />
-
-          <Link  to="/store/profile" className="link text-error text-lg ">
-            Cliquez ici pour vous identifier
-          </Link>
-        </div>
-      )}
-      {Mycontext.length > 0 ? (
+      {ClientStatus.isActivated ? (
         <>
-          {isloged && (
+          {!isloged && (
+            <div className="w-fit py-10 px-4">
+              <div className="alert alert-warning capitalize ">
+                veuillez vous connecter à votre compte ou vous inscrire pour
+                voir les détails de votre commande
+              </div>
+              <br />
+
+              <Link to="/store/profile" className="link text-error text-lg ">
+                Cliquez ici pour vous identifier
+              </Link>
+            </div>
+          )}
+          {Mycontext.length > 0 ? (
             <>
-              <CheckOutTable
-                showTable={showTable}
-                burger={burger}
-                data={Mycontext}
-              />
-              <CartTotals
-                surPlaceIco={surPlaceIco}
-                EmporterFoodIco={EmporterFoodIco}
-                DeliveryIco={DeliveryIco}
-                subTotal="13"
-                total="26"
-                Mycontext={Mycontext}
-                setcheckBoxState={setcheckBoxState}
-                setStorage={setStorage}
-                UserData={UserData}
-                isloged={isloged}
-              />
-              <label className="btn btn-circle swap swap-rotate fixed bottom-0 right-10 z-50 md:hidden">
-                <input
-                  onChange={() => setshowTable(!showTable)}
-                  type="checkbox"
-                />
+              {isloged && (
+                <>
+                  <CheckOutTable
+                    showTable={showTable}
+                    burger={burger}
+                    data={Mycontext}
+                  />
+                  <CartTotals
+                    surPlaceIco={surPlaceIco}
+                    EmporterFoodIco={EmporterFoodIco}
+                    DeliveryIco={DeliveryIco}
+                    subTotal="13"
+                    total="26"
+                    Mycontext={Mycontext}
+                    setcheckBoxState={setcheckBoxState}
+                    setStorage={setStorage}
+                    UserData={UserData}
+                    isloged={isloged}
+                  />
+                  <label className="btn btn-circle swap swap-rotate fixed bottom-0 right-10 z-50 md:hidden">
+                    <input
+                      onChange={() => setshowTable(!showTable)}
+                      type="checkbox"
+                    />
 
-                <svg
-                  className="swap-off fill-curren"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
-                  viewBox="0 0 512 512"
-                >
-                  <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
-                </svg>
+                    <svg
+                      className="swap-off fill-curren"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 512 512"
+                    >
+                      <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
+                    </svg>
 
-                <svg
-                  className="swap-on fill-current"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
-                  viewBox="0 0 512 512"
-                >
-                  <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" />
-                </svg>
-              </label>
+                    <svg
+                      className="swap-on fill-current"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 512 512"
+                    >
+                      <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" />
+                    </svg>
+                  </label>
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              <div className="alert alert-info shadow-lg">
+                <div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="stroke-current flex-shrink-0 w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  <span>Vous n'avez pas ajouté d'articles</span>
+                </div>
+              </div>
             </>
           )}
         </>
       ) : (
-        <>
-          <div className="alert alert-info shadow-lg">
-            <div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="stroke-current flex-shrink-0 w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
-              <span>Vous n'avez pas ajouté d'articles</span>
-            </div>
-          </div>
-        </>
+        <ErrorPage />
       )}
     </motion.div>
   );

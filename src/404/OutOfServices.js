@@ -5,11 +5,11 @@ export default function ErrorPage() {
   // console.error(error);
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-gray-500 ">
+    <div className="flex justify-center items-center p-16">
       <div className="prose text-center">
-        <h1>Oops! We apologize, dear visitor</h1>
-        <h2> Visit us later</h2>
-        <p className="text-red-400">We are now out of service</p>
+        <h1>Oops! Nous nous excusons, cher visiteur</h1>
+        <h2> Visitez-nous plus tard</h2>
+        <p className="text-red-400">Nous sommes maintenant hors service</p>
         <p className="text-red-700">
           {/* <i>{error.statusText || error.message}</i> */}
         </p>

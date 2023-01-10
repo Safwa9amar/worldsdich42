@@ -5,7 +5,7 @@ import User from "./User";
 
 export default function Profile() {
   const [HeaderText, setHeaderText] = useState("S'identifier");
-  const { isloged, setiLoged, UserData } = useContext(Credentiel);
+  const { isloged, UserData } = useContext(Credentiel);
 
   console.log(UserData);
   useEffect(() => {

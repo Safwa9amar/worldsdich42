@@ -5,7 +5,7 @@ import Logo from "../asstes/logo.png";
 import { CartIndicator, MdTopHeader, SmTopHeader } from "./TopHeader";
 import { Link, useLocation } from "react-router-dom";
 // import food_dilevery from "../images/food_dilevery.png";
-import food_dilevery2 from "../images/food_dilevery2.png";
+// import food_dilevery2 from "../images/food_dilevery2.png";
 import { motion } from "framer-motion";
 
 // import botiqueFronImg from "../asstes/botiqueFronImg.jpg";
