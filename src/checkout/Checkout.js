@@ -10,13 +10,12 @@ import { CheckOutTable } from "./components/CheckOutTable";
 import { CartTotals } from "./components/CartTotals";
 import { Checkout as Mycheckout } from "../context/checkoutContext";
 import { Credentiel } from "../context/CredentielContext";
-// import { SERVER_URI } from "../helpers/UrlProvider";
 import { motion } from "framer-motion";
 // import CredentielClient from "../helpers/Credentiel";
-import { Link } from "react-router-dom";
 import ErrorPage from "../404/OutOfServices";
 import { ClientStatus } from "../context/CientStatus";
-
+import { Link } from "react-router-dom";
+import Stripe from "./stripe";
 const Checkout = ({ setcheckBoxState, setStorage }) => {
   const Mycontext = useContext(Mycheckout);
   const clientStatus = useContext(ClientStatus);
@@ -30,6 +29,7 @@ const Checkout = ({ setcheckBoxState, setStorage }) => {
       }}
       className="flex-col md:w-[95vw] md:mx-[2.5vw] lg:p-14"
     >
+      {/* <Stripe /> */}
       {clientStatus.isActivated ? (
         <>
           {!isloged && (
@@ -66,6 +66,7 @@ const Checkout = ({ setcheckBoxState, setStorage }) => {
                     UserData={UserData}
                     isloged={isloged}
                   />
+                
                   <label className="btn btn-circle swap swap-rotate fixed bottom-0 right-10 z-50 md:hidden">
                     <input
                       onChange={() => setshowTable(!showTable)}

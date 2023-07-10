@@ -10,9 +10,10 @@ export default function BuySuccess({
   setcheckBoxState,
   DamandeType,
   setStorage,
-  Note
+  Note,
 }) {
   const BUY_SERVER_URI = useContext(SERVER_URI);
+  const user = useContext(Credentiel);
   // const socket = io(`${BUY_SERVER_URI}/test`);
 
   // const userCredentiel = useContext(Credentiel);
@@ -25,6 +26,8 @@ export default function BuySuccess({
   const [orderNum, setorderNum] = useState();
   const CheckoutData = useContext(Checkout);
   const command_type = DamandeType.filter((el) => el.bol === true)[0];
+  const [orderSuccess, setorderSuccess] = useState(false);
+  const [chargeData, setchargeData] = useState(false);
   const handleClick = () => {
     if (isloged) {
       setfinaLoggin(true);
@@ -37,12 +40,6 @@ export default function BuySuccess({
   };
 
   const sendBuyData = useCallback(async () => {
-    // console.log(JSON.stringify({
-    //   user:
-    //     localStorage.getItem("refrech") || sessionStorage.getItem("refrech"),
-    //   order: CheckoutData,
-    //   DamandeType: command_type,
-    // }))
     let data = await fetch(BUY_SERVER_URI + "/get_client_order", {
       mode: "cors",
       method: "POST",
@@ -54,31 +51,50 @@ export default function BuySuccess({
           localStorage.getItem("refrech") || sessionStorage.getItem("refrech"),
         order: CheckoutData,
         DamandeType: command_type,
-        Note : Note
+        Note: Note,
       }),
     })
       .then(setstartReq(true))
       .then((res) => {
         if (res.ok && res.status === 200) {
+          return res.json();
+        }
+      })
+      .then(async (res) => {
+        const order_id = res.OrderNum;
+        const data = await fetch(BUY_SERVER_URI + `/charge/${order_id}`, {
+          mode: "cors",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user:
+              localStorage.getItem("refrech") ||
+              sessionStorage.getItem("refrech"),
+            email: user.email,
+          }),
+        });
+        if (data.ok && data.status === 200) {
+          setorderSuccess(true);
+          setchargeData(data.json());
           setReq(true);
           setstartReq(false);
-          return res.json();
         }
       });
     if (data?.isConfirmed === true) {
       setReq(false);
       setOk(true);
       setorderNum(data.OrderNum);
-      // setfinalResResult(false);
     }
-    // console.table(data);
   }, [CheckoutData, command_type, BUY_SERVER_URI]);
 
   useEffect(() => {
-    // if (isloged) {
-    //   setfinaLoggin(true);
-    // }
-  }, [isloged, sendBuyData]);
+    const timer = setTimeout(() => {
+      orderSuccess && chargeData.then((res) => (window.location = res.url));
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [orderSuccess, chargeData]);
 
   return (
     <>
