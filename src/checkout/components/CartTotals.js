@@ -61,6 +61,18 @@ export function CartTotals({
     setEmporter(false);
     setDelivery(true);
   };
+
+  useEffect(() => {
+    localStorage.setItem(
+      "DamandeType",
+      JSON.stringify(DamandeType.filter((el) => el.bol === true)[0]?.id)
+    );
+  }, [DamandeType]);
+
+  useEffect(() => {
+    localStorage.setItem("Note", JSON.stringify(Note));
+  }, [Note]);
+
   const getTotalPrice = (data) => {
     let spliceToCategories = data
       .map((el) => el.category)
@@ -161,7 +173,7 @@ export function CartTotals({
         setPromotionTotal(data);
       })
       .catch((err) => console.log(err));
-  }, [isloged, Mycontext,UserData]);
+  }, [isloged, Mycontext, UserData]);
 
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
@@ -208,16 +220,12 @@ export function CartTotals({
 
       <div className="flex flex-col gap-4  w-full px-5">
         {!FraisLivraison.isActived ? (
-          <div
-            className="alert alert-info shadow-lg w-full"
-          >
+          <div className="alert alert-info shadow-lg w-full">
             La livraison à votre adresse : {FraisLivraison.name} n'est pas
             disponible actuellement
           </div>
         ) : FraisLivraison.isActived && GetTotalPrice < FraisLivraison.price ? (
-          <div
-            className="flex gap-2  alert alert-warning shadow-lg w-full"
-          >
+          <div className="flex gap-2  alert alert-warning shadow-lg w-full">
             <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

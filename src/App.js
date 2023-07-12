@@ -17,8 +17,9 @@ import CheckoutDataContextProvider from "./context/checkoutContext";
 // import CredentielModel from "./helpers/CredentielModel";
 import Profile from "./profile/Profile";
 import Error404 from "./404/404";
+import ChargeSuccess from "./checkout/ChargeSuccess";
 
-function App({ URI }) {
+function App() {
   const CategoryContext = React.useContext(Categories);
   const [isVisisble, setCartVisisble] = React.useState(false);
   const [isAdedTocart, setIsAdedTocart] = React.useState(false);
@@ -59,112 +60,123 @@ function App({ URI }) {
     "/store/profile/",
     "/store/checkout",
     "/store/checkout/",
+    "/store/checkout/success",
+    "/store/checkout/success/",
     "/store/menu/category",
   ];
   const [ErorPage, setErorPage] = React.useState(false);
   React.useEffect(() => {
-    
     // Error404
     let currentLocation = window.location.pathname;
     let isLocation = locations.includes(currentLocation);
     if (!isLocation) {
       setErorPage(true);
     }
-
-  }, [ErorPage,locations]);
+  }, [ErorPage, locations]);
+  React.useEffect(() => {
+    console.log("componentDidMount");
+  }, []);
   return (
     <>
-      
-        <SupplementContextProvider>
-          <CartDataContextProvider data={Storage}>
-            <CheckoutDataContextProvider
-              isAdedTocart={isAdedTocart}
-              isVisisble={isVisisble}
-              isDeletetedFromTocart={isDeletetedFromTocart}
-              Storage={Storage}
-              CategoryContext={CategoryContext}
+      <SupplementContextProvider>
+        <CartDataContextProvider data={Storage}>
+          <CheckoutDataContextProvider
+            isAdedTocart={isAdedTocart}
+            isVisisble={isVisisble}
+            isDeletetedFromTocart={isDeletetedFromTocart}
+            Storage={Storage}
+            CategoryContext={CategoryContext}
+          >
+            <div
+              data-theme="dracula"
+              id="scroller"
+              className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
             >
-              <div
-                data-theme="dracula"
-                id="scroller"
-                className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
-              >
-                <BrowserRouter>
-                  {/* <CredentielModel
+              <BrowserRouter>
+                {/* <CredentielModel
                 setcheckBoxState={setcheckBoxState}
                 checkBoxState={checkBoxState}
               /> */}
-                  <ScrollToTop>
-                    {ErorPage ? (
-                      <Error404 setErorPage={setErorPage} />
-                    ) : (
-                      <>
-                        <Header
-                          setCartVisisble={setCartVisisble}
-                          isAdedTocart={isAdedTocart}
-                          isDeletetedFromTocart={isDeletetedFromTocart}
-                          handleCartBoudries={handleCartBoudries}
-                          locations = {locations}
+                <ScrollToTop>
+                  {ErorPage ? (
+                    <Error404 setErorPage={setErorPage} />
+                  ) : (
+                    <>
+                      <Header
+                        setCartVisisble={setCartVisisble}
+                        isAdedTocart={isAdedTocart}
+                        isDeletetedFromTocart={isDeletetedFromTocart}
+                        handleCartBoudries={handleCartBoudries}
+                        locations={locations}
+                      />
+                      <Cart
+                        isVisisble={isVisisble}
+                        setCartVisisble={setCartVisisble}
+                        isAdedTocart={isAdedTocart}
+                        handleDeletetedFromTocart={handleDeletetedFromTocart}
+                        handleStorageEdit={handleStorageEdit}
+                      />
+
+                      <Routes>
+                        <Route exact path="/store/*" element={<Home />} />
+                        <Route exact path="/store/" element={<Home />} />
+                        <Route
+                          exact
+                          path="/store/menu/category"
+                          element={
+                            <Catergory
+                              handleStorageEdit={handleStorageEdit}
+                              handleAdedTocart={handleAdedTocart}
+                              isDeletetedFromTocart={isDeletetedFromTocart}
+                              hybrid_idFroDeletion={hybrid_idFroDeletion}
+                              getCartBoudaries={getCartBoudaries}
+                              setcheckBoxState={setcheckBoxState}
+                              setErorPage={setErorPage}
+                            />
+                          }
                         />
-                        <Cart
-                          isVisisble={isVisisble}
-                          setCartVisisble={setCartVisisble}
-                          isAdedTocart={isAdedTocart}
-                          handleDeletetedFromTocart={handleDeletetedFromTocart}
-                          handleStorageEdit={handleStorageEdit}
+                        <Route
+                          exact
+                          path="/store/checkout"
+                          element={
+                            <Checkout
+                              setcheckBoxState={setcheckBoxState}
+                              checkBoxState={checkBoxState}
+                              setStorage={setStorage}
+                            />
+                          }
+                        />
+                        <Route
+                          exact
+                          path="/store/checkout/success"
+                          element={
+                            <ChargeSuccess
+                              handleStorageEdit={handleStorageEdit}
+                            />
+                          }
                         />
 
-                        <Routes>
-                          <Route exact path="/store/*" element={<Home />} />
-                          <Route exact path="/store/" element={<Home />} />
-                          <Route
-                            exact
-                            path="/store/menu/category"
-                            element={
-                              <Catergory
-                                handleStorageEdit={handleStorageEdit}
-                                handleAdedTocart={handleAdedTocart}
-                                isDeletetedFromTocart={isDeletetedFromTocart}
-                                hybrid_idFroDeletion={hybrid_idFroDeletion}
-                                getCartBoudaries={getCartBoudaries}
-                                setcheckBoxState={setcheckBoxState}
-                                setErorPage={setErorPage}
-                              />
-                            }
-                          />
-                          <Route
-                            exact
-                            path="/store/checkout"
-                            element={
-                              <Checkout
-                                setcheckBoxState={setcheckBoxState}
-                                checkBoxState={checkBoxState}
-                                setStorage={setStorage}
-                              />
-                            }
-                          />
-                          <Route exact path="/store/menu" element={<Menu />} />
-                          <Route
-                            exact
-                            path="/store/contact"
-                            element={<Contact />}
-                          />
-                          <Route
-                            exact
-                            path="/store/profile"
-                            element={<Profile />}
-                          />
-                        </Routes>
-                      </>
-                    )}
-                  </ScrollToTop>
-                  <Footer />
-                </BrowserRouter>
-              </div>
-            </CheckoutDataContextProvider>
-          </CartDataContextProvider>
-        </SupplementContextProvider>
-     
+                        <Route exact path="/store/menu" element={<Menu />} />
+                        <Route
+                          exact
+                          path="/store/contact"
+                          element={<Contact />}
+                        />
+                        <Route
+                          exact
+                          path="/store/profile"
+                          element={<Profile />}
+                        />
+                      </Routes>
+                    </>
+                  )}
+                </ScrollToTop>
+                <Footer />
+              </BrowserRouter>
+            </div>
+          </CheckoutDataContextProvider>
+        </CartDataContextProvider>
+      </SupplementContextProvider>
     </>
   );
 }

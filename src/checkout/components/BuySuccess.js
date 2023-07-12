@@ -40,7 +40,8 @@ export default function BuySuccess({
   };
 
   const sendBuyData = useCallback(async () => {
-    let data = await fetch(BUY_SERVER_URI + "/get_client_order", {
+    setstartReq(true);
+    const data = await fetch(BUY_SERVER_URI + `/charge`, {
       mode: "cors",
       method: "POST",
       headers: {
@@ -49,49 +50,27 @@ export default function BuySuccess({
       body: JSON.stringify({
         user:
           localStorage.getItem("refrech") || sessionStorage.getItem("refrech"),
+        email: user.email,
         order: CheckoutData,
         DamandeType: command_type,
         Note: Note,
       }),
-    })
-      .then(setstartReq(true))
-      .then((res) => {
-        if (res.ok && res.status === 200) {
-          return res.json();
-        }
-      })
-      .then(async (res) => {
-        const order_id = res.OrderNum;
-        const data = await fetch(BUY_SERVER_URI + `/charge/${order_id}`, {
-          mode: "cors",
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user:
-              localStorage.getItem("refrech") ||
-              sessionStorage.getItem("refrech"),
-            email: user.email,
-          }),
-        });
-        if (data.ok && data.status === 200) {
-          setorderSuccess(true);
-          setchargeData(data.json());
-          setReq(true);
-          setstartReq(false);
-        }
-      });
-    if (data?.isConfirmed === true) {
-      setReq(false);
-      setOk(true);
-      setorderNum(data.OrderNum);
+    });
+    if (data.ok && data.status === 200) {
+      setorderSuccess(true);
+      setchargeData(data.json());
+      setReq(true);
+      setstartReq(false);
     }
   }, [CheckoutData, command_type, BUY_SERVER_URI]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      orderSuccess && chargeData.then((res) => (window.location = res.url));
+      orderSuccess &&
+        chargeData.then((res) => {
+          localStorage.setItem("charge_id", JSON.stringify(res.id));
+          window.location = res.url;
+        });
     }, 3000);
     return () => clearTimeout(timer);
   }, [orderSuccess, chargeData]);
