@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import checked from "../asstes/checked.gif";
 import { SERVER_URI } from "../helpers/UrlProvider";
 import { Checkout } from "../context/checkoutContext";
-
+import { Link } from "react-router-dom";
 export default function ChargeSuccess({ handleStorageEdit }) {
   const BUY_SERVER_URI = useContext(SERVER_URI);
   const CheckoutData = useContext(Checkout);
@@ -10,6 +10,7 @@ export default function ChargeSuccess({ handleStorageEdit }) {
   const Note = localStorage.getItem("Note");
   const [orderSuccess, setorderSuccess] = useState(false);
   const [facture, setfacture] = useState(false);
+  const [order_id, setorder_id] = useState(null);
 
   const sendBuyData = () => {
     fetch(BUY_SERVER_URI + "/get_client_order", {
@@ -31,6 +32,7 @@ export default function ChargeSuccess({ handleStorageEdit }) {
           res.json().then((data) => {
             console.log(data);
             getPaymentBill(data.OrderNum);
+            setorder_id(data.OrderNum);
           });
         }
       })
@@ -52,23 +54,21 @@ export default function ChargeSuccess({ handleStorageEdit }) {
       }),
     })
       .then((res) => {
-        if (res.ok && res.status === 200) {
-          setorderSuccess(true);
-          res.blob().then((blob) => {
-            console.log(blob);
-            const url = window.URL.createObjectURL(new Blob([blob]));
-            setfacture(url);
-          });
-        }
+        return res.blob();
       })
-      .catch((err) => {
-        console.log(err);
+      .finally(() => {
+        setorderSuccess(true);
       });
   };
   useEffect(() => {
     sendBuyData();
   }, []);
 
+  useEffect(() => {
+    if (CheckoutData.length === 0 && order_id !== null) {
+      window.location.href = "/store/menu";
+    }
+  }, [CheckoutData]);
 
   return (
     <div className="h-3/4 w-screen flex justify-center items-center">
@@ -85,21 +85,13 @@ export default function ChargeSuccess({ handleStorageEdit }) {
           </div>
         ) : (
           <div className="text-white flex flex-col items-center">
+            <img src={checked} alt="checked" className="w-20 h-20" />
             <h1 className="text-3xl font-bold">
               Votre commande est enregistrée avec succès
             </h1>
-
-            <a
-              onClick={() => {
-                handleStorageEdit([]);
-              }}
-              href={facture}
-              download="facture.docx"
-              className="text-black rounded-md p-2 flex items-center m-5 bg-[#F9D348]"
-            >
-              <img src={checked} alt="checked" className="w-10 h-10" />
-              cliquez ici pour télécharger votre facture
-            </a>
+            <Link to="/store/menu" className="text-2xl font-bold">
+              go to menu
+            </Link>
           </div>
         )}
       </div>
