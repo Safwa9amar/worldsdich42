@@ -134,17 +134,18 @@ export default function CredentielClient({
   // fetsh `${CREDENTIEL_SERVER_URI}/settings/api/livraison_adresses` when component mount
   const [livraison_adresses, setlivraison_adresses] = useState([]);
   useEffect(() => {
-    fetch(`${CREDENTIEL_SERVER_URI}/settings/api/livraison_adresses`, {
+    // fetch(`${CREDENTIEL_SERVER_URI}/settings/api/livraison_adresses`, {
+    fetch(`https://api.stripe.com/v1/shipping_rates`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer sk_test_51NIB1DG5waCNLkzT7xtBN724M9XSxDD83ZktBJT2IXVo3OaP7FKH0mE5TbY2868iFlwG7O0BG5gOGHq3rMol9Emu00lT3iNh8n`,
       },
     })
       .then((response) => response.json())
       .then((data) => {
-        setlivraison_adresses(data);
-        // console.log(data);
+        console.log(data.data);
+        setlivraison_adresses(data.data.filter((el) => el.active === true));
       });
   }, [CREDENTIEL_SERVER_URI]);
 
@@ -317,7 +318,7 @@ export default function CredentielClient({
                       <option />
                       {livraison_adresses.map((livraison_adresse) => (
                         <option value={livraison_adresse.id}>
-                          {livraison_adresse.name}
+                          {livraison_adresse.display_name}
                         </option>
                       ))}
                     </select>
@@ -368,8 +369,12 @@ export default function CredentielClient({
                       </label>
                       <label className="input-group ">
                         <span className="capitalize">Sonnette</span>
-                        <select name="sonnette" className="select select-bordered " required>
-                          <option disabled selected></option>
+                        <select
+                          name="sonnette"
+                          className="select select-bordered "
+                          required
+                          defaultValue={'non'}
+                        >
                           <option value="oui">Oui</option>
                           <option value="non">Non</option>
                         </select>

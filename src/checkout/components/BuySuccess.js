@@ -100,8 +100,8 @@ export default function BuySuccess({
               setfinaLoggin(false);
               setOk(false);
               setfinalResResult(true);
-              setStorage("[]");
-              localStorage.removeItem("cartData");
+              // setStorage("[]");
+              // localStorage.removeItem("cartData");
             }}
             className="btn btn-sm btn-circle absolute right-2 top-2"
           >

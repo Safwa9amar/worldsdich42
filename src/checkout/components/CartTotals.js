@@ -150,16 +150,16 @@ export function CartTotals({
       .catch((err) => console.log(err));
   }, [URI]);
   useEffect(() => {
-    fetch(`${URI}/settings/api/livraison_adresses`, {
-      method: "GET",
-      cors: "no-cors",
+    fetch(`https://api.stripe.com/v1/shipping_rates`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer sk_test_51NIB1DG5waCNLkzT7xtBN724M9XSxDD83ZktBJT2IXVo3OaP7FKH0mE5TbY2868iFlwG7O0BG5gOGHq3rMol9Emu00lT3iNh8n`,
+      },
     })
       .then((res) => res.json())
       .then((data) => {
-        let frais_id = UserData.adress.id;
-        let frais = data.filter((el) => el.id === frais_id);
-        setFraisLivraison(frais[0]);
-        // console.log(frais);
+        console.log(data.data);
+        setFraisLivraison(data.data[0]);
       })
       .catch((err) => console.log(err));
 
@@ -201,8 +201,8 @@ export function CartTotals({
             );
           } else if (el.id === 3 && el.isCheked) {
             if (
-              FraisLivraison.isActived &&
-              GetTotalPrice >= FraisLivraison.price
+              FraisLivraison.active &&
+              GetTotalPrice >= FraisLivraison.fixed_amount.amount / 100
             )
               return (
                 <ApplyMethode
@@ -219,12 +219,12 @@ export function CartTotals({
       </div>
 
       <div className="flex flex-col gap-4  w-full px-5">
-        {!FraisLivraison.isActived ? (
+        {!FraisLivraison.active ? (
           <div className="alert alert-info shadow-lg w-full">
-            La livraison à votre adresse : {FraisLivraison.name} n'est pas
+            La livraison à votre adresse : {FraisLivraison.display_name} n'est pas
             disponible actuellement
           </div>
-        ) : FraisLivraison.isActived && GetTotalPrice < FraisLivraison.price ? (
+        ) : FraisLivraison.active && GetTotalPrice < FraisLivraison.fixed_amount.amount/100 ? (
           <div className="flex gap-2  alert alert-warning shadow-lg w-full">
             <div>
               <svg
@@ -241,9 +241,9 @@ export function CartTotals({
                 />
               </svg>
               <span>
-                Note: Grâce à votre adresse {FraisLivraison.name}, le minimum
+                Note: Grâce à votre adresse {FraisLivraison.display_name}, le minimum
                 Prix pour la livraison est a partir de{" "}
-                {formatEUR(FraisLivraison.price)}
+                {formatEUR(FraisLivraison.fixed_amount.amount/100)}
               </span>
             </div>
           </div>
@@ -273,7 +273,7 @@ export function CartTotals({
           <>
             <div className="flex gap-2 justify-between">
               <p className="text-info">Frais de livraison </p>
-              <p>{formatEUR(parseFloat(FraisLivraison?.frais_price))}</p>
+              <p>{formatEUR(parseFloat(FraisLivraison.fixed_amount.amount/100))}</p>
             </div>
           </>
         )}
@@ -285,9 +285,9 @@ export function CartTotals({
                 ? promotionTotal.value > 0
                   ? formatEUR(
                       calculeCoupon(GetTotalPrice, promotionTotal.value) +
-                        FraisLivraison?.frais_price
+                        FraisLivraison.fixed_amount.amount/100
                     )
-                  : formatEUR(GetTotalPrice + FraisLivraison?.frais_price) //formatEUR(GetTotalPrice + FraisLivraison?.frais_price)
+                  : formatEUR(GetTotalPrice + FraisLivraison.fixed_amount.amount/100) //formatEUR(GetTotalPrice + FraisLivraison.fixed_amount.amount/100)
                 : promotionTotal.value > 0
                 ? formatEUR(calculeCoupon(GetTotalPrice, promotionTotal.value))
                 : formatEUR(GetTotalPrice) //formatEUR(GetTotalPrice)
