@@ -40,8 +40,9 @@ export default function BuySuccess({
   };
 
   const sendBuyData = useCallback(async () => {
+    console.log(command_type.id);
     setstartReq(true);
-    const data = await fetch(BUY_SERVER_URI + `/charge`, {
+    const data = await fetch(BUY_SERVER_URI + `${command_type.id === 3 ? '/charge' : '/get_client_order'}`, {
       mode: "cors",
       method: "POST",
       headers: {
@@ -69,7 +70,7 @@ export default function BuySuccess({
       orderSuccess &&
         chargeData.then((res) => {
           localStorage.setItem("charge_id", JSON.stringify(res.id));
-          window.location = res.url;
+          window.location = res.url !== undefined ? res.url : window.location.origin + '/store/checkout/success'
         });
     }, 3000);
     return () => clearTimeout(timer);
