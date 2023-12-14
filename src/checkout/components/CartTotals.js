@@ -33,6 +33,8 @@ export function CartTotals({
 
   // fraislivraison state
   const [FraisLivraison, setFraisLivraison] = useState(0);
+  const [shipitStatus, setshipitStatus] = useState(false);
+  const [shippingRates, setshippingRates] = useState([]);
   const [isPlace, setPlace] = React.useState(false);
   const [isEmporter, setEmporter] = React.useState(false);
   const [isDelivery, setDelivery] = React.useState(false);
@@ -159,7 +161,7 @@ export function CartTotals({
       .then((res) => res.json())
       .then((data) => {
         console.log(data.data);
-        setFraisLivraison(data.data[0]);
+        setshippingRates(data.data);
       })
       .catch((err) => console.log(err));
 
@@ -200,56 +202,21 @@ export function CartTotals({
               />
             );
           } else if (el.id === 3 && el.isCheked) {
-            if (
-              FraisLivraison.active &&
-              GetTotalPrice >= FraisLivraison.fixed_amount.amount / 100
-            )
-              return (
-                <ApplyMethode
-                  key={el.id}
-                  isActive={isDelivery}
-                  SetActive={delivery}
-                  type="livraison"
-                  text={"En livraison"}
-                />
-              );
+            return (
+              <ApplyMethode
+                key={el.id}
+                isActive={isDelivery}
+                SetActive={delivery}
+                type="livraison"
+                text={"En livraison"}
+              />
+            );
           }
           return "";
         })}
       </div>
 
       <div className="flex flex-col gap-4  w-full px-5">
-        {!FraisLivraison.active ? (
-          <div className="alert alert-info shadow-lg w-full">
-            La livraison à votre adresse : {FraisLivraison.display_name} n'est pas
-            disponible actuellement
-          </div>
-        ) : FraisLivraison.active && GetTotalPrice < FraisLivraison.fixed_amount.amount/100 ? (
-          <div className="flex gap-2  alert alert-warning shadow-lg w-full">
-            <div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="stroke-current flex-shrink-0 h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                />
-              </svg>
-              <span>
-                Note: Grâce à votre adresse {FraisLivraison.display_name}, le minimum
-                Prix pour la livraison est a partir de{" "}
-                {formatEUR(FraisLivraison.fixed_amount.amount/100)}
-              </span>
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
         <div className="flex gap-2 justify-between">
           <p className="text-info">CART TOTALS</p>
           <p>{formatEUR(GetTotalPrice)}</p>
@@ -271,9 +238,61 @@ export function CartTotals({
         </div>
         {isDelivery && (
           <>
+            {DamandeType.filter((el) => el.bol === true)[0]?.id === 3 && (
+              <label className="input-group input-group-vertical">
+                <span className="text-info">
+                  Veuillez sélectionner une adresse de livraison
+                </span>
+                <select
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                    setFraisLivraison(e.target.value);
+                  }}
+                  className="input input-bordered"
+                >
+                  <option />
+                  {shippingRates.map((el) => {
+                    return (
+                      <option key={el.id} value={el.fixed_amount.amount}>
+                        {el.display_name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </label>
+            )}
+            {!FraisLivraison.active ? (
+              <div className="alert alert-warning shadow-lg w-full">
+                La livraison à votre adresse : {FraisLivraison.display_name}
+                n'est pas disponible actuellement
+              </div>
+            ) : FraisLivraison.active &&
+              GetTotalPrice < FraisLivraison / 100 ? (
+              <div className="flex gap-2  alert alert-warning shadow-lg w-full">
+                <div>
+                  <svg>
+                    xmlns="http://www.w3.org/2000/svg" className="stroke-current
+                    flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                  <span>
+                    Note: Grâce à votre adresse {FraisLivraison.display_name},
+                    le minimum Prix pour la livraison est a partir de{" "}
+                    {formatEUR(FraisLivraison / 100)}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
             <div className="flex gap-2 justify-between">
               <p className="text-info">Frais de livraison </p>
-              <p>{formatEUR(parseFloat(FraisLivraison.fixed_amount.amount/100))}</p>
+              <p>{formatEUR(parseFloat(FraisLivraison / 100))}</p>
             </div>
           </>
         )}
@@ -285,15 +304,16 @@ export function CartTotals({
                 ? promotionTotal.value > 0
                   ? formatEUR(
                       calculeCoupon(GetTotalPrice, promotionTotal.value) +
-                        FraisLivraison.fixed_amount.amount/100
+                        FraisLivraison / 100
                     )
-                  : formatEUR(GetTotalPrice + FraisLivraison.fixed_amount.amount/100) //formatEUR(GetTotalPrice + FraisLivraison.fixed_amount.amount/100)
+                  : formatEUR(GetTotalPrice + FraisLivraison / 100) //formatEUR(GetTotalPrice + FraisLivraison.fixed_amount.amount/100)
                 : promotionTotal.value > 0
                 ? formatEUR(calculeCoupon(GetTotalPrice, promotionTotal.value))
                 : formatEUR(GetTotalPrice) //formatEUR(GetTotalPrice)
             }
           </p>
         </div>
+
         <div className="flex flex-col gap-2 justify-between">
           <p>Laissez-nous une note (optionnel)</p>
           <textarea

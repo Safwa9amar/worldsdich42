@@ -32,6 +32,7 @@ export default function CredentielClient({
       let login_form = new FormData(form);
       let object = {};
       login_form.forEach((value, key) => (object[key] = value));
+      console.log(object);
       await fetch(url, {
         mode: "cors", // no-cors, *cors, same-origin
 
@@ -373,7 +374,7 @@ export default function CredentielClient({
                           name="sonnette"
                           className="select select-bordered "
                           required
-                          defaultValue={'non'}
+                          defaultValue={"non"}
                         >
                           <option value="oui">Oui</option>
                           <option value="non">Non</option>
