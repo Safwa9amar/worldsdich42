@@ -5,14 +5,17 @@ import { AiOutlineLoading } from "react-icons/ai";
 import { Checkout } from "../../context/checkoutContext";
 import { Credentiel } from "../../context/CredentielContext";
 import { SERVER_URI } from "../../helpers/UrlProvider";
+import CredentielClient from "../../helpers/Credentiel";
+import { Link } from "react-router-dom";
 
 export default function BuySuccess({
   setcheckBoxState,
   DamandeType,
   setStorage,
-  Note
+  Note,
 }) {
   const BUY_SERVER_URI = useContext(SERVER_URI);
+  const user = useContext(Credentiel);
   // const socket = io(`${BUY_SERVER_URI}/test`);
 
   // const userCredentiel = useContext(Credentiel);
@@ -25,60 +28,58 @@ export default function BuySuccess({
   const [orderNum, setorderNum] = useState();
   const CheckoutData = useContext(Checkout);
   const command_type = DamandeType.filter((el) => el.bol === true)[0];
+  const [orderSuccess, setorderSuccess] = useState(false);
+  const [chargeData, setchargeData] = useState(false);
   const handleClick = () => {
-    if (isloged) {
-      setfinaLoggin(true);
-      sendBuyData();
-    } else {
-      setcheckBoxState(true);
-    }
-
-    // socket.emit("message", "hello");
+    console.log(isloged);
+    setfinaLoggin(true);
+    sendBuyData();
   };
 
   const sendBuyData = useCallback(async () => {
-    // console.log(JSON.stringify({
-    //   user:
-    //     localStorage.getItem("refrech") || sessionStorage.getItem("refrech"),
-    //   order: CheckoutData,
-    //   DamandeType: command_type,
-    // }))
-    let data = await fetch(BUY_SERVER_URI + "/get_client_order", {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user:
-          localStorage.getItem("refrech") || sessionStorage.getItem("refrech"),
-        order: CheckoutData,
-        DamandeType: command_type,
-        Note : Note
-      }),
-    })
-      .then(setstartReq(true))
-      .then((res) => {
-        if (res.ok && res.status === 200) {
-          setReq(true);
-          setstartReq(false);
-          return res.json();
-        }
-      });
-    if (data?.isConfirmed === true) {
-      setReq(false);
-      setOk(true);
-      setorderNum(data.OrderNum);
-      // setfinalResResult(false);
+    console.log(command_type.id);
+    setstartReq(true);
+    const data = await fetch(
+      BUY_SERVER_URI +
+        `${command_type.id === 3 ? "/charge" : "/get_client_order"}`,
+      {
+        mode: "cors",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user:
+            localStorage.getItem("refrech") ||
+            sessionStorage.getItem("refrech"),
+          email: user.email,
+          order: CheckoutData,
+          DamandeType: command_type,
+          Note: Note,
+        }),
+      }
+    );
+    if (data.ok && data.status === 200) {
+      setorderSuccess(true);
+      setchargeData(data.json());
+      setReq(true);
+      setstartReq(false);
     }
-    // console.table(data);
   }, [CheckoutData, command_type, BUY_SERVER_URI]);
 
   useEffect(() => {
-    // if (isloged) {
-    //   setfinaLoggin(true);
-    // }
-  }, [isloged, sendBuyData]);
+    const timer = setTimeout(() => {
+      orderSuccess &&
+        chargeData.then((res) => {
+          localStorage.setItem("charge_id", JSON.stringify(res.id));
+          window.location =
+            res.url !== undefined
+              ? res.url
+              : window.location.origin + "/store/checkout/success";
+        });
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [orderSuccess, chargeData]);
 
   return (
     <>
@@ -105,35 +106,54 @@ export default function BuySuccess({
               setfinaLoggin(false);
               setOk(false);
               setfinalResResult(true);
-              setStorage("[]");
-              localStorage.removeItem("cartData");
+              // setStorage("[]");
+              // localStorage.removeItem("cartData");
             }}
             className="btn btn-sm btn-circle absolute right-2 top-2"
           >
             ✕
           </label>
-          <h3 className="text-lg font-bold">Votre Order N°:#{orderNum}</h3>
-          <img src={order_confirmed} alt="order confrimed" />
-          <div className="py-4 flex justify-center">
-            {startReq && (
-              <AiOutlineLoading className="text-5xl animate-spin h-5 w-5 mr-3 ..." />
-            )}
-            {req && <AlertInfo />}
-            {ok && <AlertSuccess />}
-            {finalResResult && <AlertWarning />}
-          </div>
-          {finalResResult && (
-            <ul className="flex gap-6 justify-center items-center">
-              <li>
-                <a href="/">Accueil</a>
-              </li>
-              <li>
-                <a href="/menu">Menu</a>
-              </li>
-              <li>
-                <a href="/contact">Contact</a>
-              </li>
-            </ul>
+          {!isloged && (
+            <div className="flex flex-col gap-10">
+              <h3 className="text-lg font-bold">Vous devez vous connecter</h3>
+              <p className="text-info">
+                Vous devez d'abord vous connecter à votre compte pour pouvoir
+                commander la livraison
+              </p>
+              <Link
+                to="/store/profile"
+                className="btn btn-primary  right-2 top-2"
+              >
+                cliquez ici pour vous connecter
+              </Link>
+            </div>
+          )}
+          {isloged && (
+            <>
+              <h3 className="text-lg font-bold">Votre Order N°:#{orderNum}</h3>
+              <img src={order_confirmed} alt="order confrimed" />
+              <div className="py-4 flex justify-center">
+                {startReq && (
+                  <AiOutlineLoading className="text-5xl animate-spin h-5 w-5 mr-3 ..." />
+                )}
+                {req && <AlertInfo />}
+                {ok && <AlertSuccess />}
+                {finalResResult && <AlertWarning />}
+              </div>
+              {finalResResult && (
+                <ul className="flex gap-6 justify-center items-center">
+                  <li>
+                    <a href="/">Accueil</a>
+                  </li>
+                  <li>
+                    <a href="/menu">Menu</a>
+                  </li>
+                  <li>
+                    <a href="/contact">Contact</a>
+                  </li>
+                </ul>
+              )}
+            </>
           )}
         </div>
       </div>

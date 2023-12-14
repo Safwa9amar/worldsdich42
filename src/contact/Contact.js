@@ -141,18 +141,18 @@ const Contact = () => {
         <div className="flex flex-col gap-6 w-full">
           <div className="flex gap-4">
             <MdPlace className="text-3xl" />
-              <p className="w-52">{contact.address}</p>
+            <p className="w-52">{contact.address}</p>
           </div>
           <div className="flex gap-4">
             <FiMail className="text-3xl" />
-              <p >{contact.mail}</p>
+            <p>{contact.mail}</p>
           </div>
           <div className="flex gap-4">
             <FiPhoneCall className="text-3xl" />
-              <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
               <p className="w-52">{contact.tel1}</p>
               <p className="w-52">{contact.tel2}</p>
-              </div>
+            </div>
           </div>
         </div>
       </div>

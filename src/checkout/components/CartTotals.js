@@ -33,6 +33,8 @@ export function CartTotals({
 
   // fraislivraison state
   const [FraisLivraison, setFraisLivraison] = useState(0);
+  const [shipitStatus, setshipitStatus] = useState(false);
+  const [shippingRates, setshippingRates] = useState([]);
   const [isPlace, setPlace] = React.useState(false);
   const [isEmporter, setEmporter] = React.useState(false);
   const [isDelivery, setDelivery] = React.useState(false);
@@ -61,6 +63,18 @@ export function CartTotals({
     setEmporter(false);
     setDelivery(true);
   };
+
+  useEffect(() => {
+    localStorage.setItem(
+      "DamandeType",
+      JSON.stringify(DamandeType.filter((el) => el.bol === true)[0]?.id)
+    );
+  }, [DamandeType]);
+
+  useEffect(() => {
+    localStorage.setItem("Note", JSON.stringify(Note));
+  }, [Note]);
+
   const getTotalPrice = (data) => {
     let spliceToCategories = data
       .map((el) => el.category)
@@ -138,16 +152,16 @@ export function CartTotals({
       .catch((err) => console.log(err));
   }, [URI]);
   useEffect(() => {
-    fetch(`${URI}/settings/api/livraison_adresses`, {
-      method: "GET",
-      cors: "no-cors",
+    fetch(`https://api.stripe.com/v1/shipping_rates`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer sk_test_51NIB1DG5waCNLkzT7xtBN724M9XSxDD83ZktBJT2IXVo3OaP7FKH0mE5TbY2868iFlwG7O0BG5gOGHq3rMol9Emu00lT3iNh8n`,
+      },
     })
       .then((res) => res.json())
       .then((data) => {
-        let frais_id = UserData.adress.id;
-        let frais = data.filter((el) => el.id === frais_id);
-        setFraisLivraison(frais[0]);
-        // console.log(frais);
+        console.log(data.data);
+        setshippingRates(data.data);
       })
       .catch((err) => console.log(err));
 
@@ -161,7 +175,7 @@ export function CartTotals({
         setPromotionTotal(data);
       })
       .catch((err) => console.log(err));
-  }, [isloged, Mycontext,UserData]);
+  }, [isloged, Mycontext, UserData]);
 
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
@@ -188,60 +202,21 @@ export function CartTotals({
               />
             );
           } else if (el.id === 3 && el.isCheked) {
-            if (
-              FraisLivraison.isActived &&
-              GetTotalPrice >= FraisLivraison.price
-            )
-              return (
-                <ApplyMethode
-                  key={el.id}
-                  isActive={isDelivery}
-                  SetActive={delivery}
-                  type="livraison"
-                  text={"En livraison"}
-                />
-              );
+            return (
+              <ApplyMethode
+                key={el.id}
+                isActive={isDelivery}
+                SetActive={delivery}
+                type="livraison"
+                text={"En livraison"}
+              />
+            );
           }
           return "";
         })}
       </div>
 
       <div className="flex flex-col gap-4  w-full px-5">
-        {!FraisLivraison.isActived ? (
-          <div
-            className="alert alert-info shadow-lg w-full"
-          >
-            La livraison à votre adresse : {FraisLivraison.name} n'est pas
-            disponible actuellement
-          </div>
-        ) : FraisLivraison.isActived && GetTotalPrice < FraisLivraison.price ? (
-          <div
-            className="flex gap-2  alert alert-warning shadow-lg w-full"
-          >
-            <div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="stroke-current flex-shrink-0 h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                />
-              </svg>
-              <span>
-                Note: Grâce à votre adresse {FraisLivraison.name}, le minimum
-                Prix pour la livraison est a partir de{" "}
-                {formatEUR(FraisLivraison.price)}
-              </span>
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
         <div className="flex gap-2 justify-between">
           <p className="text-info">CART TOTALS</p>
           <p>{formatEUR(GetTotalPrice)}</p>
@@ -263,9 +238,61 @@ export function CartTotals({
         </div>
         {isDelivery && (
           <>
+            {DamandeType.filter((el) => el.bol === true)[0]?.id === 3 && (
+              <label className="input-group input-group-vertical">
+                <span className="text-info">
+                  Veuillez sélectionner une adresse de livraison
+                </span>
+                <select
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                    setFraisLivraison(e.target.value);
+                  }}
+                  className="input input-bordered"
+                >
+                  <option />
+                  {shippingRates.map((el) => {
+                    return (
+                      <option key={el.id} value={el.fixed_amount.amount}>
+                        {el.display_name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </label>
+            )}
+            {!FraisLivraison.active ? (
+              <div className="alert alert-warning shadow-lg w-full">
+                La livraison à votre adresse : {FraisLivraison.display_name}
+                n'est pas disponible actuellement
+              </div>
+            ) : FraisLivraison.active &&
+              GetTotalPrice < FraisLivraison / 100 ? (
+              <div className="flex gap-2  alert alert-warning shadow-lg w-full">
+                <div>
+                  <svg>
+                    xmlns="http://www.w3.org/2000/svg" className="stroke-current
+                    flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                  <span>
+                    Note: Grâce à votre adresse {FraisLivraison.display_name},
+                    le minimum Prix pour la livraison est a partir de{" "}
+                    {formatEUR(FraisLivraison / 100)}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
             <div className="flex gap-2 justify-between">
               <p className="text-info">Frais de livraison </p>
-              <p>{formatEUR(parseFloat(FraisLivraison?.frais_price))}</p>
+              <p>{formatEUR(parseFloat(FraisLivraison / 100))}</p>
             </div>
           </>
         )}
@@ -277,15 +304,16 @@ export function CartTotals({
                 ? promotionTotal.value > 0
                   ? formatEUR(
                       calculeCoupon(GetTotalPrice, promotionTotal.value) +
-                        FraisLivraison?.frais_price
+                        FraisLivraison / 100
                     )
-                  : formatEUR(GetTotalPrice + FraisLivraison?.frais_price) //formatEUR(GetTotalPrice + FraisLivraison?.frais_price)
+                  : formatEUR(GetTotalPrice + FraisLivraison / 100) //formatEUR(GetTotalPrice + FraisLivraison.fixed_amount.amount/100)
                 : promotionTotal.value > 0
                 ? formatEUR(calculeCoupon(GetTotalPrice, promotionTotal.value))
                 : formatEUR(GetTotalPrice) //formatEUR(GetTotalPrice)
             }
           </p>
         </div>
+
         <div className="flex flex-col gap-2 justify-between">
           <p>Laissez-nous une note (optionnel)</p>
           <textarea
