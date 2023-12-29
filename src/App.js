@@ -151,7 +151,8 @@ function App() {
                           path="/store/checkout/success"
                           element={
                             <ChargeSuccess
-                              handleStorageEdit={handleStorageEdit}
+                              Storage={Storage}
+                              setStorage={setStorage}
                             />
                           }
                         />

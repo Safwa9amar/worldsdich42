@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import BuySuccess from "./BuySuccess";
 import { SERVER_URI } from "../../helpers/UrlProvider";
 // import formatEUR from helpers
 import { formatEUR } from "../../helpers/currencyFormatter";
 import { calculeCoupon } from "../../helpers/CalculeCoupon";
+import { Link } from "react-router-dom";
 
 // function ApplyCoupon() {
 //   return (
@@ -33,8 +34,8 @@ export function CartTotals({
 
   // fraislivraison state
   const [FraisLivraison, setFraisLivraison] = useState(0);
-  const [shipitStatus, setshipitStatus] = useState(false);
   const [shippingRates, setshippingRates] = useState([]);
+  const [selectedShippingRate, setselectedShippingRate] = useState(null);
   const [isPlace, setPlace] = React.useState(false);
   const [isEmporter, setEmporter] = React.useState(false);
   const [isDelivery, setDelivery] = React.useState(false);
@@ -245,12 +246,18 @@ export function CartTotals({
                 </span>
                 <select
                   onChange={(e) => {
-                    console.log(e.target.value);
                     setFraisLivraison(e.target.value);
+                    setselectedShippingRate(
+                      shippingRates.filter(
+                        (el) =>
+                          el.fixed_amount.amount === parseFloat(e.target.value)
+                      )[0]
+                    );
+                    console.log(selectedShippingRate, e.target.value);
                   }}
                   className="input input-bordered"
                 >
-                  <option />
+                  <option value="0">Choisir une adresse</option>
                   {shippingRates.map((el) => {
                     return (
                       <option key={el.id} value={el.fixed_amount.amount}>
@@ -261,35 +268,7 @@ export function CartTotals({
                 </select>
               </label>
             )}
-            {!FraisLivraison.active ? (
-              <div className="alert alert-warning shadow-lg w-full">
-                La livraison à votre adresse : {FraisLivraison.display_name}
-                n'est pas disponible actuellement
-              </div>
-            ) : FraisLivraison.active &&
-              GetTotalPrice < FraisLivraison / 100 ? (
-              <div className="flex gap-2  alert alert-warning shadow-lg w-full">
-                <div>
-                  <svg>
-                    xmlns="http://www.w3.org/2000/svg" className="stroke-current
-                    flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                    />
-                  </svg>
-                  <span>
-                    Note: Grâce à votre adresse {FraisLivraison.display_name},
-                    le minimum Prix pour la livraison est a partir de{" "}
-                    {formatEUR(FraisLivraison / 100)}
-                  </span>
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
+
             <div className="flex gap-2 justify-between">
               <p className="text-info">Frais de livraison </p>
               <p>{formatEUR(parseFloat(FraisLivraison / 100))}</p>
@@ -324,13 +303,57 @@ export function CartTotals({
             placeholder="Bio"
           ></textarea>
         </div>
-        <br />
-        <BuySuccess
-          setStorage={setStorage}
-          setcheckBoxState={setcheckBoxState}
-          DamandeType={DamandeType}
-          Note={Note}
-        />
+
+        {DamandeType.filter((el) => el.bol === true)[0]?.id === 3 &&
+          selectedShippingRate?.active && (
+            <Fragment>
+              {!selectedShippingRate?.active ? (
+                <div className="alert alert-warning shadow-lg w-full">
+                  La livraison à votre adresse :{" "}
+                  {selectedShippingRate?.display_name} n'est pas disponible
+                  actuellement
+                </div>
+              ) : selectedShippingRate?.active &&
+                GetTotalPrice < selectedShippingRate?.metadata?.price ? (
+                <div className="flex gap-2 alert alert-warning shadow-lg w-full">
+                  Note : Grâce à votre adresse{" "}
+                  {selectedShippingRate?.display_name}, le minimum Prix pour la
+                  livraison est à partir de{" "}
+                  {formatEUR(selectedShippingRate?.metadata.price)}
+                </div>
+              ) : !isloged ? (
+                <div className="flex flex-col gap-10">
+                  <p className="text-info">
+                    Vous devez d'abord vous connecter à votre compte pour
+                    pouvoir commander la livraison
+                  </p>
+                  <Link
+                    to="/store/profile"
+                    className="btn btn-primary  right-2 top-2"
+                  >
+                    cliquez ici pour vous connecter
+                  </Link>
+                </div>
+              ) : (
+                <BuySuccess
+                  setStorage={setStorage}
+                  setcheckBoxState={setcheckBoxState}
+                  DamandeType={DamandeType}
+                  Note={Note}
+                  selectedShippingRate={selectedShippingRate}
+                />
+              )}
+            </Fragment>
+          )}
+
+        {DamandeType.filter((el) => el.bol === true)[0]?.id !== 3 && (
+          <BuySuccess
+            setStorage={setStorage}
+            setcheckBoxState={setcheckBoxState}
+            DamandeType={DamandeType}
+            Note={Note}
+          />
+        )}
       </div>
     </div>
   );

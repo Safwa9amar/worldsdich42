@@ -13,6 +13,7 @@ export default function BuySuccess({
   DamandeType,
   setStorage,
   Note,
+  selectedShippingRate,
 }) {
   const BUY_SERVER_URI = useContext(SERVER_URI);
   const user = useContext(Credentiel);
@@ -56,6 +57,7 @@ export default function BuySuccess({
           order: CheckoutData,
           DamandeType: command_type,
           Note: Note,
+          selectedShippingRate: selectedShippingRate || null,
         }),
       }
     );
@@ -113,48 +115,32 @@ export default function BuySuccess({
           >
             ✕
           </label>
-          {!isloged && (
-            <div className="flex flex-col gap-10">
-              <h3 className="text-lg font-bold">Vous devez vous connecter</h3>
-              <p className="text-info">
-                Vous devez d'abord vous connecter à votre compte pour pouvoir
-                commander la livraison
-              </p>
-              <Link
-                to="/store/profile"
-                className="btn btn-primary  right-2 top-2"
-              >
-                cliquez ici pour vous connecter
-              </Link>
-            </div>
-          )}
-          {isloged && (
-            <>
-              <h3 className="text-lg font-bold">Votre Order N°:#{orderNum}</h3>
-              <img src={order_confirmed} alt="order confrimed" />
-              <div className="py-4 flex justify-center">
-                {startReq && (
-                  <AiOutlineLoading className="text-5xl animate-spin h-5 w-5 mr-3 ..." />
-                )}
-                {req && <AlertInfo />}
-                {ok && <AlertSuccess />}
-                {finalResResult && <AlertWarning />}
-              </div>
-              {finalResResult && (
-                <ul className="flex gap-6 justify-center items-center">
-                  <li>
-                    <a href="/">Accueil</a>
-                  </li>
-                  <li>
-                    <a href="/menu">Menu</a>
-                  </li>
-                  <li>
-                    <a href="/contact">Contact</a>
-                  </li>
-                </ul>
+
+          <>
+            <h3 className="text-lg font-bold">Votre Order N°:#{orderNum}</h3>
+            <img src={order_confirmed} alt="order confrimed" />
+            <div className="py-4 flex justify-center">
+              {startReq && (
+                <AiOutlineLoading className="text-5xl animate-spin h-5 w-5 mr-3 ..." />
               )}
-            </>
-          )}
+              {req && <AlertInfo />}
+              {ok && <AlertSuccess />}
+              {finalResResult && <AlertWarning />}
+            </div>
+            {finalResResult && (
+              <ul className="flex gap-6 justify-center items-center">
+                <li>
+                  <a href="/">Accueil</a>
+                </li>
+                <li>
+                  <a href="/menu">Menu</a>
+                </li>
+                <li>
+                  <a href="/contact">Contact</a>
+                </li>
+              </ul>
+            )}
+          </>
         </div>
       </div>
     </>
