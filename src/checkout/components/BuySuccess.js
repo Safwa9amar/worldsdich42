@@ -7,6 +7,7 @@ import { Credentiel } from "../../context/CredentielContext";
 import { SERVER_URI } from "../../helpers/UrlProvider";
 import CredentielClient from "../../helpers/Credentiel";
 import { Link } from "react-router-dom";
+import useShippingRate from "../../hooks/useShipingRate";
 
 export default function BuySuccess({
   setcheckBoxState,
@@ -18,6 +19,7 @@ export default function BuySuccess({
   const BUY_SERVER_URI = useContext(SERVER_URI);
   const user = useContext(Credentiel);
   // const socket = io(`${BUY_SERVER_URI}/test`);
+  const { shippingRateId } = useShippingRate();
 
   // const userCredentiel = useContext(Credentiel);
   const { isloged } = useContext(Credentiel);

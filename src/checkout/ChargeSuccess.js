@@ -3,6 +3,7 @@ import { SERVER_URI } from "../helpers/UrlProvider";
 import { Checkout } from "../context/checkoutContext";
 import { Link } from "react-router-dom";
 import order_success from "../images/order_success.gif";
+import useShippingRate from "../hooks/useShipingRate";
 export default function ChargeSuccess({ Storage, setStorage }) {
   const BUY_SERVER_URI = useContext(SERVER_URI);
   const CheckoutData = useContext(Checkout);
@@ -13,6 +14,7 @@ export default function ChargeSuccess({ Storage, setStorage }) {
   const [order_id, setOrderId] = useState(
     sessionStorage.getItem("order_id") || ""
   );
+  const { selectedShippingRate } = useShippingRate();
 
   const sendBuyData = useCallback(async () => {
     try {

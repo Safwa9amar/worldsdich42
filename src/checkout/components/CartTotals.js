@@ -5,23 +5,8 @@ import { SERVER_URI } from "../../helpers/UrlProvider";
 import { formatEUR } from "../../helpers/currencyFormatter";
 import { calculeCoupon } from "../../helpers/CalculeCoupon";
 import { Link } from "react-router-dom";
-
-// function ApplyCoupon() {
-//   return (
-//     <div className="form-control ">
-//       <div className="input-group">
-//         <input
-//           type="text"
-//           placeholder="code coupon"
-//           className="input input-bordered w-full lg:w-auto"
-//         />
-//         <button className="btn bg-[#5B6D5B] w-1/2 lg:w-auto">
-//           APPLIQUER COUPON
-//         </button>
-//       </div>
-//     </div>
-//   );
-// }
+import useShippingRate from "../../hooks/useShipingRate";
+import { AiOutlineLoading } from "react-icons/ai";
 
 export function CartTotals({
   Mycontext,
@@ -34,8 +19,14 @@ export function CartTotals({
 
   // fraislivraison state
   const [FraisLivraison, setFraisLivraison] = useState(0);
-  const [shippingRates, setshippingRates] = useState([]);
-  const [selectedShippingRate, setselectedShippingRate] = useState(null);
+  const {
+    setSelectedShippingRateObject,
+    shippingRates,
+    selectedShippingRate,
+    loading,
+    error,
+  } = useShippingRate();
+
   const [isPlace, setPlace] = React.useState(false);
   const [isEmporter, setEmporter] = React.useState(false);
   const [isDelivery, setDelivery] = React.useState(false);
@@ -153,19 +144,6 @@ export function CartTotals({
       .catch((err) => console.log(err));
   }, [URI]);
   useEffect(() => {
-    fetch(`https://api.stripe.com/v1/shipping_rates`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer sk_test_51NIB1DG5waCNLkzT7xtBN724M9XSxDD83ZktBJT2IXVo3OaP7FKH0mE5TbY2868iFlwG7O0BG5gOGHq3rMol9Emu00lT3iNh8n`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data.data);
-        setshippingRates(data.data);
-      })
-      .catch((err) => console.log(err));
-
     // fetch /settings/api/globalPromotion
     fetch(`${URI}/settings/api/globalPromotion`, {
       method: "GET",
@@ -244,23 +222,40 @@ export function CartTotals({
                 <span className="text-info">
                   Veuillez sélectionner une adresse de livraison
                 </span>
+                {
+                  loading ? (
+                    <div className="flex gap-2 alert alert-info shadow-lg w-full">
+                      <AiOutlineLoading className="text-5xl animate-spin h-5 w-5 mr-3 ..." />
+                      <p>Chargement des adresses de livraison...</p>
+                    </div>
+                  ) : error ? (
+                    <div className="alert alert-error shadow-lg w-full">
+                      {error}
+                    </div>
+                  ) : (
+                    ""
+                  ) // <div className="alert alert-error shadow-lg w-full">{error}</div>
+                }
                 <select
                   onChange={(e) => {
                     setFraisLivraison(e.target.value);
-                    setselectedShippingRate(
+                    setSelectedShippingRateObject(
                       shippingRates.filter(
                         (el) =>
                           el.fixed_amount.amount === parseFloat(e.target.value)
                       )[0]
                     );
-                    console.log(selectedShippingRate, e.target.value);
                   }}
                   className="input input-bordered"
                 >
                   <option value="0">Choisir une adresse</option>
                   {shippingRates.map((el) => {
                     return (
-                      <option key={el.id} value={el.fixed_amount.amount}>
+                      <option
+                        id={el.id}
+                        key={el.id}
+                        value={el.fixed_amount.amount}
+                      >
                         {el.display_name}
                       </option>
                     );
@@ -305,13 +300,12 @@ export function CartTotals({
         </div>
 
         {DamandeType.filter((el) => el.bol === true)[0]?.id === 3 &&
-          selectedShippingRate?.active && (
+          selectedShippingRate !== null && (
             <Fragment>
               {!selectedShippingRate?.active ? (
                 <div className="alert alert-warning shadow-lg w-full">
-                  La livraison à votre adresse :{" "}
-                  {selectedShippingRate?.display_name} n'est pas disponible
-                  actuellement
+                  La livraison à {selectedShippingRate?.display_name} n'est pas
+                  disponible actuellement
                 </div>
               ) : selectedShippingRate?.active &&
                 GetTotalPrice < selectedShippingRate?.metadata?.price ? (
