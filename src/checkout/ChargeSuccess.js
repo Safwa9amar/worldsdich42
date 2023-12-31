@@ -14,8 +14,8 @@ export default function ChargeSuccess({ Storage, setStorage }) {
   const [order_id, setOrderId] = useState(
     sessionStorage.getItem("order_id") || ""
   );
-  const { selectedShippingRate } = useShippingRate();
-
+  const { selectedShippingRate, clearSelectedShippingRate } = useShippingRate();
+  console.log(selectedShippingRate);
   const sendBuyData = useCallback(async () => {
     try {
       const res = await fetch(BUY_SERVER_URI + "/get_client_order", {
@@ -31,6 +31,7 @@ export default function ChargeSuccess({ Storage, setStorage }) {
           DamandeType: command_type,
           Note: Note,
           order: CheckoutData,
+          selectedShippingRate: selectedShippingRate,
         }),
       });
 
@@ -41,11 +42,12 @@ export default function ChargeSuccess({ Storage, setStorage }) {
         sessionStorage.setItem("order_id", data.OrderNum);
         setOrderSuccess(true);
         setStorage("[]");
+        clearSelectedShippingRate();
       }
     } catch (err) {
       console.error(err);
     }
-  }, [BUY_SERVER_URI, command_type, Note, CheckoutData]);
+  }, [BUY_SERVER_URI, command_type, Note, CheckoutData, selectedShippingRate]);
 
   const getPaymentBill = async (id) => {
     try {
@@ -76,7 +78,7 @@ export default function ChargeSuccess({ Storage, setStorage }) {
 
   useEffect(() => {
     CheckoutData.length > 0 ? sendBuyData() : setOrderSuccess(true);
-  }, []);
+  }, [selectedShippingRate]);
 
   return (
     <div className=" w-screen flex justify-center items-center">

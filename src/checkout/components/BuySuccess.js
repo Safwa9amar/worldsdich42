@@ -14,12 +14,11 @@ export default function BuySuccess({
   DamandeType,
   setStorage,
   Note,
-  selectedShippingRate,
 }) {
   const BUY_SERVER_URI = useContext(SERVER_URI);
   const user = useContext(Credentiel);
   // const socket = io(`${BUY_SERVER_URI}/test`);
-  const { shippingRateId } = useShippingRate();
+  const { selectedShippingRate, clearSelectedShippingRate } = useShippingRate();
 
   // const userCredentiel = useContext(Credentiel);
   const { isloged } = useContext(Credentiel);
@@ -28,7 +27,7 @@ export default function BuySuccess({
   const [req, setReq] = useState(false);
   const [startReq, setstartReq] = useState(false);
   const [finalResResult, setfinalResResult] = useState(false);
-  const [orderNum, setorderNum] = useState();
+  const [orderNum] = useState();
   const CheckoutData = useContext(Checkout);
   const command_type = DamandeType.filter((el) => el.bol === true)[0];
   const [orderSuccess, setorderSuccess] = useState(false);
@@ -69,7 +68,7 @@ export default function BuySuccess({
       setReq(true);
       setstartReq(false);
     }
-  }, [CheckoutData, command_type, BUY_SERVER_URI]);
+  }, [CheckoutData, command_type, BUY_SERVER_URI, selectedShippingRate]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
