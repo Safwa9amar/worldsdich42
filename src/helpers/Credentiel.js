@@ -145,7 +145,6 @@ export default function CredentielClient({
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.data);
         setlivraison_adresses(data.data.filter((el) => el.active === true));
       });
   }, [CREDENTIEL_SERVER_URI]);

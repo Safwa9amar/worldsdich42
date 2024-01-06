@@ -1,60 +1,39 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useCallback,
-  useContext,
-} from "react";
-// import io from "socket.io-client";
-import { SERVER_URI } from "../helpers/UrlProvider";
+import React, { createContext, useState, useEffect, useCallback } from "react";
 
-export const Supplement = createContext();
+export const SupplementContext = createContext();
 
-const SupplementContextProvider = ({ URI, children }) => {
-  const SUPP_SERVER_URI = useContext(SERVER_URI);
-  // const socket = io(SUPP_SERVER_URI);
-  const [supp, setSupp] = useState([]);
+const SupplementContextProvider = ({ children }) => {
+  const SUPP_SERVER_URI = process.env.REACT_APP_SERVER_URI;
+  const [supplements, setSupplements] = useState([]);
 
-  let getCaegories = useCallback(async () => {
-    const data = await fetch(`${SUPP_SERVER_URI}/getSuppdata`).then((res) =>
-      res.json()
-    );
-
+  const fetchSupplementData = useCallback(async () => {
     try {
-      const { itemSuppData, suppData } = data;
+      const response = await fetch(`${SUPP_SERVER_URI}/getSuppdata`);
+      const { itemSuppData, suppData } = await response.json();
 
       const finalData = suppData.map((el) => {
-        let new_item_supplement = [];
-        for (const item of el.item_supplement) {
-          for (const _item of itemSuppData) {
-            if (item === _item.id) {
-              new_item_supplement.push(_item);
-            }
-          }
-        }
+        const new_item_supplement = itemSuppData.filter((item) =>
+          el.item_supplement.includes(item.id)
+        );
         el.item_supplement = new_item_supplement;
         return el;
       });
 
-      setSupp(finalData);
+      setSupplements(finalData);
     } catch (error) {
-      console.log("sipp data err", error);
+      console.error("Error fetching supplement data:", error);
     }
   }, [SUPP_SERVER_URI]);
-  useEffect(() => {
-    getCaegories();
-    // socket.on("getSuppdata", (data) => {
-    //   console.log("after");
-    // return () => {
-    //   try {
-    //     socket.emit("getSuppdata", { id: -1 });
-    //     socket.off("getSuppdata");
-    //   } catch (error) {
-    //     console.log("zeaze", error);
-    //   }
-    // };
-  }, [getCaegories]);
 
-  return <Supplement.Provider value={supp}>{children}</Supplement.Provider>;
+  useEffect(() => {
+    fetchSupplementData();
+  }, [fetchSupplementData]);
+
+  return (
+    <SupplementContext.Provider value={supplements}>
+      {children}
+    </SupplementContext.Provider>
+  );
 };
+
 export default SupplementContextProvider;

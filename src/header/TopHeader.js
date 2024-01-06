@@ -76,7 +76,13 @@ export const CartIndicator = ({ openCart, handleCartBoudries, className }) => {
     // console.log(e.target.getBoundingClientRect());
   };
   return (
-    <button onClick={openCart} className={`${isClientActive.isActivated ? "" : "pointer-events-none"}  ${className}`} onLoad={handleLoad}>
+    <button
+      onClick={openCart}
+      className={`${
+        isClientActive.isActivated ? "" : "pointer-events-none"
+      }  ${className}`}
+      onLoad={handleLoad}
+    >
       <p className="absolute bottom-10 right-0 bg-[#5B6D5B] w-5 h-5 rounded-full text-sm ">
         {CartStorage?.length || 0}
       </p>

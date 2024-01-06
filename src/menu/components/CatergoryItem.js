@@ -182,9 +182,7 @@ export const CatergoryItem = (props) => {
           {header.toLowerCase()}
         </h3>
         <p className="text-[#5B6D5B] font-bold text-xl">
-          {
-            formatEUR(Math.abs(Price) + Math.abs(MenuPrice))
-          }
+          {formatEUR(Math.abs(Price) + Math.abs(MenuPrice))}
         </p>
         <LazyLoadImage
           className="absolute bottom-4 right-4"

@@ -1,11 +1,14 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { SERVER_URI } from "../helpers/UrlProvider";
+import React, { useContext, useEffect, useState } from "react";
 import { Checkout } from "../context/checkoutContext";
 import { Link } from "react-router-dom";
 import order_success from "../images/order_success.gif";
 import useShippingRate from "../hooks/useShipingRate";
+import useFetch from "../hooks/useFetch";
+import usePaymentBill from "../hooks/usePaymentBill";
+import emptyCart from "../asstes/emptyCart.png";
+
 export default function ChargeSuccess({ Storage, setStorage }) {
-  const BUY_SERVER_URI = useContext(SERVER_URI);
+  const BUY_SERVER_URI = process.env.REACT_APP_SERVER_URI;
   const CheckoutData = useContext(Checkout);
   const command_type = localStorage.getItem("DamandeType");
   const Note = localStorage.getItem("Note");
@@ -15,84 +18,81 @@ export default function ChargeSuccess({ Storage, setStorage }) {
     sessionStorage.getItem("order_id") || ""
   );
   const { selectedShippingRate, clearSelectedShippingRate } = useShippingRate();
-  console.log(selectedShippingRate);
-  const sendBuyData = useCallback(async () => {
-    try {
-      const res = await fetch(BUY_SERVER_URI + "/get_client_order", {
-        mode: "cors",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user:
-            localStorage.getItem("refrech") ||
-            sessionStorage.getItem("refrech"),
-          DamandeType: command_type,
-          Note: Note,
-          order: CheckoutData,
-          selectedShippingRate: selectedShippingRate,
-        }),
-      });
 
-      if (res.ok && res.status === 200) {
-        const data = await res.json();
-        console.log(data);
-        setOrderId(data.OrderNum);
-        sessionStorage.setItem("order_id", data.OrderNum);
-        setOrderSuccess(true);
-        setStorage("[]");
-        clearSelectedShippingRate();
-      }
-    } catch (err) {
-      console.error(err);
+  const { data, loading, error, startFetch } = useFetch(
+    `${BUY_SERVER_URI}/get_client_order`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user:
+          localStorage.getItem("refrech") || sessionStorage.getItem("refrech"),
+        DamandeType: command_type,
+        Note: Note,
+        order: CheckoutData,
+        selectedShippingRate: selectedShippingRate,
+      }),
     }
-  }, [BUY_SERVER_URI, command_type, Note, CheckoutData, selectedShippingRate]);
-
-  const getPaymentBill = async (id) => {
-    try {
-      setGettingFacture(true);
-      const res = await fetch(BUY_SERVER_URI + "/get_payment_bill", {
-        mode: "cors",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user:
-            localStorage.getItem("refrech") ||
-            sessionStorage.getItem("refrech"),
-          order_id: id,
-        }),
-      });
-
-      if (res.ok) {
-        setGettingFacture(false);
-        await res.blob();
-      }
-    } catch (err) {
-      setGettingFacture(false);
-      console.error(err);
-    }
-  };
+  );
 
   useEffect(() => {
-    CheckoutData.length > 0 ? sendBuyData() : setOrderSuccess(true);
+    if (!loading && !error && data) {
+      setOrderId(data.OrderNum);
+      sessionStorage.setItem("order_id", data.OrderNum);
+      setOrderSuccess(true);
+      setStorage("[]");
+      clearSelectedShippingRate();
+    }
+  }, [data, loading, error, setStorage, clearSelectedShippingRate]);
+
+  useEffect(() => {
+    Storage !== "[]" && startFetch();
   }, [selectedShippingRate]);
+  const { Billloading, download: downloadPaymentBill } = usePaymentBill(
+    `${BUY_SERVER_URI}/get_payment_bill`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        order_id: order_id,
+      }),
+    }
+  );
+  useEffect(() => {
+    setGettingFacture(false);
+    sessionStorage.removeItem("order_id");
+  }, [Billloading]);
 
   return (
-    <div className=" w-screen flex justify-center items-center">
-      <div className="border-2 border-slate-600 rounded-md m-10 md:w-1/2 p-5 flex gap-2  justify-center flex-wrap ">
+    <div className="w-screen flex justify-center items-center">
+      <div className="border-2 border-slate-600 rounded-md m-10 md:w-1/2 p-5 flex gap-2 justify-center flex-wrap">
         {!orderSuccess ? (
-          <div className="text-white flex flex-col items-center">
-            <h1 className="text-3xl font-bold">
-              Finalisation de votre commande...
-            </h1>
-            <div
-              className="animate-spin h-20 w-20 m-6  border-b-2 border-white rounded-full"
-              viewBox="0 0 24 24"
-            ></div>
-          </div>
+          Storage !== "[]" ? (
+            <div className="text-white flex flex-col items-center">
+              <h1 className="text-3xl font-bold">
+                Finalisation de votre commande...
+              </h1>
+              <div
+                className="animate-spin h-20 w-20 m-6 border-b-2 border-white rounded-full"
+                viewBox="0 0 24 24"
+              ></div>
+            </div>
+          ) : (
+            <div className="text-white flex flex-col items-center">
+              <h1 className="text-3xl font-bold">Votre panier est vide...</h1>
+              <img src={emptyCart} alt="empty cart" className="w-60 h-60" />
+              <Link
+                to="/store/menu"
+                className="capitalize p-4 w-fit h-fit m-2 font-bold btn btn-sm btn-outline btn-primary"
+              >
+                Menu
+              </Link>
+            </div>
+          )
         ) : (
           <>
             <img
@@ -113,17 +113,17 @@ export default function ChargeSuccess({ Storage, setStorage }) {
               </p>
               <Link
                 to="/store/menu"
-                className="capitalize  p-4 w-fit h-fit m-2 font-bold btn btn-sm btn-outline btn-primary "
+                className="capitalize p-4 w-fit h-fit m-2 font-bold btn btn-sm btn-outline btn-primary"
               >
                 Retour au menu
               </Link>
               <button
                 onClick={() => {
-                  getPaymentBill(order_id);
+                  setGettingFacture(true);
+                  downloadPaymentBill();
                 }}
-                className="capitalize  p-4 w-fit h-fit m-2 font-bold btn btn-sm btn-outline btn-accent "
+                className="capitalize p-4 w-fit h-fit m-2 font-bold btn btn-sm btn-outline btn-accent"
               >
-                {/* spinner */}
                 {gettingFacture ? (
                   <svg
                     className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"

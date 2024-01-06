@@ -2,7 +2,7 @@ import * as React from "react";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { Supplement } from "../../context/suplementContext";
+import { SupplementContext } from "../../context/suplementContext";
 import { formatEUR } from "../../helpers/currencyFormatter";
 
 const responsive = {
@@ -120,26 +120,25 @@ const CarouselItems = ({
         src={src}
         alt={name}
       />
-      <p className="text-xs"> 
-        {
-          name
-        }
+      <p className="text-xs">
+        {name}
         <sup className="font-bold">( +{formatEUR(Prix)} )</sup>
       </p>
-      <p className={`flex flex-col h-fit badge badge-xs ${status ? "badge-primary" : ""} my-2 `}>
-        
-            {
-              // crate two span for each word in the parent name
-              parent.split(" ").map((el, i) => {
-                return (
-                  <span key={i} className="text-xs">
-                    {el}
-                  </span>
-                );
-              }
-              )
-            }
-        
+      <p
+        className={`flex flex-col h-fit badge badge-xs ${
+          status ? "badge-primary" : ""
+        } my-2 `}
+      >
+        {
+          // crate two span for each word in the parent name
+          parent.split(" ").map((el, i) => {
+            return (
+              <span key={i} className="text-xs">
+                {el}
+              </span>
+            );
+          })
+        }
       </p>
       {status && (
         <div className="flex justify-between gap-2 items-center px-4 rounded-md text-sm bg-secondary">
@@ -211,7 +210,7 @@ export function SupplementCard(props) {
   } = props;
   const [showModal, setShowModal] = React.useState(false);
   const [recipe_data, setRecipe_data] = React.useState([]);
-  const supplementData = React.useContext(Supplement);
+  const supplementData = React.useContext(SupplementContext);
 
   const [RecipArr, setRecipArr] = React.useState([]);
   const [suppData, setsuppData] = React.useState([]);

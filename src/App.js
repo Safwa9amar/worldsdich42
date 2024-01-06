@@ -49,21 +49,25 @@ function App() {
   const handleStorageEdit = (data) => {
     setStorage(JSON.stringify(data));
   };
-  let locations = [
-    "/store/",
-    "/store",
-    "/store/menu",
-    "/store/menu/",
-    "/store/contact",
-    "/store/contact/",
-    "/store/profile",
-    "/store/profile/",
-    "/store/checkout",
-    "/store/checkout/",
-    "/store/checkout/success",
-    "/store/checkout/success/",
-    "/store/menu/category",
-  ];
+  // const root_path = process.env.REACT_APP_ROOT_PATH;
+
+  let locations = React.useMemo(() => {
+    return [
+      "/store/",
+      "/store",
+      "/store/menu",
+      "/store/menu/",
+      "/store/contact",
+      "/store/contact/",
+      "/store/profile",
+      "/store/profile/",
+      "/store/checkout",
+      "/store/checkout/",
+      "/store/checkout/success",
+      "/store/checkout/success/",
+      "/store/menu/category",
+    ];
+  }, []);
   const [ErorPage, setErorPage] = React.useState(false);
   React.useEffect(() => {
     // Error404
@@ -73,9 +77,6 @@ function App() {
       setErorPage(true);
     }
   }, [ErorPage, locations]);
-  React.useEffect(() => {
-    console.log("componentDidMount");
-  }, []);
   return (
     <>
       <SupplementContextProvider>

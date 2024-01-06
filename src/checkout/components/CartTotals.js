@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import BuySuccess from "./BuySuccess";
+import OrderNow from "./OrderNow";
 import { SERVER_URI } from "../../helpers/UrlProvider";
 // import formatEUR from helpers
 import { formatEUR } from "../../helpers/currencyFormatter";
@@ -329,7 +329,7 @@ export function CartTotals({
                   </Link>
                 </div>
               ) : (
-                <BuySuccess
+                <OrderNow
                   setStorage={setStorage}
                   setcheckBoxState={setcheckBoxState}
                   DamandeType={DamandeType}
@@ -341,7 +341,7 @@ export function CartTotals({
           )}
 
         {DamandeType.filter((el) => el.bol === true)[0]?.id !== 3 && (
-          <BuySuccess
+          <OrderNow
             setStorage={setStorage}
             setcheckBoxState={setcheckBoxState}
             DamandeType={DamandeType}

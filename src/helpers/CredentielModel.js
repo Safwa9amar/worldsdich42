@@ -1,9 +1,9 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Credentiel } from "../context/CredentielContext";
-import { SERVER_URI } from "../helpers/UrlProvider";
+import useShippingRate from "../hooks/useShipingRate";
 
 export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
-  const CREDENTIEL_SERVER_URI = useContext(SERVER_URI);
+  const CREDENTIEL_SERVER_URI = process.env.REACT_APP_SERVER_URI;
   const { isloged, setiLoged, setUserData } = useContext(Credentiel);
   const [login, setlogin] = useState(true);
   const [regsitre, setRegsitre] = useState(false);
@@ -16,6 +16,8 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
 
   const [Displaylogger, setDisplaylogger] = useState(true);
   const [RememberMe, setRememberMe] = useState(false);
+  const { shippingRates } = useShippingRate();
+
   const url = CREDENTIEL_SERVER_URI + "/registre";
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,7 +65,7 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
       if (password === password_confirme) {
         setcheckPassConfirm(true);
         let register_form = new FormData(form);
-        
+
         let object = {};
         register_form.forEach((value, key) => (object[key] = value));
         // console.log(object);
@@ -120,22 +122,6 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
       setRegsitre(true);
     }
   };
-  // fetsh `${CREDENTIEL_SERVER_URI}/settings/api/livraison_adresses` when component mount
-  const [livraison_adresses, setlivraison_adresses] = useState([]);
-  useEffect(() => {
-    fetch(`${CREDENTIEL_SERVER_URI}/settings/api/livraison_adresses`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setlivraison_adresses(data);
-        // console.log(data);
-      });
-  }, []);
 
   return (
     <>
@@ -274,10 +260,9 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
                           name="adress"
                           type="adress"
                           className="input input-bordered"
-                          
                         >
                           <option />
-                          {livraison_adresses.map((livraison_adresse) => (
+                          {shippingRates.map((livraison_adresse) => (
                             <option value={livraison_adresse.id}>
                               {livraison_adresse.name}
                             </option>

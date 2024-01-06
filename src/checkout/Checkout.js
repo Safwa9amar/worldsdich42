@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 // import { FaRegUser } from "react-icons/fa";
 // import { RiCoupon3Line } from "react-icons/ri";
 // import { BiLogOut } from "react-icons/bi";
+import emptyCart from "../asstes/emptyCart.png";
 import burger from "../menu/images/burger.png";
 import surPlaceIco from "../icons/table_food.svg";
 import EmporterFoodIco from "../icons/emporter_food.svg";
@@ -98,23 +99,15 @@ const Checkout = ({ setcheckBoxState, setStorage }) => {
             </>
           ) : (
             <>
-              <div className="alert alert-info shadow-lg">
-                <div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    className="stroke-current flex-shrink-0 w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    ></path>
-                  </svg>
-                  <span>Vous n'avez pas ajouté d'articles</span>
-                </div>
+              <div className="text-white flex flex-col items-center">
+                <h1 className="text-3xl font-bold">Votre panier est vide...</h1>
+                <img src={emptyCart} alt="empty cart" className="w-60 h-60" />
+                <Link
+                  to="/store/menu"
+                  className="capitalize p-4 w-fit h-fit m-2 font-bold btn btn-sm btn-outline btn-primary"
+                >
+                  Menu
+                </Link>
               </div>
             </>
           )}

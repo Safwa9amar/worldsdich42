@@ -6,8 +6,6 @@ import User from "./User";
 export default function Profile() {
   const [HeaderText, setHeaderText] = useState("S'identifier");
   const { isloged, UserData } = useContext(Credentiel);
-
-  console.log(UserData);
   useEffect(() => {
     if (isloged) {
       setHeaderText("Mon Compte");

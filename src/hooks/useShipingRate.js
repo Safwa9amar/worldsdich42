@@ -1,26 +1,28 @@
 import { useState, useEffect } from "react";
-
 const useShippingRate = () => {
   const [selectedShippingRate, setSelectedShippingRate] = useState(null);
   const [shippingRates, setShippingRates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const apiKey = process.env.REACT_APP_STRIPE_API_KEY;
+  const fetchUrl = process.env.REACT_APP_STRIP_API_URL;
   // Function to fetch shipping rates from the Stripe API
   const fetchShippingRates = async () => {
     try {
       // Replace 'YOUR_STRIPE_API_KEY' with your actual Stripe API key
-      const response = await fetch(`https://api.stripe.com/v1/shipping_rates`, {
+      const response = await fetch(`${fetchUrl}shipping_rates`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer sk_test_51NIB1DG5waCNLkzT7xtBN724M9XSxDD83ZktBJT2IXVo3OaP7FKH0mE5TbY2868iFlwG7O0BG5gOGHq3rMol9Emu00lT3iNh8n`,
+          Authorization: `Bearer ${apiKey}`,
         },
       });
 
       const data = await response.json();
 
       // Assuming the API response contains an array of shipping rates
-      setShippingRates(data.data);
+      // active shiping rates
+      const activeShippingRates = data.data.filter((rate) => rate.active);
+      setShippingRates(activeShippingRates);
       setLoading(false);
     } catch (error) {
       setError(error.message);
@@ -28,21 +30,24 @@ const useShippingRate = () => {
     }
   };
 
-  // Function to set the user-selected shipping rate in localStorage
+  // Function to set the user-selected shipping rate in sessionStorage
   const setSelectedShippingRateObject = (shippingRate) => {
-    localStorage.setItem("selectedShippingRate", JSON.stringify(shippingRate));
+    sessionStorage.setItem(
+      "selectedShippingRate",
+      JSON.stringify(shippingRate)
+    );
     setSelectedShippingRate(shippingRate);
   };
 
-  // Function to clear the user-selected shipping rate from localStorage
+  // Function to clear the user-selected shipping rate from sessionStorage
   const clearSelectedShippingRate = () => {
-    localStorage.removeItem("selectedShippingRate");
+    sessionStorage.removeItem("selectedShippingRate");
     setSelectedShippingRate(null);
   };
 
-  // Effect to initialize the user-selected shipping rate from localStorage on component mount
+  // Effect to initialize the user-selected shipping rate from sessionStorage on component mount
   useEffect(() => {
-    const storedShippingRate = localStorage.getItem("selectedShippingRate");
+    const storedShippingRate = sessionStorage.getItem("selectedShippingRate");
     if (storedShippingRate !== "undefined") {
       setSelectedShippingRate(JSON.parse(storedShippingRate));
     }

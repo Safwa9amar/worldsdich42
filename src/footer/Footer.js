@@ -96,7 +96,7 @@ export default function Footer() {
         </p>
         <a
           className="underline link-primary"
-          href="http://hamza-safwan.me/"
+          href={process.env.REACT_APP_DEVELOPER_URL}
           target="_blank"
           rel="noreferrer"
         >
@@ -114,7 +114,11 @@ export default function Footer() {
           produits frais.
         </p>
 
-        <img className="lg:w-[250px] lg:h-[250px] w-[150px] h-[150px]" src={Logo} alt="logo" />
+        <img
+          className="lg:w-[250px] lg:h-[250px] w-[150px] h-[150px]"
+          src={Logo}
+          alt="logo"
+        />
       </div>
 
       <div className="flex flex-col items-center gap-4">

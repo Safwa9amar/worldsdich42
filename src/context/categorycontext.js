@@ -1,16 +1,9 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useCallback,
-  useContext,
-} from "react";
-import { SERVER_URI } from "../helpers/UrlProvider";
+import React, { createContext, useState, useEffect, useCallback } from "react";
 
 export const Categories = createContext();
 
 const CategoryContextProvider = ({ children }) => {
-  const CATEGORIES_SERVER_URI = useContext(SERVER_URI);
+  const CATEGORIES_SERVER_URI = process.env.REACT_APP_SERVER_URI;
 
   const [categories, setCategories] = useState(
     JSON.parse(localStorage.getItem("categories")) || []
@@ -32,11 +25,11 @@ const CategoryContextProvider = ({ children }) => {
     getCaegories();
   });
   // 10 minutes interval
-  let tenMinutes = 1000 * 60 * 10
+  let tenMinutes = 1000 * 60 * 10;
   setInterval(() => {
     getCaegories();
-  }, tenMinutes );
-  
+  }, tenMinutes);
+
   return (
     <Categories.Provider value={categories}>{children}</Categories.Provider>
   );
