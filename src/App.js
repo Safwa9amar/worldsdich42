@@ -49,34 +49,7 @@ function App() {
   const handleStorageEdit = (data) => {
     setStorage(JSON.stringify(data));
   };
-  // const root_path = process.env.REACT_APP_ROOT_PATH;
 
-  let locations = React.useMemo(() => {
-    return [
-      "/store/",
-      "/store",
-      "/store/menu",
-      "/store/menu/",
-      "/store/contact",
-      "/store/contact/",
-      "/store/profile",
-      "/store/profile/",
-      "/store/checkout",
-      "/store/checkout/",
-      "/store/checkout/success",
-      "/store/checkout/success/",
-      "/store/menu/category",
-    ];
-  }, []);
-  const [ErorPage, setErorPage] = React.useState(false);
-  React.useEffect(() => {
-    // Error404
-    let currentLocation = window.location.pathname;
-    let isLocation = locations.includes(currentLocation);
-    if (!isLocation) {
-      setErorPage(true);
-    }
-  }, [ErorPage, locations]);
   return (
     <>
       <SupplementContextProvider>
@@ -93,85 +66,72 @@ function App() {
               id="scroller"
               className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
             >
-              <BrowserRouter>
-                {/* <CredentielModel
-                setcheckBoxState={setcheckBoxState}
-                checkBoxState={checkBoxState}
-              /> */}
+              <BrowserRouter
+                basename={process.env.REACT_APP_ROOT_PATH_BASENAME}
+              >
                 <ScrollToTop>
-                  {ErorPage ? (
-                    <Error404 setErorPage={setErorPage} />
-                  ) : (
-                    <>
-                      <Header
-                        setCartVisisble={setCartVisisble}
-                        isAdedTocart={isAdedTocart}
-                        isDeletetedFromTocart={isDeletetedFromTocart}
-                        handleCartBoudries={handleCartBoudries}
-                        locations={locations}
+                  <>
+                    <Header
+                      setCartVisisble={setCartVisisble}
+                      isAdedTocart={isAdedTocart}
+                      isDeletetedFromTocart={isDeletetedFromTocart}
+                      handleCartBoudries={handleCartBoudries}
+                      // locations={locations}
+                    />
+                    <Cart
+                      isVisisble={isVisisble}
+                      setCartVisisble={setCartVisisble}
+                      isAdedTocart={isAdedTocart}
+                      handleDeletetedFromTocart={handleDeletetedFromTocart}
+                      handleStorageEdit={handleStorageEdit}
+                    />
+
+                    <Routes>
+                      <Route path="*" element={<Error404 />} />
+
+                      <Route exact path="/" element={<Home />} />
+                      <Route
+                        exact
+                        path="/menu/category"
+                        element={
+                          <Catergory
+                            handleStorageEdit={handleStorageEdit}
+                            handleAdedTocart={handleAdedTocart}
+                            isDeletetedFromTocart={isDeletetedFromTocart}
+                            hybrid_idFroDeletion={hybrid_idFroDeletion}
+                            getCartBoudaries={getCartBoudaries}
+                            setcheckBoxState={setcheckBoxState}
+                            // setErorPage={setErorPage}
+                          />
+                        }
                       />
-                      <Cart
-                        isVisisble={isVisisble}
-                        setCartVisisble={setCartVisisble}
-                        isAdedTocart={isAdedTocart}
-                        handleDeletetedFromTocart={handleDeletetedFromTocart}
-                        handleStorageEdit={handleStorageEdit}
+                      <Route
+                        exact
+                        path="/checkout"
+                        element={
+                          <Checkout
+                            setcheckBoxState={setcheckBoxState}
+                            checkBoxState={checkBoxState}
+                            setStorage={setStorage}
+                          />
+                        }
+                      />
+                      <Route
+                        exact
+                        path="/success"
+                        element={
+                          <ChargeSuccess
+                            Storage={Storage}
+                            setStorage={setStorage}
+                          />
+                        }
                       />
 
-                      <Routes>
-                        <Route exact path="/store/*" element={<Home />} />
-                        <Route exact path="/store/" element={<Home />} />
-                        <Route
-                          exact
-                          path="/store/menu/category"
-                          element={
-                            <Catergory
-                              handleStorageEdit={handleStorageEdit}
-                              handleAdedTocart={handleAdedTocart}
-                              isDeletetedFromTocart={isDeletetedFromTocart}
-                              hybrid_idFroDeletion={hybrid_idFroDeletion}
-                              getCartBoudaries={getCartBoudaries}
-                              setcheckBoxState={setcheckBoxState}
-                              setErorPage={setErorPage}
-                            />
-                          }
-                        />
-                        <Route
-                          exact
-                          path="/store/checkout"
-                          element={
-                            <Checkout
-                              setcheckBoxState={setcheckBoxState}
-                              checkBoxState={checkBoxState}
-                              setStorage={setStorage}
-                            />
-                          }
-                        />
-                        <Route
-                          exact
-                          path="/store/checkout/success"
-                          element={
-                            <ChargeSuccess
-                              Storage={Storage}
-                              setStorage={setStorage}
-                            />
-                          }
-                        />
-
-                        <Route exact path="/store/menu" element={<Menu />} />
-                        <Route
-                          exact
-                          path="/store/contact"
-                          element={<Contact />}
-                        />
-                        <Route
-                          exact
-                          path="/store/profile"
-                          element={<Profile />}
-                        />
-                      </Routes>
-                    </>
-                  )}
+                      <Route exact path="/menu" element={<Menu />} />
+                      <Route exact path="/contact" element={<Contact />} />
+                      <Route exact path="/profile" element={<Profile />} />
+                    </Routes>
+                  </>
                 </ScrollToTop>
                 <Footer />
               </BrowserRouter>

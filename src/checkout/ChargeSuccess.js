@@ -86,7 +86,7 @@ export default function ChargeSuccess({ Storage, setStorage }) {
               <h1 className="text-3xl font-bold">Votre panier est vide...</h1>
               <img src={emptyCart} alt="empty cart" className="w-60 h-60" />
               <Link
-                to="/store/menu"
+                to="/menu"
                 className="capitalize p-4 w-fit h-fit m-2 font-bold btn btn-sm btn-outline btn-primary"
               >
                 Menu
@@ -112,10 +112,10 @@ export default function ChargeSuccess({ Storage, setStorage }) {
                 attendons avec impatience de vous servir à nouveau toujours !
               </p>
               <Link
-                to="/store/menu"
+                to="/menu"
                 className="capitalize p-4 w-fit h-fit m-2 font-bold btn btn-sm btn-outline btn-primary"
               >
-                Retour au menu
+                Menu
               </Link>
               <button
                 onClick={() => {

@@ -23,7 +23,7 @@ export default function OrderNow({ DamandeType, Note }) {
     setShowModel(true);
     setstartReq(true);
     if (command_type.id === 1 || command_type.id === 2) {
-      navigate("/store/checkout/success");
+      navigate("/success");
     } else {
       const data = await fetch(process.env.REACT_APP_SERVER_URI + "/charge", {
         mode: "cors",

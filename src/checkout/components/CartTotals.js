@@ -1,6 +1,5 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import OrderNow from "./OrderNow";
-import { SERVER_URI } from "../../helpers/UrlProvider";
 // import formatEUR from helpers
 import { formatEUR } from "../../helpers/currencyFormatter";
 import { calculeCoupon } from "../../helpers/CalculeCoupon";
@@ -13,9 +12,9 @@ export function CartTotals({
   setcheckBoxState,
   setStorage,
   UserData,
-  isloged,
+  isLogged,
 }) {
-  const URI = useContext(SERVER_URI);
+  const URI = process.env.REACT_APP_SERVER_URI;
 
   // fraislivraison state
   const [FraisLivraison, setFraisLivraison] = useState(0);
@@ -144,7 +143,6 @@ export function CartTotals({
       .catch((err) => console.log(err));
   }, [URI]);
   useEffect(() => {
-    // fetch /settings/api/globalPromotion
     fetch(`${URI}/settings/api/globalPromotion`, {
       method: "GET",
       cors: "no-cors",
@@ -154,7 +152,7 @@ export function CartTotals({
         setPromotionTotal(data);
       })
       .catch((err) => console.log(err));
-  }, [isloged, Mycontext, UserData]);
+  }, [isLogged, Mycontext, UserData]);
 
   return (
     <div className="flex flex-col md:flex-row items-stratch justify-between my-6">
@@ -315,14 +313,14 @@ export function CartTotals({
                   livraison est à partir de{" "}
                   {formatEUR(selectedShippingRate?.metadata.price)}
                 </div>
-              ) : !isloged ? (
+              ) : !isLogged ? (
                 <div className="flex flex-col gap-10">
                   <p className="text-info">
                     Vous devez d'abord vous connecter à votre compte pour
                     pouvoir commander la livraison
                   </p>
                   <Link
-                    to="/store/profile"
+                    to="/profile"
                     className="btn btn-primary  right-2 top-2"
                   >
                     cliquez ici pour vous connecter

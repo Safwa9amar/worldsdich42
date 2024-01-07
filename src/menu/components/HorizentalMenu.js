@@ -27,12 +27,13 @@ const MenuItem = ({ icon, text, id, Length, setActiveItem }) => {
   let { search } = useLocation();
   let categoryId = Math.abs(search.replace(/^\D+/g, ""));
 
- 
   return (
     <Link
-      href="/store/menu"
-      to={`/store/menu/category?id=${id}`}
-      className={` flex items-center  flex-1 gap-2 w-full badge !p-4 !hover:shadow-xl hover:bg-accent-focus hover:text-white  ${categoryId === id ? "badge-accent text-white" : ""} `}
+      href="/menu"
+      to={`/menu/category?id=${id}`}
+      className={` flex items-center  flex-1 gap-2 w-full badge !p-4 !hover:shadow-xl hover:bg-accent-focus hover:text-white  ${
+        categoryId === id ? "badge-accent text-white" : ""
+      } `}
     >
       <img className={`w-[25px] h-[35px]   `} src={icon} alt={text} />
       <p className="text-md md:text-lg capitalize w-full">

@@ -26,9 +26,9 @@ export const NavigationsLinks = ({ setisVisible }) => {
       <li onClick={handleClick}>
         <Link
           className={`no-underline ${
-            location.pathname === "/store/" ? activeClass : ""
+            location.pathname === "/" ? activeClass : ""
           }`}
-          to="/store/"
+          to="/"
         >
           Accueil
         </Link>
@@ -36,9 +36,9 @@ export const NavigationsLinks = ({ setisVisible }) => {
       <li onClick={handleClick}>
         <Link
           className={`no-underline ${
-            location.pathname.startsWith("/store/menu") ? activeClass : ""
+            location.pathname.startsWith("/menu") ? activeClass : ""
           }`}
-          to="store/menu"
+          to="/menu"
         >
           Menu
         </Link>
@@ -46,9 +46,9 @@ export const NavigationsLinks = ({ setisVisible }) => {
       <li onClick={handleClick}>
         <Link
           className={`no-underline ${
-            location.pathname.startsWith("/store/contact") ? activeClass : ""
+            location.pathname.startsWith("/contact") ? activeClass : ""
           }`}
-          to="store/contact"
+          to="/contact"
         >
           Contact
         </Link>
@@ -94,7 +94,7 @@ export const CartIndicator = ({ openCart, handleCartBoudries, className }) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className={
-          Location.pathname.startsWith("/store/checkout")
+          Location.pathname.startsWith("/checkout")
             ? `stroke-accent fill-accent `
             : `stroke-current`
         }

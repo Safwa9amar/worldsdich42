@@ -10,10 +10,10 @@ import { FiPhoneCall } from "react-icons/fi";
 import Logo from "../images/_logo.png";
 
 // import serverUrl from helpers folder
-import { SERVER_URI } from "./../helpers/UrlProvider";
 export default function Footer() {
-  const WorkHours = `${useContext(SERVER_URI)}/settings/api/WorkHours`;
-  const Contact = `${useContext(SERVER_URI)}/settings/api/contact_info`;
+  const SERVER_URI = process.env.REACT_APP_SERVER_URI;
+  const WorkHours = `${SERVER_URI}/settings/api/WorkHours`;
+  const Contact = `${SERVER_URI}/settings/api/contact_info`;
   // work hours state
   const [workHours, setWorkHours] = React.useState([]);
 

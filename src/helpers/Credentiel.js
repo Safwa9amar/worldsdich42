@@ -9,7 +9,7 @@ export default function CredentielClient({
   HeaderText,
 }) {
   const CREDENTIEL_SERVER_URI = useContext(SERVER_URI);
-  const { isloged, setiLoged, setUserData } = useContext(Credentiel);
+  const { isLogged, setIsLogged, setUserData } = useContext(Credentiel);
   const [login, setlogin] = useState(true);
   const [regsitre, setRegsitre] = useState(false);
 
@@ -48,7 +48,7 @@ export default function CredentielClient({
           setDisplaylogger(true);
           if (code === 200) {
             setTimeout(() => {
-              setiLoged(true);
+              setIsLogged(true);
               setDisplaylogger(false);
               window.location.reload();
             }, 2000);
@@ -56,7 +56,7 @@ export default function CredentielClient({
           return response.json();
         })
         .then((data) => {
-          if (isloged) setUserData(data.userData);
+          if (isLogged) setUserData(data.userData);
           if (RememberMe) {
             localStorage.setItem("jwt", data.access_token);
             localStorage.setItem("refrech", data.refresh_token);
@@ -94,7 +94,7 @@ export default function CredentielClient({
             setDisplaylogger(true);
             if (code === 200) {
               setTimeout(() => {
-                setiLoged(true);
+                setIsLogged(true);
                 setDisplaylogger(false);
                 window.location.reload();
               }, 2000);
@@ -102,7 +102,7 @@ export default function CredentielClient({
             return response.json();
           })
           .then((data) => {
-            isloged && setUserData(data.userData);
+            isLogged && setUserData(data.userData);
             if (RememberMe) {
               localStorage.setItem("jwt", data.access_token);
               localStorage.setItem("refrech", data.refresh_token);

@@ -5,8 +5,6 @@ import React, { useContext, useEffect, useState } from "react";
 // import meathalalIco from "../icons/meathalal.svg";
 // import breadIco from "../icons/bread.svg";
 import Logo from "../images/_logo.png";
-import { SERVER_URI } from "../helpers/UrlProvider";
-
 import { Link } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -35,10 +33,29 @@ const responsive = {
     items: 1,
   },
 };
+const responsive2 = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 1,
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 1,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 1,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+  },
+};
 
 const Home = () => {
   const data = useContext(Categories);
-  const URI = useContext(SERVER_URI);
+  const URI = process.env.REACT_APP_SERVER_URI;
   const [promotionTotal, setPromotionTotal] = useState(0);
 
   useEffect(() => {
@@ -61,59 +78,82 @@ const Home = () => {
         // rotate: [0, 0, 270, 270, 0],
         // borderRadius: ["20%", "20%", "50%", "50%", "20%"],
       }}
-      className="w-full flex flex-col items-center gap-10"
+      className="flex flex-col items-center justify-center gap-20"
     >
-      {/* <div className="flex flex-row justify-evenly items-center w-full text-white capitalize">
-        <div
-          className="text-center flex flex-col items-center"
-          ref={ref}
-          style={{
-            transform: isInView ? "none" : "translateY(20px)",
-            opacity: isInView ? 1 : 0,
-            transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s",
-          }}
-        >
+      <div
+        className="
+        bg-bg-header
+      md:bg-bg-md-header
+      bg-fixed
+      bg-cover
+       w-full p-20 flex flex-col items-center justify-center gap-4"
+      >
+        <div className="w-4/5 h-full bg-[#000000cc] p-10 rounded-lg bg-cover flex flex-col items-center justify-center gap-4">
           <img
-            className="w-[50px] md:w-[80px] h-[50px] md:h-[150px] "
-            src={foodqualityIco}
-            alt="foodqualityIco"
+            src={Logo}
+            alt="logo"
+            className="w-[100px] md:w-[200px] h-[100px] md:h-[200px] "
           />
-          <p>Quality Foods</p>
+          <motion.h1
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+              transition: { delay: 0.5 },
+            }}
+            className="text-5xl md:text-[4rem] font-DancingScript "
+          >
+            Restaurant rapide halal
+          </motion.h1>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+              transition: { delay: 1 },
+            }}
+            className="text-lg md:text-xl font-light max-w-[700px]  "
+          >
+            Vous propose sandwichs tacos au four burgers fait maison pizza sur
+            place ou à emporter et en livraison, avec des produits frais.
+            (Escalope, kefta maison...), Une salle climatisée.
+            <br />
+            On dispose de 24 places assises. On dispose également de deux
+            chaises hautes pour bébé. <br />
+            Une Télé est à votre disposition en attendant votre commande.
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+              transition: { delay: 1.2 },
+            }}
+            className="btn btn-outline btn-primary"
+          >
+            <Link to="/menu">Commandez</Link>
+          </motion.p>
         </div>
-        <div
-          className="text-center flex flex-col items-center"
-          ref={ref}
-          style={{
-            transform: isInView ? "none" : "translateY(20px)",
-            opacity: isInView ? 1 : 0,
-            transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1s",
-          }}
-        >
-          <img
-            className="w-[50px] md:w-[80px] h-[50px] md:h-[150px] "
-            src={meathalalIco}
-            alt="meathalalIco"
-          />
-          <p>Viande 100% halal</p>
-        </div>
-        <div
-          className="text-center flex flex-col items-center"
-          ref={ref}
-          style={{
-            transform: isInView ? "none" : "translateY(20px)",
-            opacity: isInView ? 1 : 0,
-            transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1.5s",
-          }}
-        >
-          <img
-            className="w-[50px] md:w-[80px] h-[50px] md:h-[150px] "
-            src={breadIco}
-            alt="breadIco"
-          />
-          <p>pain fait maison</p>
-        </div>
-      </div> */}
+      </div>
       <br />
+
+      <div className="flex flex-col items-center gap-10 text-center text-white w-full">
+        <h1 className="font-DancingScript font-bold text-3xl md:text-6xl capitalize">
+          nous servons
+        </h1>
+        <div className="flex flex-wrap justify-center  gap-2 w-4/5">
+          {data.map((el, idx) => {
+            return (
+              <Menus
+                key={idx}
+                idx={idx}
+                name={el.name}
+                id={el.id}
+                img={el.img}
+              />
+            );
+          })}
+        </div>
+      </div>
       <div className="sm:prose-sm md:prose-md  text-center text-white">
         <h1 className="font-DancingScript font-bold text-3xl md:text-6xl capitalize">
           Nos offres
@@ -157,18 +197,6 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center gap-10 text-center text-white w-full">
-        <h1 className="font-DancingScript font-bold text-3xl md:text-6xl capitalize">
-          nous servons
-        </h1>
-        <div className="flex flex-wrap justify-center  gap-2 w-4/5">
-          {data.map((el, idx) => {
-            return <Menus idx={idx} name={el.name} id={el.id} img={el.img} />;
-          })}
-        </div>
-      </div>
-      <BookTable />
-
       <div className=" mt-10 mx-10 flex flex-col items-center sm:prose-sm md:prose-md  text-center text-white">
         <h1 className="font-DancingScript font-bold text-3xl md:text-6xl capitalize">
           Galerie
@@ -180,19 +208,23 @@ const Home = () => {
         infinite={true}
         autoPlay={true}
         className="w-full"
-        itemClass="!h-[250px] !max-w-[350px] 	mx-4"
+        itemClass="!h-[4 50px] !max-w-fit  	mx-4"
         responsive={responsive}
         showDots={true}
         dotListClass="custom-dot-list-style"
       >
         {Ldata.map((el) => (
-          <img key={el.id} src={el.img} alt={el.id} className="rounded-lg" />
+          <img
+            key={el.id}
+            src={el.img}
+            alt={el.id}
+            className="rounded-lg aspect-square"
+          />
         ))}
       </Carousel>
-      <Link
-        className="bg-[#5B6D5B] w-fit py-4 px-8 my-4 text-white rounded-md"
-        to="/store/menu"
-      >
+      <BookTable />
+
+      <Link className="btn btn-outline btn-primary m-10 " to="/menu">
         VOIRE LE MENU
       </Link>
     </motion.div>

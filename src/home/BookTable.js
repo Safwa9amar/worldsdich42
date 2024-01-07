@@ -93,17 +93,19 @@ export default function BookTable() {
               </button>
             </div>
           ) : (
-            !message && <div className="form-control items-start self-start">
-              <input
-                required
-                type="submit"
-                value="Réserver "
-                className="btn btn-sm md:btn-md btn-accent hover:bg-accent rounded-3xl text-white"
-              />
-            </div>
+            !message && (
+              <div className="form-control items-start self-start">
+                <input
+                  required
+                  type="submit"
+                  value="Réserver "
+                  className="btn btn-outline btn-primary"
+                />
+              </div>
+            )
           )}
         </form>
-        <Map tailcss={"hidden sm:block"}/>
+        <Map tailcss={"hidden sm:block"} />
       </div>
     </section>
   );

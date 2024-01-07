@@ -117,7 +117,7 @@ export default function Error404({ setErorPage }) {
         <div className="alert alert-warning">
           vous essayez d'accéder à une page qui n'existe pas
         </div>
-        <Link onClick={handleLink} className="btn btn-primary" to="/store/">
+        <Link onClick={handleLink} className="btn btn-primary" to="/">
           retour à la page d'accueil
         </Link>
       </div>

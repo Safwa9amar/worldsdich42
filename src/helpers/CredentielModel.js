@@ -4,7 +4,7 @@ import useShippingRate from "../hooks/useShipingRate";
 
 export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
   const CREDENTIEL_SERVER_URI = process.env.REACT_APP_SERVER_URI;
-  const { isloged, setiLoged, setUserData } = useContext(Credentiel);
+  const { isLogged, setIsLogged, setUserData } = useContext(Credentiel);
   const [login, setlogin] = useState(true);
   const [regsitre, setRegsitre] = useState(false);
 
@@ -41,14 +41,14 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
           setDisplaylogger(true);
           if (code === 200) {
             setTimeout(() => {
-              setiLoged(true);
+              setIsLogged(true);
               setDisplaylogger(false);
             }, 2000);
           }
           return response.json();
         })
         .then((data) => {
-          if (isloged) setUserData(data.userData);
+          if (isLogged) setUserData(data.userData);
           if (RememberMe) {
             localStorage.setItem("jwt", data.access_token);
             localStorage.setItem("refrech", data.refresh_token);
@@ -86,14 +86,14 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
             setDisplaylogger(true);
             if (code === 200) {
               setTimeout(() => {
-                setiLoged(true);
+                setIsLogged(true);
                 setDisplaylogger(false);
               }, 2000);
             }
             return response.json();
           })
           .then((data) => {
-            isloged && setUserData(data.userData);
+            isLogged && setUserData(data.userData);
             if (RememberMe) {
               localStorage.setItem("jwt", data.access_token);
               localStorage.setItem("refrech", data.refresh_token);
@@ -125,7 +125,7 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
 
   return (
     <>
-      {!isloged && (
+      {!isLogged && (
         <>
           <input
             checked={checkBoxState}

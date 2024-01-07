@@ -57,53 +57,23 @@ export default function Header({
   // );
 
   return (
-    <div
-      style={{
-        // backgroundImage: `url(${nav_bg})`,
-        // backgroundImage: `url(${"https://images.pexels.com/photos/54455/cook-food-kitchen-eat-54455.jpeg?cs=srgb&dl=pexels-pixabay-54455.jpg&fm=jpg"})`,
-        backgroundSize: "100% 100%",
-      }}
-      className={`
-               transition-all 
-               bg-bg-header
-               md:bg-bg-md-header
-               bg-fixed
-               
-               bg-[100% 100%]
-               w-full
-               rounded-xl 
-               ${
-                 Location.pathname.startsWith("/store/menu") ||
-                 Location.pathname.startsWith("/store/menu/") ||
-                 Location.pathname === "/store/checkout/" ||
-                 Location.pathname === "/store/checkout" ||
-                 Location.pathname === "/store/profile" ||
-                 Location.pathname === "/store/profile/" ||
-                 Location.pathname === "/store/contact" ||
-                 Location.pathname === "/store/contact/" ||
-                 Location.pathname === "/store/checkout/success" ||
-                 Location.pathname === "/store/checkout/success/"
-                   ? ""
-                   : "h-screen "
-               }`}
-      //  md:w-[95vw] md:mx-[2.5vw] md:mt-5
-    >
-      <div className="h-full w-full p-4 text-white flex flex-col gap-4 items-center ">
-        <div className="flex justify-between items-center w-full md:w-5/6 relative md:p-6 ">
-          <Link to={"/store"} className="lg:flex items-center hidden">
+    <div className="transition-all  w-full rounded-xl">
+      <div className="h-full w-full text-white flex flex-col gap-4 items-center ">
+        <div className="flex justify-between items-center w-full md:w-5/6 relative m-10  ">
+          <Link to={"/"} className="lg:flex items-center hidden">
             <img className="w-[50px] h-[50px] " src={Logo} alt="logo" />
             <h4 className="text-white m-0 text-xl font-DancingScript font-bold">
               World's Dwich 42
             </h4>
           </Link>
           <Link
-            to="/store/profile"
+            to="/profile"
             className="btn btn-ghost btn-circle avatar md:hidden "
           >
             <div className="w-10 rounded-full">
               <svg
                 className={
-                  Location.pathname.startsWith("/store/profile")
+                  Location.pathname.startsWith("/profile")
                     ? `stroke-accent fill-accent `
                     : `stroke-current fill-current `
                 }
@@ -133,13 +103,13 @@ export default function Header({
           />
           <div className="flex items-center gap-2">
             <Link
-              to="/store/profile"
+              to="/profile"
               className="btn btn-ghost btn-circle avatar hidden md:block "
             >
               <div className="w-10 rounded-full">
                 <svg
                   className={
-                    Location.pathname.startsWith("/store/profile")
+                    Location.pathname.startsWith("/profile")
                       ? `stroke-accent fill-accent `
                       : `stroke-current fill-current `
                   }
@@ -161,49 +131,9 @@ export default function Header({
             />
           </div>
         </div>
-        {(Location.pathname === "/store/" || Location.pathname === "/store") &&
-          !Location.pathname.startsWith("/store/menu") && (
-            <div className="md:p-4 mt-10 md:mt-20 w-full md:w-5/6 flex flex-col gap-4">
-              <motion.h1
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 1,
-                  transition: { delay: 0.5 },
-                }}
-                className="text-5xl md:text-[4rem] font-DancingScript "
-              >
-                Restaurant rapide halal
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 1,
-                  transition: { delay: 1 },
-                }}
-                className="text-lg md:text-xl font-light max-w-[700px]  "
-              >
-                Vous propose sandwichs tacos au four burgers fait maison pizza
-                sur place ou à emporter et en livraison, avec des produits
-                frais. (Escalope, kefta maison...), Une salle climatisée.
-                <br />
-                On dispose de 24 places assises. On dispose également de deux
-                chaises hautes pour bébé. <br />
-                Une Télé est à votre disposition en attendant votre commande.
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 1,
-                  transition: { delay: 1.2 },
-                }}
-                className="text-white btn btn-sm md:btn-md btn-accent capitalize w-fit  rounded-3xl "
-              >
-                <Link to="/store/menu">Commandez</Link>
-              </motion.p>
-            </div>
-          )}
-        {Location.pathname === "/store/checkout" && (
+        {(Location.pathname === "/" || Location.pathname === "") &&
+          !Location.pathname.startsWith("/menu") && <div></div>}
+        {Location.pathname === "/checkout" && (
           <div className="relative flex items-center justify-center w-full">
             {/* <img
           className="md:w-[180px] md:h-[80px] h-[50px]  absolute -top-8 right-14 lg:-top-12 lg:right-1/4"
@@ -239,9 +169,9 @@ export default function Header({
   );
 }
 
-// {!Location.pathname.startsWith("/store/menu") && (
+// {!Location.pathname.startsWith("/menu") && (
 //   <div className="flex justify-between lg:mx-6 w-full lg:mt-4 ">
-//     {Location.pathname.startsWith("/store/checkout") && (
+//     {Location.pathname.startsWith("/checkout") && (
 //       <div className="relative flex items-center justify-center w-full">
 //         <img
 //           className="md:w-[180px] md:h-[80px] h-[50px]  absolute -top-8 right-14 lg:-top-12 lg:right-1/3"
@@ -272,7 +202,7 @@ export default function Header({
 //         </div>
 //       </div>
 //     )}
-//     {!Location.pathname.startsWith("/store/checkout") && (
+//     {!Location.pathname.startsWith("/checkout") && (
 //       <div className="relative">
 //         <div className="flex items-center lg:hidden">
 //           <img className="w-[40px] h-[40px] " src={Logo} alt="logo" />
@@ -309,7 +239,7 @@ export default function Header({
 //         </p>
 //       </div>
 //     )}
-//     {!Location.pathname.startsWith("/store/checkout") && (
+//     {!Location.pathname.startsWith("/checkout") && (
 //       <div className="w-1/2 lg:w-1/4">
 //         <img className="w-full h-full" src={burger} alt="burger" />
 //       </div>

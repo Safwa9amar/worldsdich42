@@ -25,11 +25,11 @@ export default function MenuItem({
     <div className="relative m-4">
       <Link
         onClick={handleclick}
-        to={`/store/menu/category?id=${itemId}`}
+        to={`/menu/category?id=${itemId}`}
         onMouseEnter={AnimatEnenter}
         onMouseLeave={AnimatEnLeave}
         className={`
-        ${cutting_off_status ? 'rounded-br-[60%]' : '' }
+        ${cutting_off_status ? "rounded-br-[60%]" : ""}
         relative text-center bg-[#28231B] w-[150px] lg:w-[250px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg text-white
         `}
       >
@@ -52,10 +52,9 @@ export default function MenuItem({
       {cutting_off_status && (
         <div className="badge badge-info absolute right-0 top-0 -z-[1] h-full w-full ">
           <p className=" absolute right-2 bottom-1 text-md lg:text-xl">
-          -{cutting_off}% 
-
+            -{cutting_off}%
           </p>
-          </div>
+        </div>
       )}
     </div>
   );

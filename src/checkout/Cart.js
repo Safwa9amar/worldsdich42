@@ -199,7 +199,7 @@ function Cart({
         </SwipeableList>
         <Link
           onClick={() => setCartVisisble(false)}
-          to="/store/checkout"
+          to="/checkout"
           className="btn btn-active btn-accent fixed bottom-10 z-50 px-10"
         >
           Complete order

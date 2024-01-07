@@ -4,15 +4,15 @@ import { FaRegUser } from "react-icons/fa";
 import { Credentiel } from "../context/CredentielContext";
 
 export default function User() {
-  const { isloged, setiLoged, UserData } = useContext(Credentiel);
+  const { isLogged, setIsLogged, userData } = useContext(Credentiel);
 
   return (
     <div className="w-11/12 my-10 ">
-      {isloged && (
+      {isLogged && (
         <>
           <div className="text-white w-full flex items-center justify-between gap-2 py-4 px-8  rounded-lg border-t-2 border-t-blue-600 bg-[#252C30] ">
             <span className="w-fit flex items-center gap-4">
-              <FaRegUser /> Bienvenue {UserData.Nom}
+              <FaRegUser /> Bienvenue {userData.Nom}
             </span>
             <button
               className="text-error cursor-pointer flex items-center"
@@ -21,14 +21,14 @@ export default function User() {
                 localStorage.removeItem("refrech");
                 sessionStorage.removeItem("jwt");
                 localStorage.removeItem("jwt");
-                setiLoged(false);
+                setIsLogged(false);
               }}
             >
               <BiLogOut className="mx-2" />
               (déconnexion)
             </button>
           </div>
-          {/* <OrderStatus UserData={UserData} /> */}
+          {/* <OrderStatus userData={userData} /> */}
         </>
       )}
       <br />
@@ -40,13 +40,17 @@ export default function User() {
       <div className="">
         <div className="font-bold">
           Nom d'utilisateur :
-          <span className="text-slate-300 font-medium ">{UserData.username} </span>
+          <span className="text-slate-300 font-medium ">
+            {userData.username}{" "}
+          </span>
         </div>
         <div className="font-bold">
-          Prénom : <span className="text-slate-300 font-medium">{UserData.Prenom} </span>
+          Prénom :{" "}
+          <span className="text-slate-300 font-medium">{userData.Prenom} </span>
         </div>
         <div className="font-bold">
-          Nom : <span className="text-slate-300 font-medium">{UserData.Nom} </span>
+          Nom :{" "}
+          <span className="text-slate-300 font-medium">{userData.Nom} </span>
         </div>
       </div>
       <br />
@@ -57,37 +61,48 @@ export default function User() {
       <div className="divider"></div>
       <div className="">
         <div className="font-bold">
-          Email : <span className="text-slate-300 font-medium">{UserData.email} </span>
+          Email :{" "}
+          <span className="text-slate-300 font-medium">{userData.email} </span>
         </div>
         <div className="font-bold">
-          Numéro : <span className="text-slate-300 font-medium">{UserData.Tel} </span>
+          Numéro :{" "}
+          <span className="text-slate-300 font-medium">{userData.Tel} </span>
         </div>
         <div className="font-bold">
-          L'adresse : <span className="text-slate-300 font-medium">{UserData.adress?.name} </span>{" "}
+          L'adresse :{" "}
+          <span className="text-slate-300 font-medium">
+            {userData.adress?.name}{" "}
+          </span>{" "}
         </div>
       </div>
       <br />
 
       <h1 className="text-lg md:text-2xl font-extrabold lg:text-3xl">
-      Informations de livraison
+        Informations de livraison
       </h1>
       <div className="divider"></div>
       <div className="grid grid-cols-2">
         <div>
-          <div className="font-bold">Quartier  :</div>
+          <div className="font-bold">Quartier :</div>
           <div className="font-bold">Adresse :</div>
           <div className="font-bold">Bâtiment :</div>
-          <div className="font-bold">Étage  :</div>
-          <div className="font-bold">Sonnerie   :</div>
-          <div className="font-bold">Code  :</div>
+          <div className="font-bold">Étage :</div>
+          <div className="font-bold">Sonnerie :</div>
+          <div className="font-bold">Code :</div>
         </div>
         <div>
-          <div className="text-slate-300">{UserData.adress.name} </div>
-          <div className="text-slate-300">{UserData.adress_exct}</div>
-          <div className="text-slate-300">{UserData.batiment}</div>
-          <div className="text-slate-300">{UserData.etage}</div>
-          <div className="text-slate-300">{UserData.sonnerie ? <span className="badge badge-success">Oui</span> : <span className="badge badge-success">Non</span>  }</div>
-          <div className="text-slate-300">{UserData.code}</div>
+          <div className="text-slate-300">{userData.adress.name} </div>
+          <div className="text-slate-300">{userData.adress_exct}</div>
+          <div className="text-slate-300">{userData.batiment}</div>
+          <div className="text-slate-300">{userData.etage}</div>
+          <div className="text-slate-300">
+            {userData.sonnerie ? (
+              <span className="badge badge-success">Oui</span>
+            ) : (
+              <span className="badge badge-success">Non</span>
+            )}
+          </div>
+          <div className="text-slate-300">{userData.code}</div>
         </div>
       </div>
     </div>
@@ -119,9 +134,9 @@ export default function User() {
 //           <div className="font-bold">Nom</div>
 //         </div>
 //         <div>
-//           <div className="text-slate-300">{UserData.username}</div>
-//           <div className="text-slate-300">{UserData.Prenom}</div>
-//           <div className="text-slate-300">{UserData.Nom} </div>
+//           <div className="text-slate-300">{userData.username}</div>
+//           <div className="text-slate-300">{userData.Prenom}</div>
+//           <div className="text-slate-300">{userData.Nom} </div>
 //         </div>
 //       </div>
 //     </>

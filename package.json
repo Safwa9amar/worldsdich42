@@ -2,6 +2,7 @@
   "name": "worldsdich42",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@emailjs/browser": "^3.9.1",
     "@stripe/react-stripe-js": "^2.1.0",
@@ -24,7 +25,7 @@
     "react-lazy-load-image-component": "^1.5.6",
     "react-multi-carousel": "^2.8.2",
     "react-rating-stars-component": "^2.2.0",
-    "react-router-dom": "^6.4.0",
+    "react-router-dom": "^6.21.1",
     "react-scripts": "^5.0.1",
     "react-swipeable-list": "^1.6.0",
     "react-touch-carousel": "^0.10.2",
