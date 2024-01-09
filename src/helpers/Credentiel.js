@@ -1,191 +1,148 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Credentiel } from "../context/CredentielContext";
-import { SERVER_URI } from "../helpers/UrlProvider";
+import React, { useState, useEffect, useRef } from "react";
+// import { Credentiel } from "../context/CredentielContext";
 import { motion } from "framer-motion";
+import useShippingRate from "../hooks/useShipingRate";
 export default function CredentielClient({
-  setcheckBoxState,
-  checkBoxState,
   setHeaderText,
-  HeaderText,
+  setIsLogged,
+  setLoginData,
+  userData,
 }) {
-  const CREDENTIEL_SERVER_URI = useContext(SERVER_URI);
-  const { isLogged, setIsLogged, setUserData } = useContext(Credentiel);
-  const [login, setlogin] = useState(true);
-  const [regsitre, setRegsitre] = useState(false);
+  const CREDENTIEL_SERVER_URI =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_SERVER_URI
+      : process.env.REACT_APP_DEV_SERVER_URI;
 
-  const [password, setpassword] = useState();
-
-  const [password_confirme, setpassword_confirme] = useState();
-  const [checkPassConfirm, setcheckPassConfirm] = useState(true);
-  const [codeStatus, setcodeStatus] = useState();
-
-  const [Displaylogger, setDisplaylogger] = useState(true);
-  const [RememberMe, setRememberMe] = useState(false);
-  const [isAdressSelected, setisAdressSelected] = useState(false);
-
-  const url = CREDENTIEL_SERVER_URI + "/registre";
-
+  // Destructuring values from context
+  const alertRef = useRef(null);
+  // State variables
+  const [login, setLogin] = useState(true);
+  const [register, setRegister] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState(""); // Corrected variable name
+  const [checkPassConfirm, setCheckPassConfirm] = useState(true);
+  const [registerRes, setRegisterRes] = useState({
+    codeStatus: 0,
+    msg: "",
+  });
+  const [displayLogger, setDisplayLogger] = useState(true);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [isAddressSelected, setIsAddressSelected] = useState(false); // Corrected variable name
+  const url = `${CREDENTIEL_SERVER_URI}/registre`;
+  const { shippingRates } = useShippingRate(); // Assuming useShippingRate returns shippingRates
+  const [data, setData] = useState(null);
+  const [responsCode, setResponsCode] = useState(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let form = e.target;
-    if (login) {
-      let login_form = new FormData(form);
-      let object = {};
-      login_form.forEach((value, key) => (object[key] = value));
-      console.log(object);
-      await fetch(url, {
-        mode: "cors", // no-cors, *cors, same-origin
+    const form = e.target;
+    const formData = new FormData(form);
+    const object = {};
 
+    formData.forEach((value, key) => (object[key] = value));
+
+    try {
+      // Check if passwords match for registration
+      if (!login && password !== passwordConfirm) {
+        console.log(login, password, passwordConfirm);
+        setCheckPassConfirm(false);
+        return;
+      }
+
+      fetch(url, {
+        mode: "cors",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(object),
       })
-        .then((response) => {
-          let code = response.status;
-          setcodeStatus(code);
-          setDisplaylogger(true);
-          if (code === 200) {
-            setTimeout(() => {
-              setIsLogged(true);
-              setDisplaylogger(false);
-              window.location.reload();
-            }, 2000);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          if (isLogged) setUserData(data.userData);
-          if (RememberMe) {
-            localStorage.setItem("jwt", data.access_token);
-            localStorage.setItem("refrech", data.refresh_token);
-          } else {
-            sessionStorage.setItem("jwt", data.access_token);
-            sessionStorage.setItem("refrech", data.refresh_token);
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    }
-    if (regsitre) {
-      if (password === password_confirme) {
-        setcheckPassConfirm(true);
-        let register_form = new FormData(form);
-
-        let object = {};
-        register_form.forEach((value, key) => (object[key] = value));
-        // console.log(object);
-        // return;
-        await fetch(url, {
-          mode: "cors", // no-cors, *cors, same-origin
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(object),
-        })
-          .then((response) => {
-            console.log(response);
-
-            let code = response.status;
-            setcodeStatus(code);
-            setDisplaylogger(true);
-            if (code === 200) {
-              setTimeout(() => {
-                setIsLogged(true);
-                setDisplaylogger(false);
-                window.location.reload();
-              }, 2000);
-            }
-            return response.json();
-          })
-          .then((data) => {
-            isLogged && setUserData(data.userData);
-            if (RememberMe) {
-              localStorage.setItem("jwt", data.access_token);
+        .then((res) => {
+          if (res.status === 200) {
+            console.log(res);
+            setIsLogged(true);
+            setLoginData(res.json());
+            if (rememberMe) {
               localStorage.setItem("refrech", data.refresh_token);
             } else {
-              sessionStorage.setItem("jwt", data.access_token);
               sessionStorage.setItem("refrech", data.refresh_token);
             }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      } else {
-        setcheckPassConfirm(false);
-      }
+          } else {
+            setResponsCode(res.status);
+            return res.json();
+          }
+        })
+        .then((err) => {
+          setData(err);
+          setDisplayLogger(true);
+        });
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
   };
-  const handleClick = (e) => {
-    let type = e.target.name;
-    setDisplaylogger(false);
-    if (type === "login") {
-      setlogin(true);
-      setRegsitre(false);
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      setRegisterRes({
+        codeStatus: responsCode,
+        msg: data.message,
+      });
     }
+  }, [data, responsCode]);
+
+  const handleClick = (e) => {
+    const type = e.target.name;
+    setDisplayLogger(false);
+
+    if (type === "login") {
+      setLogin(true);
+      setRegister(false);
+    }
+
     if (type === "registre") {
-      setlogin(false);
-      setRegsitre(true);
+      setLogin(false);
+      setRegister(true);
       setHeaderText("Créer un nouveau compte");
     }
   };
-  // fetsh `${CREDENTIEL_SERVER_URI}/settings/api/livraison_adresses` when component mount
-  const [livraison_adresses, setlivraison_adresses] = useState([]);
-  useEffect(() => {
-    // fetch(`${CREDENTIEL_SERVER_URI}/settings/api/livraison_adresses`, {
-    fetch(`https://api.stripe.com/v1/shipping_rates`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer sk_test_51NIB1DG5waCNLkzT7xtBN724M9XSxDD83ZktBJT2IXVo3OaP7FKH0mE5TbY2868iFlwG7O0BG5gOGHq3rMol9Emu00lT3iNh8n`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setlivraison_adresses(data.data.filter((el) => el.active === true));
-      });
-  }, [CREDENTIEL_SERVER_URI]);
 
   return (
     <>
       <div className="p-5">
         <div className="relative">
           <div className="form-control">
-            {Displaylogger && (
-              <p
+            {displayLogger && (
+              <button
+                ref={alertRef}
                 onClick={() => {
-                  setDisplaylogger(false);
+                  setDisplayLogger(false);
                 }}
                 className={`alert ${
-                  codeStatus === 200
+                  registerRes.codeStatus === 200
                     ? "alert-success"
-                    : codeStatus === 401
+                    : registerRes.codeStatus === 401
                     ? "alert-error"
-                    : codeStatus === 302
+                    : registerRes.codeStatus === 302
                     ? ""
-                    : codeStatus === 306
+                    : registerRes.codeStatus === 306
                     ? "alert-warning"
-                    : codeStatus === 300
+                    : registerRes.codeStatus === 300
                     ? "alert-warning"
                     : "hidden"
                 }`}
               >
-                {codeStatus === 200 ? (
+                {registerRes.codeStatus === 200 ? (
                   "Connexion réussie"
-                ) : codeStatus === 401 ? (
+                ) : registerRes.codeStatus === 401 ? (
                   "mot de passe incorrect réessayez"
-                ) : codeStatus === 302 ? (
+                ) : registerRes.codeStatus === 302 ? (
                   <button name="registre" onClick={handleClick}>
                     Il n'y a pas d'utilisateur avec ce nom, inscrivez-vous ici
                   </button>
-                ) : codeStatus === 306 ? (
+                ) : registerRes.codeStatus === 306 ? (
                   "Le nom d'utilisateur existe déjà Veuillez en choisir un autre"
-                ) : codeStatus === 300 ? (
+                ) : registerRes.codeStatus === 300 ? (
                   <>
-                    Email ou téléphone est déjà utilisé,
+                    {registerRes.msg}
                     <a href="#mymodel" className="text-primary">
                       Cliquez ici pour Récupérer votre mot de passe
                     </a>
@@ -193,9 +150,10 @@ export default function CredentielClient({
                 ) : (
                   "hidden"
                 )}
-              </p>
+              </button>
             )}
           </div>
+
           <br />
           {login && (
             <form onSubmit={handleSubmit}>
@@ -259,7 +217,7 @@ export default function CredentielClient({
           )}
           {/* login */}
           {/* sign up */}
-          {regsitre && (
+          {register && (
             <form onSubmit={handleSubmit}>
               {/* <p className="text-lg md:text-2xl">{HeaderText}</p> */}
               <div className="flex flex-col gap-4 mt-4">
@@ -307,16 +265,20 @@ export default function CredentielClient({
                     <span>CP , Ville , Quartier</span>
 
                     <select
-                      onChange={(e) => {
-                        setisAdressSelected(true);
-                      }}
                       required
                       name="adress"
                       type="adress"
                       className="input input-bordered"
+                      onChange={(e) => {
+                        if (e.target.value === "") {
+                          setIsAddressSelected(false);
+                        } else {
+                          setIsAddressSelected(true);
+                        }
+                      }}
                     >
                       <option />
-                      {livraison_adresses.map((livraison_adresse) => (
+                      {shippingRates.map((livraison_adresse) => (
                         <option value={livraison_adresse.id}>
                           {livraison_adresse.display_name}
                         </option>
@@ -324,7 +286,7 @@ export default function CredentielClient({
                     </select>
                   </label>
                 </div>
-                {isAdressSelected && (
+                {isAddressSelected && (
                   <motion.div
                     initial={{
                       opacity: 0,
@@ -342,7 +304,7 @@ export default function CredentielClient({
                           required
                           name="adresse_exct"
                           type="text"
-                          placeholder="Eg : 17, Rue Antoine du Rafour 42100 Saint-étienne"
+                          placeholder="Eg : 17, Rue Antoine drafour 42100 Saint-étienne"
                           className="input input-bordered"
                         />
                       </label>
@@ -423,7 +385,7 @@ export default function CredentielClient({
                     <input
                       required
                       onChange={(e) => {
-                        setpassword(e.target.value);
+                        setPassword(e.target.value);
                       }}
                       name="password"
                       type="password"
@@ -438,7 +400,7 @@ export default function CredentielClient({
                     <input
                       required
                       onChange={(e) => {
-                        setpassword_confirme(e.target.value);
+                        setPasswordConfirm(e.target.value);
                       }}
                       name="password_confirme"
                       type="password"
@@ -476,7 +438,7 @@ export default function CredentielClient({
                   onClick={handleClick}
                   name="login"
                   className={`text-warning tab tab-lifted  ${
-                    regsitre ? "tab-active" : ""
+                    register ? "tab-active" : ""
                   }`}
                 >
                   Cliquez ici pour vous identifier

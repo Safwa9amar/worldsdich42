@@ -11,7 +11,10 @@ import Logo from "../images/_logo.png";
 
 // import serverUrl from helpers folder
 export default function Footer() {
-  const SERVER_URI = process.env.REACT_APP_SERVER_URI;
+  const SERVER_URI =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_SERVER_URI
+      : process.env.REACT_APP_DEV_SERVER_URI;
   const WorkHours = `${SERVER_URI}/settings/api/WorkHours`;
   const Contact = `${SERVER_URI}/settings/api/contact_info`;
   // work hours state

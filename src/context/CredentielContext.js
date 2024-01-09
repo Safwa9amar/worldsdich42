@@ -3,7 +3,10 @@ import React, { createContext, useState, useEffect } from "react";
 export const Credentiel = createContext();
 
 const CredentielContextProvider = ({ children }) => {
-  const CC_SERVER_URI = process.env.REACT_APP_SERVER_URI;
+  const CC_SERVER_URI =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_SERVER_URI
+      : process.env.REACT_APP_DEV_SERVER_URI;
   const refrechToken =
     localStorage.getItem("refrech") || sessionStorage.getItem("refrech");
 

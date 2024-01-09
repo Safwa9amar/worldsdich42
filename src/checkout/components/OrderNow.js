@@ -25,23 +25,28 @@ export default function OrderNow({ DamandeType, Note }) {
     if (command_type.id === 1 || command_type.id === 2) {
       navigate("/success");
     } else {
-      const data = await fetch(process.env.REACT_APP_SERVER_URI + "/charge", {
-        mode: "cors",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user:
-            localStorage.getItem("refrech") ||
-            sessionStorage.getItem("refrech"),
-          email: user.email,
-          order: CheckoutData,
-          DamandeType: command_type,
-          Note: Note,
-          selectedShippingRate: selectedShippingRate || null,
-        }),
-      });
+      const data = await fetch(
+        process.env.NODE_ENV === "production"
+          ? process.env.REACT_APP_PROD_SERVER_URI
+          : process.env.REACT_APP_DEV_SERVER_URI + "/charge",
+        {
+          mode: "cors",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user:
+              localStorage.getItem("refrech") ||
+              sessionStorage.getItem("refrech"),
+            email: user.email,
+            order: CheckoutData,
+            DamandeType: command_type,
+            Note: Note,
+            selectedShippingRate: selectedShippingRate || null,
+          }),
+        }
+      );
       if (data.ok && data.status === 200) {
         setorderSuccess(true);
         setchargeData(data.json());

@@ -55,7 +55,10 @@ const responsive2 = {
 
 const Home = () => {
   const data = useContext(Categories);
-  const URI = process.env.REACT_APP_SERVER_URI;
+  const URI =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_SERVER_URI
+      : process.env.REACT_APP_DEV_SERVER_URI;
   const [promotionTotal, setPromotionTotal] = useState(0);
 
   useEffect(() => {

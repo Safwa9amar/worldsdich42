@@ -3,9 +3,14 @@ import React, { createContext, useState, useEffect, useCallback } from "react";
 export const AddressContext = createContext();
 
 const AddressContextProvider = ({ children }) => {
-  // const Address_SERVER_URI = process.env.REACT_APP_SERVER_URI;
-  const stripe_api_url = process.env.REACT_APP_STRIP_API_URL;
-  const stripe_key = process.env.REACT_APP_STRIPE_API_KEY;
+  const stripe_api_url =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_STRIPE_API_URL
+      : process.env.REACT_APP_DEV_STRIPE_API_URL;
+  const stripe_key =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_STRIPE_API_KEY
+      : process.env.REACT_APP_DEV_STRIPE_API_KEY;
 
   const [addresses, setAddresses] = useState(
     JSON.parse(localStorage.getItem("addresses")) || []

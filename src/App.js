@@ -20,6 +20,10 @@ import Error404 from "./404/404";
 import ChargeSuccess from "./checkout/ChargeSuccess";
 
 function App() {
+  console.log(
+    "%c This is a browser feature intended for developers. If someone told you to copy and paste something here to enable a feature or hack someone's account, it is a scam and will give them access to your account.",
+    "background: #222; color: #bada55"
+  );
   const CategoryContext = React.useContext(Categories);
   const [isVisisble, setCartVisisble] = React.useState(false);
   const [isAdedTocart, setIsAdedTocart] = React.useState(false);
@@ -67,7 +71,11 @@ function App() {
               className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
             >
               <BrowserRouter
-                basename={process.env.REACT_APP_ROOT_PATH_BASENAME}
+                basename={
+                  process.env.NODE_ENV === "production"
+                    ? process.env.REACT_APP_PROD_ROOT_PATH_BASENAME
+                    : process.env.REACT_APP_DEV_ROOT_PATH_BASENAME
+                }
               >
                 <ScrollToTop>
                   <>

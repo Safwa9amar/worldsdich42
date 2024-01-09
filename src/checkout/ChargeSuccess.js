@@ -8,7 +8,10 @@ import usePaymentBill from "../hooks/usePaymentBill";
 import emptyCart from "../asstes/emptyCart.png";
 
 export default function ChargeSuccess({ Storage, setStorage }) {
-  const BUY_SERVER_URI = process.env.REACT_APP_SERVER_URI;
+  const BUY_SERVER_URI =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_SERVER_URI
+      : process.env.REACT_APP_DEV_SERVER_URI;
   const CheckoutData = useContext(Checkout);
   const command_type = localStorage.getItem("DamandeType");
   const Note = localStorage.getItem("Note");

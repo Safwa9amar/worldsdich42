@@ -3,7 +3,10 @@ import { Credentiel } from "../context/CredentielContext";
 import useShippingRate from "../hooks/useShipingRate";
 
 export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
-  const CREDENTIEL_SERVER_URI = process.env.REACT_APP_SERVER_URI;
+  const CREDENTIEL_SERVER_URI =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_SERVER_URI
+      : process.env.REACT_APP_DEV_SERVER_URI;
   const { isLogged, setIsLogged, setUserData } = useContext(Credentiel);
   const [login, setlogin] = useState(true);
   const [regsitre, setRegsitre] = useState(false);
@@ -17,7 +20,7 @@ export default function CredentielModel({ setcheckBoxState, checkBoxState }) {
   const [Displaylogger, setDisplaylogger] = useState(true);
   const [RememberMe, setRememberMe] = useState(false);
   const { shippingRates } = useShippingRate();
-
+  console.log("qweqweqweq ipoioeoqpie ", shippingRates);
   const url = CREDENTIEL_SERVER_URI + "/registre";
   const handleSubmit = async (e) => {
     e.preventDefault();

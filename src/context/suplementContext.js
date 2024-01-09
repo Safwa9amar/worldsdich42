@@ -3,7 +3,10 @@ import React, { createContext, useState, useEffect, useCallback } from "react";
 export const SupplementContext = createContext();
 
 const SupplementContextProvider = ({ children }) => {
-  const SUPP_SERVER_URI = process.env.REACT_APP_SERVER_URI;
+  const SUPP_SERVER_URI =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_SERVER_URI
+      : process.env.REACT_APP_DEV_SERVER_URI;
   const [supplements, setSupplements] = useState([]);
 
   const fetchSupplementData = useCallback(async () => {

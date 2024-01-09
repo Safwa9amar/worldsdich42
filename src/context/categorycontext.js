@@ -3,7 +3,10 @@ import React, { createContext, useState, useEffect, useCallback } from "react";
 export const Categories = createContext();
 
 const CategoryContextProvider = ({ children }) => {
-  const CATEGORIES_SERVER_URI = process.env.REACT_APP_SERVER_URI;
+  const CATEGORIES_SERVER_URI =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_SERVER_URI
+      : process.env.REACT_APP_DEV_SERVER_URI;
 
   const [categories, setCategories] = useState(
     JSON.parse(localStorage.getItem("categories")) || []

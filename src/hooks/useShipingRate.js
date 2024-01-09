@@ -4,9 +4,16 @@ const useShippingRate = () => {
   const [shippingRates, setShippingRates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const apiKey = process.env.REACT_APP_STRIPE_API_KEY;
-  const fetchUrl = process.env.REACT_APP_STRIP_API_URL;
+  const apiKey =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_STRIPE_API_KEY
+      : process.env.REACT_APP_DEV_STRIPE_API_KEY;
+  const fetchUrl =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_STRIP_API_URL
+      : process.env.REACT_APP_DEV_STRIP_API_URL;
   // Function to fetch shipping rates from the Stripe API
+  // console.log(fetchUrl, apiKey);
   const fetchShippingRates = async () => {
     try {
       // Replace 'YOUR_STRIPE_API_KEY' with your actual Stripe API key
