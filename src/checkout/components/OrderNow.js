@@ -18,18 +18,19 @@ export default function OrderNow({ DamandeType, Note }) {
   const command_type = DamandeType.filter((el) => el.bol === true)[0];
   const [orderSuccess, setorderSuccess] = useState(false);
   const [chargeData, setchargeData] = useState(false);
-
+  const URL =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_SERVER_URI
+      : process.env.REACT_APP_DEV_SERVER_URI;
   const handleClick = async () => {
+    // console.log("start order");
     setShowModel(true);
     setstartReq(true);
     if (command_type.id === 1 || command_type.id === 2) {
       navigate("/success");
     } else {
-      const data = await fetch(
-        process.env.NODE_ENV === "production"
-          ? process.env.REACT_APP_PROD_SERVER_URI
-          : process.env.REACT_APP_DEV_SERVER_URI + "/charge",
-        {
+      try {
+        const data = await fetch(`${URL}/charge`, {
           mode: "cors",
           method: "POST",
           headers: {
@@ -45,13 +46,16 @@ export default function OrderNow({ DamandeType, Note }) {
             Note: Note,
             selectedShippingRate: selectedShippingRate || null,
           }),
+        });
+        // console.log(data);
+        if (data.ok && data.status === 200) {
+          setorderSuccess(true);
+          setchargeData(data.json());
+          setReq(true);
+          setstartReq(false);
         }
-      );
-      if (data.ok && data.status === 200) {
-        setorderSuccess(true);
-        setchargeData(data.json());
-        setReq(true);
-        setstartReq(false);
+      } catch (error) {
+        // console.log(error);
       }
     }
   };
