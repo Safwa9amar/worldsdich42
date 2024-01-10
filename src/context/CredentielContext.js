@@ -12,11 +12,13 @@ const CredentielContextProvider = ({ children }) => {
 
   const [isLogged, setIsLogged] = useState(false);
   const [userData, setUserData] = useState([]);
+  const [isLoading, setIisLoading] = useState(false);
 
   const url = `${CC_SERVER_URI}/registre`;
 
   useEffect(() => {
     const fetchData = async () => {
+      setIisLoading(true);
       try {
         const response = await fetch(url, {
           mode: "cors",
@@ -36,6 +38,7 @@ const CredentielContextProvider = ({ children }) => {
 
         const data = await response.json();
         setUserData(data);
+        setIisLoading(false);
         // getRating(data.id);
       } catch (error) {
         // Handle error if needed
@@ -53,7 +56,9 @@ const CredentielContextProvider = ({ children }) => {
         userData,
         setIsLogged,
         setUserData,
-        // Add other values if needed
+        refrechToken,
+        isLoading,
+        setIisLoading,
       }}
     >
       {children}

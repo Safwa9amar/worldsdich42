@@ -1,13 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-// import { Credentiel } from "../context/CredentielContext";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { Credentiel } from "../context/CredentielContext";
 import { motion } from "framer-motion";
 import useShippingRate from "../hooks/useShipingRate";
-export default function CredentielClient({
-  setHeaderText,
-  setIsLogged,
-  setLoginData,
-  userData,
-}) {
+export default function CredentielClient({ setHeaderText }) {
+  const { isLogged, setIsLogged, setUserData, setIisLoading } =
+    useContext(Credentiel);
   const CREDENTIEL_SERVER_URI =
     process.env.NODE_ENV === "production"
       ? process.env.REACT_APP_PROD_SERVER_URI
@@ -33,6 +30,7 @@ export default function CredentielClient({
   const [data, setData] = useState(null);
   const [responsCode, setResponsCode] = useState(null);
   const handleSubmit = async (e) => {
+    setIisLoading(true);
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
@@ -58,22 +56,22 @@ export default function CredentielClient({
       })
         .then((res) => {
           if (res.status === 200) {
-            console.log(res);
             setIsLogged(true);
-            setLoginData(res.json());
-            if (rememberMe) {
-              localStorage.setItem("refrech", data.refresh_token);
-            } else {
-              sessionStorage.setItem("refrech", data.refresh_token);
-            }
           } else {
             setResponsCode(res.status);
-            return res.json();
           }
+          return res.json();
         })
-        .then((err) => {
-          setData(err);
+        .then((data) => {
+          setUserData(data);
+          setData(data);
           setDisplayLogger(true);
+          setIisLoading(false);
+          if (rememberMe) {
+            localStorage.setItem("refrech", data.refresh_token);
+          } else {
+            sessionStorage.setItem("refrech", data.refresh_token);
+          }
         });
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -81,7 +79,6 @@ export default function CredentielClient({
   };
   useEffect(() => {
     if (data) {
-      console.log(data);
       setRegisterRes({
         codeStatus: responsCode,
         msg: data.message,
@@ -130,7 +127,7 @@ export default function CredentielClient({
                     : "hidden"
                 }`}
               >
-                {registerRes.codeStatus === 200 ? (
+                {isLogged ? (
                   "Connexion réussie"
                 ) : registerRes.codeStatus === 401 ? (
                   "mot de passe incorrect réessayez"

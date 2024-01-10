@@ -18,6 +18,7 @@ import CheckoutDataContextProvider from "./context/checkoutContext";
 import Profile from "./profile/Profile";
 import Error404 from "./404/404";
 import ChargeSuccess from "./checkout/ChargeSuccess";
+import CredentielContextProvider from "./context/CredentielContext";
 
 function App() {
   console.log(
@@ -56,97 +57,100 @@ function App() {
 
   return (
     <>
-      <SupplementContextProvider>
-        <CartDataContextProvider data={Storage}>
-          <CheckoutDataContextProvider
-            isAdedTocart={isAdedTocart}
-            isVisisble={isVisisble}
-            isDeletetedFromTocart={isDeletetedFromTocart}
-            Storage={Storage}
-            CategoryContext={CategoryContext}
-          >
-            <div
-              data-theme="dracula"
-              id="scroller"
-              className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
+      <CredentielContextProvider>
+        {" "}
+        <SupplementContextProvider>
+          <CartDataContextProvider data={Storage}>
+            <CheckoutDataContextProvider
+              isAdedTocart={isAdedTocart}
+              isVisisble={isVisisble}
+              isDeletetedFromTocart={isDeletetedFromTocart}
+              Storage={Storage}
+              CategoryContext={CategoryContext}
             >
-              <BrowserRouter
-                basename={
-                  process.env.NODE_ENV === "production"
-                    ? process.env.REACT_APP_PROD_ROOT_PATH_BASENAME
-                    : process.env.REACT_APP_DEV_ROOT_PATH_BASENAME
-                }
+              <div
+                data-theme="dracula"
+                id="scroller"
+                className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
               >
-                <ScrollToTop>
-                  <>
-                    <Header
-                      setCartVisisble={setCartVisisble}
-                      isAdedTocart={isAdedTocart}
-                      isDeletetedFromTocart={isDeletetedFromTocart}
-                      handleCartBoudries={handleCartBoudries}
-                      // locations={locations}
-                    />
-                    <Cart
-                      isVisisble={isVisisble}
-                      setCartVisisble={setCartVisisble}
-                      isAdedTocart={isAdedTocart}
-                      handleDeletetedFromTocart={handleDeletetedFromTocart}
-                      handleStorageEdit={handleStorageEdit}
-                    />
-
-                    <Routes>
-                      <Route path="*" element={<Error404 />} />
-
-                      <Route exact path="/" element={<Home />} />
-                      <Route
-                        exact
-                        path="/menu/category"
-                        element={
-                          <Catergory
-                            handleStorageEdit={handleStorageEdit}
-                            handleAdedTocart={handleAdedTocart}
-                            isDeletetedFromTocart={isDeletetedFromTocart}
-                            hybrid_idFroDeletion={hybrid_idFroDeletion}
-                            getCartBoudaries={getCartBoudaries}
-                            setcheckBoxState={setcheckBoxState}
-                            // setErorPage={setErorPage}
-                          />
-                        }
+                <BrowserRouter
+                  basename={
+                    process.env.NODE_ENV === "production"
+                      ? process.env.REACT_APP_PROD_ROOT_PATH_BASENAME
+                      : process.env.REACT_APP_DEV_ROOT_PATH_BASENAME
+                  }
+                >
+                  <ScrollToTop>
+                    <>
+                      <Header
+                        setCartVisisble={setCartVisisble}
+                        isAdedTocart={isAdedTocart}
+                        isDeletetedFromTocart={isDeletetedFromTocart}
+                        handleCartBoudries={handleCartBoudries}
+                        // locations={locations}
                       />
-                      <Route
-                        exact
-                        path="/checkout"
-                        element={
-                          <Checkout
-                            setcheckBoxState={setcheckBoxState}
-                            checkBoxState={checkBoxState}
-                            setStorage={setStorage}
-                          />
-                        }
-                      />
-                      <Route
-                        exact
-                        path="/success"
-                        element={
-                          <ChargeSuccess
-                            Storage={Storage}
-                            setStorage={setStorage}
-                          />
-                        }
+                      <Cart
+                        isVisisble={isVisisble}
+                        setCartVisisble={setCartVisisble}
+                        isAdedTocart={isAdedTocart}
+                        handleDeletetedFromTocart={handleDeletetedFromTocart}
+                        handleStorageEdit={handleStorageEdit}
                       />
 
-                      <Route exact path="/menu" element={<Menu />} />
-                      <Route exact path="/contact" element={<Contact />} />
-                      <Route exact path="/profile" element={<Profile />} />
-                    </Routes>
-                  </>
-                </ScrollToTop>
-                <Footer />
-              </BrowserRouter>
-            </div>
-          </CheckoutDataContextProvider>
-        </CartDataContextProvider>
-      </SupplementContextProvider>
+                      <Routes>
+                        <Route path="*" element={<Error404 />} />
+
+                        <Route exact path="/" element={<Home />} />
+                        <Route
+                          exact
+                          path="/menu/category"
+                          element={
+                            <Catergory
+                              handleStorageEdit={handleStorageEdit}
+                              handleAdedTocart={handleAdedTocart}
+                              isDeletetedFromTocart={isDeletetedFromTocart}
+                              hybrid_idFroDeletion={hybrid_idFroDeletion}
+                              getCartBoudaries={getCartBoudaries}
+                              setcheckBoxState={setcheckBoxState}
+                              // setErorPage={setErorPage}
+                            />
+                          }
+                        />
+                        <Route
+                          exact
+                          path="/checkout"
+                          element={
+                            <Checkout
+                              setcheckBoxState={setcheckBoxState}
+                              checkBoxState={checkBoxState}
+                              setStorage={setStorage}
+                            />
+                          }
+                        />
+                        <Route
+                          exact
+                          path="/success"
+                          element={
+                            <ChargeSuccess
+                              Storage={Storage}
+                              setStorage={setStorage}
+                            />
+                          }
+                        />
+
+                        <Route exact path="/menu" element={<Menu />} />
+                        <Route exact path="/contact" element={<Contact />} />
+                        <Route exact path="/profile" element={<Profile />} />
+                      </Routes>
+                    </>
+                  </ScrollToTop>
+                  <Footer />
+                </BrowserRouter>
+              </div>
+            </CheckoutDataContextProvider>
+          </CartDataContextProvider>
+        </SupplementContextProvider>
+      </CredentielContextProvider>
     </>
   );
 }
