@@ -105,16 +105,9 @@ const CarouselItems = ({
   }, [count, obj, parent_id]);
 
   return (
-    <div className=" flex flex-col  items-center capitalize">
-      {/* <span
-        className={`indicator-item badge badge-xs ${
-          status ? "badge-primary" : "badge-neutral"
-        }`}
-      >
-        {status ? "disponible" : "indisponible"}
-      </span> */}
+    <div className=" flex flex-col  gap-2 items-center capitalize text-center">
       <img
-        className={`rounded-box w-[100px] h-[100px] md:w-[150px] md:h-[150px] ${
+        className={`rounded-box w-[50px] h-[50px] md:w-[100px] md:h-[100px] aspect-square ${
           status ? "" : "brightness-50"
         }`}
         src={src}
@@ -125,19 +118,13 @@ const CarouselItems = ({
         <sup className="font-bold">( +{formatEUR(Prix)} )</sup>
       </p>
       <p
-        className={`flex flex-col h-fit badge badge-xs ${
+        className={`hidden md:block h-fit badge badge-xs  ${
           status ? "badge-primary" : ""
         } my-2 `}
       >
         {
           // crate two span for each word in the parent name
-          parent.split(" ").map((el, i) => {
-            return (
-              <span key={i} className="text-xs">
-                {el}
-              </span>
-            );
-          })
+          parent
         }
       </p>
       {status && (
@@ -259,22 +246,22 @@ export function SupplementCard(props) {
           </div>
           <h3 className="font-bold text-lg">Choisissez ce que vous voulez!</h3>
           <div className="py-4">
-            {/* <div className="grid grid-cols-2 p-4 place-content-center"> */}
-            {showModal &&
-              recipe_data.map((el) => {
-                const { id, isCheked, name } = el;
-                return (
-                  <CheckedItem
-                    key={id}
-                    id={id}
-                    el_id={el_id}
-                    isChecked={isCheked}
-                    text={name}
-                    handleOptionChanges={handleOptionChanges}
-                  />
-                );
-              })}
-            {/* </div> */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 ">
+              {showModal &&
+                recipe_data.map((el) => {
+                  const { id, isCheked, name } = el;
+                  return (
+                    <CheckedItem
+                      key={id}
+                      id={id}
+                      el_id={el_id}
+                      isChecked={isCheked}
+                      text={name}
+                      handleOptionChanges={handleOptionChanges}
+                    />
+                  );
+                })}
+            </div>
             <div className="w-full">
               {supplementData.map((el) => {
                 return (
@@ -316,14 +303,25 @@ function CheckedItem({ isChecked, text, id, el_id, handleOptionChanges }) {
   return (
     <div className="sm:text-md md:text-xl ">
       <div className="form-control">
-        <label className="label cursor-pointer justify-start gap-2 ">
+        <label
+          className={`
+          m-5
+          p-5
+          w-full
+          flex justify-center
+          rounded-xl
+          h-10
+        ${checked ? "bg-cyan-950" : "bg-transparent"}
+        label cursor-pointer  gap-2
+          `}
+        >
           <input
             onChange={handleChange}
             type="checkbox"
             checked={checked}
-            className="toggle toggle-sm	checkbox-accent"
+            className="toggle toggle-xs	checkbox-secondary"
           />
-          <span className="label-text">{text}</span>
+          <span className="text-xs">{text}</span>
         </label>
       </div>
     </div>

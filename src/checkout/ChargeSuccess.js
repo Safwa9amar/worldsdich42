@@ -52,7 +52,7 @@ export default function ChargeSuccess({ Storage, setStorage }) {
 
   useEffect(() => {
     Storage !== "[]" && startFetch();
-  }, [selectedShippingRate]);
+  }, []);
   const { Billloading, download: downloadPaymentBill } = usePaymentBill(
     `${BUY_SERVER_URI}/get_payment_bill`,
     {

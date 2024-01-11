@@ -5,6 +5,8 @@ import { BsCartCheckFill } from "react-icons/bs";
 import menuImg from "../../images/Menu.png";
 // import product_bg from "../../images/product_bg.jpg";
 import arcticons_manga from "../../icons/arcticons_manga-plus.svg";
+import { TbSquareRoundedPlus2 } from "react-icons/tb";
+
 import { Cartstorage } from "../../context/LocalStorageContext";
 // import { Credentiel } from "../../context/CredentielContext";
 import { SERVER_URI } from "../../helpers/UrlProvider";
@@ -165,7 +167,7 @@ export const CatergoryItem = (props) => {
         className="md:hidden relative bg-[#28231B] w-[170px] h-[150px] hover:shadow-sm hover:shadow-gray-600  cursor-pointer p-8 flex flex-col justify-end items-center gap-2 rounded-lg m-6 text-white"
       >
         <LazyLoadImage
-          className={`w-[100px] h-[150px] translate-y-15 object-cover rounded-lg`}
+          className={`w-[100px] h-[150px] translate-y-15 object-fill rounded-lg`}
           src={img}
           alt={img}
         />
@@ -178,17 +180,13 @@ export const CatergoryItem = (props) => {
             activeColor="#ffd700"
           />
         )} */}
-        <h3 className="lg:text-2xl text-md font-bold tracking-widest capitalize">
+        <h3 className="lg:text-2xl text-xs text-center font-bold tracking-widest capitalize">
           {header.toLowerCase()}
         </h3>
         <p className="text-[#5B6D5B] font-bold text-xl">
           {formatEUR(Math.abs(Price) + Math.abs(MenuPrice))}
         </p>
-        <LazyLoadImage
-          className="absolute bottom-4 right-4"
-          src={arcticons_manga}
-          alt="plus"
-        />
+        <TbSquareRoundedPlus2 className="absolute bottom-4 right-4  " />
       </div>
 
       <div

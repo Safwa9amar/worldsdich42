@@ -36,7 +36,7 @@ const MenuItem = ({ icon, text, id, Length, setActiveItem }) => {
       } `}
     >
       <img className={`w-[25px] h-[35px]   `} src={icon} alt={text} />
-      <p className="text-md md:text-lg capitalize w-full">
+      <p className="hidden md:block text-md md:text-lg capitalize w-full">
         {text} {Length ? `(${Length})` : ""}
       </p>
     </Link>

@@ -85,13 +85,13 @@ const Home = () => {
     >
       <div
         className="
-        bg-bg-header
-      md:bg-bg-md-header
+      bg-bg-md-header
       bg-fixed
       bg-cover
-       w-full p-20 flex flex-col items-center justify-center gap-4"
+      lg:p-20 
+       w-full flex flex-col items-center justify-center gap-4"
       >
-        <div className="w-4/5 h-full bg-[#000000cc] p-10 rounded-lg bg-cover flex flex-col items-center justify-center gap-4">
+        <div className="w-full h-full bg-[#000000cc] p-10 rounded-lg bg-cover flex flex-col items-center justify-center gap-4">
           <img
             src={Logo}
             alt="logo"

@@ -8,10 +8,13 @@ import { motion } from "framer-motion";
 import emailjs from "@emailjs/browser";
 import { useState } from "react";
 import Map from "../helpers/Map";
-import { SERVER_URI } from "./../helpers/UrlProvider";
 import { FiMail } from "react-icons/fi";
 
 const Contact = () => {
+  const SERVER_URI =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PROD_SERVER_URI
+      : process.env.REACT_APP_DEV_SERVER_URI;
   const Contact = `${useContext(SERVER_URI)}/settings/api/contact_info`;
   const [contact, setContact] = React.useState([]);
 

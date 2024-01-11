@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect, useCallback } from "react";
 export const Categories = createContext();
 
 const CategoryContextProvider = ({ children }) => {
-  const CATEGORIES_SERVER_URI =
+  const serverUri =
     process.env.NODE_ENV === "production"
       ? process.env.REACT_APP_PROD_SERVER_URI
       : process.env.REACT_APP_DEV_SERVER_URI;
@@ -12,29 +12,39 @@ const CategoryContextProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("categories")) || []
   );
 
-  let getCaegories = useCallback(async () => {
-    const data = await fetch(`${CATEGORIES_SERVER_URI}/api`).then((res) =>
-      res.json()
-    );
-    setCategories(data);
-    localStorage.setItem("categories", JSON.stringify(data));
-  }, [CATEGORIES_SERVER_URI]);
+  const getCategories = useCallback(async () => {
+    try {
+      const response = await fetch(`${serverUri}/api`);
+      const data = await response.json();
+      setCategories(data);
+      localStorage.setItem("categories", JSON.stringify(data));
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  }, [serverUri]);
 
   useEffect(() => {
-    getCaegories();
-  }, [getCaegories]);
+    getCategories();
 
-  document.addEventListener("DOMContentLoaded", () => {
-    getCaegories();
-  });
-  // 10 minutes interval
-  let tenMinutes = 1000 * 60 * 10;
-  setInterval(() => {
-    getCaegories();
-  }, tenMinutes);
+    // Clean up the event listener
+    return () => {
+      document.removeEventListener("DOMContentLoaded", getCategories);
+    };
+  }, [getCategories]);
+
+  // Uncomment the following if you want to use the interval
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     getCategories();
+  //   }, 1000 * 60 * 10);
+  //
+  //   // Clear the interval on component unmount
+  //   return () => clearInterval(intervalId);
+  // }, [getCategories]);
 
   return (
     <Categories.Provider value={categories}>{children}</Categories.Provider>
   );
 };
+
 export default CategoryContextProvider;

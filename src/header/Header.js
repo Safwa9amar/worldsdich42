@@ -57,7 +57,7 @@ export default function Header({
   // );
 
   return (
-    <div className="transition-all  w-full rounded-xl">
+    <div className="transition-all px-10  w-full rounded-xl">
       <div className="h-full w-full text-white flex flex-col gap-4 items-center ">
         <div className="flex justify-between items-center w-full md:w-5/6 relative m-10  ">
           <Link to={"/"} className="lg:flex items-center hidden">
