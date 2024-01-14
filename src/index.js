@@ -5,7 +5,6 @@ import "./loader.css";
 import Loader from "./asstes/loader.gif";
 import CategoryContextProvider from "./context/categorycontext";
 import CredentielContextProvider from "./context/CredentielContext";
-import URLContextProvider from "./helpers/UrlProvider";
 import ClientStatusContextProvider from "./context/CientStatus";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -25,15 +24,13 @@ const SuspenseFallback = () => {
 };
 
 root.render(
-  <URLContextProvider>
-    <ClientStatusContextProvider>
-      <CredentielContextProvider>
-        <CategoryContextProvider>
-          <Suspense fallback={<SuspenseFallback />}>
-            <App />
-          </Suspense>
-        </CategoryContextProvider>
-      </CredentielContextProvider>
-    </ClientStatusContextProvider>
-  </URLContextProvider>
+  <ClientStatusContextProvider>
+    <CredentielContextProvider>
+      <CategoryContextProvider>
+        <Suspense fallback={<SuspenseFallback />}>
+          <App />
+        </Suspense>
+      </CategoryContextProvider>
+    </CredentielContextProvider>
+  </ClientStatusContextProvider>
 );

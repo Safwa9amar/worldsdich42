@@ -1,47 +1,35 @@
-import * as React from "react";
+import React, { useState, useContext } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Header from "./header/Header";
-import Menu from "./menu/Menu";
-import Footer from "./footer/Footer";
-import Home from "./home/Home";
-import Contact from "./contact/Contact";
-import Cart from "./checkout/Cart";
-import Checkout from "./checkout/Checkout";
-import Catergory from "./menu/components/Catergory";
+import Header from "./layout/header/Header";
+import Footer from "./layout/footer/Footer";
+import Cart from "./pages/checkout/Cart";
 import ScrollToTop from "./helpers/ScrollToTop";
 import { Categories } from "./context/categorycontext";
 import SupplementContextProvider from "./context/suplementContext";
 import CartDataContextProvider from "./context/LocalStorageContext";
 import CheckoutDataContextProvider from "./context/checkoutContext";
-// import CredentielModel from "./helpers/CredentielModel";
-import Profile from "./profile/Profile";
-import Error404 from "./404/404";
-import ChargeSuccess from "./checkout/ChargeSuccess";
 import CredentielContextProvider from "./context/CredentielContext";
-
-function App() {
-  console.log(
-    "%c This is a browser feature intended for developers. If someone told you to copy and paste something here to enable a feature or hack someone's account, it is a scam and will give them access to your account.",
-    "background: #222; color: #bada55"
-  );
-  const CategoryContext = React.useContext(Categories);
-  const [isVisisble, setCartVisisble] = React.useState(false);
-  const [isAdedTocart, setIsAdedTocart] = React.useState(false);
-  const [checkBoxState, setcheckBoxState] = React.useState(false);
-  const [Storage, setStorage] = React.useState(
+import { generateRoutes } from "./helpers/routesGenerator";
+const App = () => {
+  // State and context hooks
+  const CategoryContext = useContext(Categories);
+  const [isVisisble, setCartVisisble] = useState(false);
+  const [isAdedTocart, setIsAdedTocart] = useState(false);
+  const [checkBoxState, setcheckBoxState] = useState(false);
+  const [Storage, setStorage] = useState(
     localStorage.getItem("cartData") !== null
       ? localStorage.getItem("cartData")
       : "[]"
   );
-  const [isDeletetedFromTocart, setIsDeletetedFromTocart] =
-    React.useState(false);
+  const [isDeletetedFromTocart, setIsDeletetedFromTocart] = useState(false);
+  const [hybrid_idFroDeletion, sethybrid_idFroDeletion] = useState();
+  const [getCartBoudaries, setgetCartBoudaries] = useState();
 
-  const [hybrid_idFroDeletion, sethybrid_idFroDeletion] = React.useState();
+  // Event handlers
   const handleAdedTocart = () => {
     setIsAdedTocart(!isAdedTocart);
   };
-  const [getCartBoudaries, setgetCartBoudaries] = React.useState();
 
   const handleCartBoudries = (data) => {
     setgetCartBoudaries(data);
@@ -51,108 +39,111 @@ function App() {
     setIsDeletetedFromTocart(!isDeletetedFromTocart);
     sethybrid_idFroDeletion(hybrid_id);
   };
+
   const handleStorageEdit = (data) => {
     setStorage(JSON.stringify(data));
   };
+  // Separate function to generate routes
+
+  const customProps = {
+    // Your custom props here
+  };
+
+  const defaultProps = {
+    categoryProps: {
+      // Category-specific props
+      handleStorageEdit,
+      handleAdedTocart,
+      isDeletetedFromTocart,
+      hybrid_idFroDeletion,
+      getCartBoudaries,
+      setcheckBoxState,
+    },
+    checkoutProps: {
+      // Checkout-specific props
+      setcheckBoxState,
+      checkBoxState,
+      setStorage,
+    },
+    chargeSuccessProps: {
+      // ChargeSuccess-specific props
+    },
+    menuProps: {
+      // Menu-specific props
+    },
+    contactProps: {
+      // Contact-specific props
+    },
+    profileProps: {
+      // Profile-specific props
+    },
+  };
+
+  const routes = generateRoutes(
+    (Component, props) => <Component {...props} />,
+    {
+      ...customProps,
+      ...defaultProps,
+    }
+  );
 
   return (
-    <>
-      <CredentielContextProvider>
-        {" "}
-        <SupplementContextProvider>
-          <CartDataContextProvider data={Storage}>
-            <CheckoutDataContextProvider
-              isAdedTocart={isAdedTocart}
-              isVisisble={isVisisble}
-              isDeletetedFromTocart={isDeletetedFromTocart}
-              Storage={Storage}
-              CategoryContext={CategoryContext}
+    <CredentielContextProvider>
+      <SupplementContextProvider>
+        <CartDataContextProvider data={Storage}>
+          <CheckoutDataContextProvider
+            isAdedTocart={isAdedTocart}
+            isVisisble={isVisisble}
+            isDeletetedFromTocart={isDeletetedFromTocart}
+            Storage={Storage}
+            CategoryContext={CategoryContext}
+          >
+            <div
+              data-theme="dracula"
+              id="scroller"
+              className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
             >
-              <div
-                data-theme="dracula"
-                id="scroller"
-                className="w-screen h-screen overflow-x-hidden md:scrollbar md:scrollbar-thumb-gray-900 md:scrollbar-track-gray-100"
+              <BrowserRouter
+                basename={
+                  process.env.NODE_ENV === "production"
+                    ? process.env.REACT_APP_PROD_ROOT_PATH_BASENAME
+                    : process.env.REACT_APP_DEV_ROOT_PATH_BASENAME
+                }
               >
-                <BrowserRouter
-                  basename={
-                    process.env.NODE_ENV === "production"
-                      ? process.env.REACT_APP_PROD_ROOT_PATH_BASENAME
-                      : process.env.REACT_APP_DEV_ROOT_PATH_BASENAME
-                  }
-                >
-                  <ScrollToTop>
-                    <>
-                      <Header
-                        setCartVisisble={setCartVisisble}
-                        isAdedTocart={isAdedTocart}
-                        isDeletetedFromTocart={isDeletetedFromTocart}
-                        handleCartBoudries={handleCartBoudries}
-                        // locations={locations}
-                      />
-                      <Cart
-                        isVisisble={isVisisble}
-                        setCartVisisble={setCartVisisble}
-                        isAdedTocart={isAdedTocart}
-                        handleDeletetedFromTocart={handleDeletetedFromTocart}
-                        handleStorageEdit={handleStorageEdit}
-                      />
-
-                      <Routes>
-                        <Route path="*" element={<Error404 />} />
-
-                        <Route exact path="/" element={<Home />} />
+                <ScrollToTop>
+                  <>
+                    <Header
+                      setCartVisisble={setCartVisisble}
+                      isAdedTocart={isAdedTocart}
+                      isDeletetedFromTocart={isDeletetedFromTocart}
+                      handleCartBoudries={handleCartBoudries}
+                    />
+                    <Cart
+                      isVisisble={isVisisble}
+                      setCartVisisble={setCartVisisble}
+                      isAdedTocart={isAdedTocart}
+                      handleDeletetedFromTocart={handleDeletetedFromTocart}
+                      handleStorageEdit={handleStorageEdit}
+                    />
+                    <Routes>
+                      {routes.map((route, index) => (
                         <Route
-                          exact
-                          path="/menu/category"
-                          element={
-                            <Catergory
-                              handleStorageEdit={handleStorageEdit}
-                              handleAdedTocart={handleAdedTocart}
-                              isDeletetedFromTocart={isDeletetedFromTocart}
-                              hybrid_idFroDeletion={hybrid_idFroDeletion}
-                              getCartBoudaries={getCartBoudaries}
-                              setcheckBoxState={setcheckBoxState}
-                              // setErorPage={setErorPage}
-                            />
-                          }
+                          key={index}
+                          path={route.path}
+                          element={route.element}
                         />
-                        <Route
-                          exact
-                          path="/checkout"
-                          element={
-                            <Checkout
-                              setcheckBoxState={setcheckBoxState}
-                              checkBoxState={checkBoxState}
-                              setStorage={setStorage}
-                            />
-                          }
-                        />
-                        <Route
-                          exact
-                          path="/success"
-                          element={
-                            <ChargeSuccess
-                              Storage={Storage}
-                              setStorage={setStorage}
-                            />
-                          }
-                        />
-
-                        <Route exact path="/menu" element={<Menu />} />
-                        <Route exact path="/contact" element={<Contact />} />
-                        <Route exact path="/profile" element={<Profile />} />
-                      </Routes>
-                    </>
-                  </ScrollToTop>
-                  <Footer />
-                </BrowserRouter>
-              </div>
-            </CheckoutDataContextProvider>
-          </CartDataContextProvider>
-        </SupplementContextProvider>
-      </CredentielContextProvider>
-    </>
+                      ))}
+                    </Routes>
+                  </>
+                </ScrollToTop>
+                <Footer />
+              </BrowserRouter>
+            </div>
+          </CheckoutDataContextProvider>
+        </CartDataContextProvider>
+      </SupplementContextProvider>
+    </CredentielContextProvider>
   );
-}
+};
 
 export default App;
